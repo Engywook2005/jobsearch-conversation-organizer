@@ -8,9 +8,6 @@ module.exports = function(grunt) {
         configPath: path.join(process.cwd(), 'grunt/config'),
         jitGrunt: {
             customTasksDir: 'grunt/tasks'
-        },
-        data: {
-            foo: 'bar' // accessible with '<%= foo %>'
         }
     });
 };

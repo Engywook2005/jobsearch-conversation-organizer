@@ -6,7 +6,7 @@ module.exports = {
     serveHTTP: {
         options: {
             port: 8907,
-            base: './',
+            base: './public_html/',
             keepalive: true
         }
     }
