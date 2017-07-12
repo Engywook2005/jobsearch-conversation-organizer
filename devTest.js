@@ -5,10 +5,21 @@
 //console.log(process.argv[2]);
 const mysql = require('./src/mysql');
 
+const testSelectQuery = function(connex) {
+    const selexQueries = new mysql.SelexQuery(connex);
+    const selexCallback = function(err, response) {
+        for(var i = 0; i < response.length; i++) {
+            console.log("contact: " + response[i].firstName + " " + response[i].lastName);
+        }
+    };
+    selexQueries.execQuery(selexCallback, "SELECT * FROM contactList");
+}
+
 const connexCallback = function(err, connex) {
     if(connex) {
         console.log("have connection!");
-        console.log(connex.query);
+        connex.query("use jobConvos");
+        testSelectQuery(connex);
     } else {
         console.log("oops! \n" + err);
     }

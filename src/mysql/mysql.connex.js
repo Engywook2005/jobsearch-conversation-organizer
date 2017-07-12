@@ -27,10 +27,6 @@ class MySqlConnexJS {
             }
         });
     }
-
-    squawk() {
-        console.log("squawk!");
-    };
 }
 
 module.exports = MySqlConnexJS;
