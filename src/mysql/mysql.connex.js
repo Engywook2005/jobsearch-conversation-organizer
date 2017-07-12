@@ -9,15 +9,15 @@ class MySqlConnexJS {
         this.mysqlInstance = require ('mysql');
     }
 
-    conectToSQLServer(callback = function(err, connex) {
-        console.log(err);
-        console.log(connex);
-    }) {
+    connectToSQLServer(callback = function(err, connex) {
+        console.log("default callback: " + (connex && !err));
+    },
+    password = "foo") {
+        console.log(password);
         const connection = this.mysqlInstance.createConnection({
             host: "localhost",
             user: "root",
-            //TODO add argument to call to app to pass username and password
-            password: "thisPasswordIntentionallyWrong"
+            password
         });
         connection.connect(function(err) {
             if(err) {

@@ -3,8 +3,4 @@
  */
 const mysql = require('./mysql');
 
-const mysqlConnex = new mysql.MySqlConnexJS();
-mysqlConnex.conectToSQLServer();
-
-
 module.exports.mysql = mysql;

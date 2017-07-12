@@ -1,7 +1,8 @@
 /**
  * Created by Greg on 6/16/2017.
  */
-const src = require('./src');
-//test lines
+const api = require('./src');
+//const devTest = require('./devTest.js');
 
-module.exports = src;
+module.exports.api = api;
+//module.exports.devTest = devTest;
