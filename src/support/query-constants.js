@@ -15,7 +15,8 @@ dateNamePosEmployerRecruiter.lastStatusChange,
 applicationStatus.status,
 conversationType.type,
 dateNamePosEmployerRecruiter.employerName,
-dateNamePosEmployerRecruiter.recruiterName
+dateNamePosEmployerRecruiter.recruiterName,
+dateNamePosEmployerRecruiter.remark
 FROM
 (
 	SELECT DISTINCT
@@ -24,6 +25,7 @@ FROM
 	dateNamePos.firstName,
 	dateNamePos.lastName,
     dateNamePos.convoType,
+    dateNamePos.remark,
 	dateNamePos.title,
 	dateNamePos.status,
 	dateNamePos.lastStatusChange,
@@ -37,6 +39,7 @@ FROM
 		dateAndName.firstName,
 		dateAndName.lastName,
         dateAndName.convoType,
+        dateAndName.remark,
 		specificPosition.title,
 		specificPosition.employer,
 		specificPosition.recruiter,
@@ -48,6 +51,7 @@ FROM
 			convoTable.conversationTime AS conversationTime,
 			convoTable.specificPositionID AS positionID,
             convoTable.conversationType AS convoType,
+            convoTable.remark AS remark,
 			contactTable.firstName AS firstName,
 			contactTable.lastName AS lastName
 			FROM
@@ -57,6 +61,7 @@ FROM
 		) AS dateAndName
 		INNER JOIN specificPosition
 		ON dateAndName.positionID = specificPosition.positionID
+		WHERE specificPosition.status <> 5
 	) AS dateNamePos
 	INNER JOIN employer
 	ON employer.employerID = dateNamePos.employer
