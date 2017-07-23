@@ -4,6 +4,7 @@
 
 //console.log(process.argv[2]);
 const mysql = require('./src/mysql');
+const HTTPServer = require('./src/server/http-server');
 
 const testSelectQuery = function(connex) {
     const selexQueries = new mysql.SelexQuery(connex);
@@ -32,4 +33,9 @@ const testConnection = function(password) {
 
 }
 
-testConnection(process.argv[2]);
+const serveHTTPQueryResults = function(password) {
+    new HTTPServer(password);
+};
+
+//testConnection(process.argv[2]);
+serveHTTPQueryResults(process.argv[2]);
