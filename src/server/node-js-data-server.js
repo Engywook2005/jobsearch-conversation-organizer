@@ -6,12 +6,12 @@ const mysql = require('../mysql/');
 
 class NodeJSDataServer {
     constructor(mySqlConnex) {
-        console.log("node js data server running");
-        this._mySqlConnex = mySqlConnex;
+        this.mySqlConnex = mySqlConnex;
     }
 
     execSelectQuery(callback, queryString) {
-        const mysqlSelex = new mysql.SelexQuery(this._mySqlConnex);
+        console.log('executing query');
+        const mysqlSelex = new mysql.SelexQuery(this.mySqlConnex);
         mysqlSelex.execQuery(callback, queryString);
     }
 }

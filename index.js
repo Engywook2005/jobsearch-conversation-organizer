@@ -1,8 +1,14 @@
 /**
  * Created by Greg on 6/16/2017.
  */
-const api = require('./src');
-//const devTest = require('./devTest.js');
+const Starter = require('./src/api/starter');
 
-module.exports.api = api;
-//module.exports.devTest = devTest;
+
+(() => {
+    new Starter(process.argv[2]).start();
+})();
+
+
+
+// @TODO is this actually needed?
+module.exports.starter = Starter;
