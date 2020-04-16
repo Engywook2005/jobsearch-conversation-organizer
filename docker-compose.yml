@@ -1,0 +1,30 @@
+###############################################################################
+# wordpres fpm docker-compose
+# Zerbinati Francesco
+# 17/01/18
+# mariadb + nginx + php-fpm + wordpress
+###############################################################################
+
+version: '2'
+services:
+    db:
+      image: mariadb:10
+      container_name: mariadb
+      restart: always
+      environment:
+        - MYSQL_ROOT_PASSWORD="root"
+        - MYSQL_DATABASE="jobConvos"
+        - MYSQL_USER="root"
+        - MYSQL_PASSWORD="root"
+      volumes:
+        - ./mySQLBackup:/mySQLBackup
+      ports:
+        - "3307:3306"
+    web-server:
+      image: nginx:alpine
+      restart: always
+      container_name: nginx
+      volumes:
+        - ./dist:/var/www/html
+      ports:
+        - "8080:80"
