@@ -1,10 +1,9 @@
-/**
- * Created by Greg on 7/22/2017.
- */
+/* global module */
+/* global require */
 
 const http = require('http');
 const NodeJSDataServer = require('./node-js-data-server');
-const mysql = require('../mysql');
+const mysql = require('../mysql/index');
 const QueryConstants = require('../support/query-constants');
 
 class HTTPServer {
@@ -64,11 +63,11 @@ class HTTPServer {
                     'queryString' : '',
                     'func' : () => {
                         response.writeHead("404", {'Content-Type': 'text/json'});
-                        response.write('We would love to welcome you home, but this site doesn not have a home. No method to call.');
+                        response.write('We would love to welcome you home, but this site does not have a home. No method to call.');
                         response.end();
                     }
                 }
-            }
+            };
 
             const url = request.url;
 
@@ -81,7 +80,7 @@ class HTTPServer {
 
             routing[url].func(routing[url].queryString);
 
-        }).listen("8097");
+        }).listen("8081");
 
         console.log('server is running');
     }

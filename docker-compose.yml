@@ -25,6 +25,8 @@ services:
       restart: always
       container_name: nginx
       volumes:
-        - ./dist:/var/www/html
+        - ./src/sqlMiddleware:/var/sqlMiddleWare
+        - ./public:/var/www/html
       ports:
-        - "8080:80"
+        - "8080:80" #http serve for react
+        - "8081:8081" #htttpserve for sqlMiddleWare

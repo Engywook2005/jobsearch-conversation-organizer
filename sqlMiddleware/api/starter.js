@@ -1,6 +1,8 @@
+/* global module */
+/* global require */
+
 const HTTPServer = require('../server/http-server');
 
-// @TODO should make some of this private.
 class Starter {
 
     constructor(password) {
