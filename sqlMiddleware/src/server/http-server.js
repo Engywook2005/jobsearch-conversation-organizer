@@ -12,8 +12,6 @@ class HTTPServer {
     }
 
     createMySQLInstance(password) {
-        console.log(`password is ${password}`);
-
         // const mySQLConnex = new mysql.MySqlConnexJS();
         new mysql.MySqlConnexJS().connectToSQLServer(this.startServerOnMySQLReady.bind(this), password);
     }
