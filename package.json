@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startMySql": "docker exec -it nginx node /var/sqlMiddleWare/src/index.js root"
+    "startMySql": "docker exec -it nginx node /var/sqlMiddleWare/src/index.js root",
+    "restoreDB": "docker exec -it mariadb mysql -u root -proot jobConvos < ./mySQLBackup/jobConvosDump.sql"
   },
   "repository": {
     "type": "git",

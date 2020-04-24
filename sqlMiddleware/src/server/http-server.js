@@ -25,6 +25,8 @@ class HTTPServer {
      */
     fullQuery(response, nodeJSDataServer, query, params = null) {
 
+        console.log(query);
+
         const mySQLResponseCallback = function(err, mySQLResponse) {
 
             // @TODO this should be consolidated in one function to handle all ultimate output.
@@ -54,7 +56,7 @@ class HTTPServer {
             // @TODO may need to set MIME types here as well.
             const routing = {
                 '/fish.json' : {
-                    'queryString' : QueryConstants.select.conversationMainTable,     
+                    'queryString' : QueryConstants.select.conversationmaintable,
                     'func' : (queryString) => {
                         this.fullQuery(response, nodeJSDataServer, queryString);
                     }
