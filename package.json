@@ -4,6 +4,7 @@
   "description": "Logs conversations I have had in the course of a job search.",
   "main": "index.js",
   "scripts": {
+    "buildDev": "webpack --mode development --config webpack/webpack.common.js",
     "restoreDB": "docker exec -it mariadb mysql -u root -proot jobConvos < ./mySQLBackup/jobConvosDump.sql",
     "startMySql": "docker exec -it nginx node /var/sqlMiddleWare/src/index.js root"
   },
@@ -17,20 +18,20 @@
     "url": "https://github.com/Engywook2005/jobsearch-conversation-organizer/issues"
   },
   "homepage": "https://github.com/Engywook2005/jobsearch-conversation-organizer#readme",
-  "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
-  },
   "devDependencies": {
     "babel-core": "^6.26.3",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "html-webpack-plugin": "^4.2.0",
-    "webpack": "^4.43.0",
+    "html-webpack-plugin": "^4.0.4",
+    "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   }
 }
