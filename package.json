@@ -1,9 +1,20 @@
 {
-  "engines": {
-    "node": ">= 0.10.0"
+  "name": "jobsearch-conversation-organizer",
+  "version": "0.1.0",
+  "description": "Logs conversations I have had in the course of a job search.",
+  "main": "index.js",
+  "scripts": {
+    "restoreDB": "docker exec -it mariadb mysql -u root -proot jobConvos < ./mySQLBackup/jobConvosDump.sql",
+    "startMySql": "docker exec -it nginx node /var/sqlMiddleWare/src/index.js root"
   },
-  "dependencies": {
-    "http-server": "^0.11.1",
-    "node-mysql": "^0.1.1"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Engywook2005/jobsearch-conversation-organizer.git"
+  },
+  "author": "Greg Thorson",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Engywook2005/jobsearch-conversation-organizer/issues"
+  },
+  "homepage": "https://github.com/Engywook2005/jobsearch-conversation-organizer#readme"
 }

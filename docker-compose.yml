@@ -1,10 +1,3 @@
-###############################################################################
-# wordpres fpm docker-compose
-# Zerbinati Francesco
-# 17/01/18
-# mariadb + nginx + php-fpm + wordpress
-###############################################################################
-
 version: '2'
 services:
     db:
@@ -12,19 +5,21 @@ services:
       container_name: mariadb
       restart: always
       environment:
-        - MYSQL_ROOT_PASSWORD="root"
-        - MYSQL_DATABASE="jobConvos"
-        - MYSQL_USER="root"
-        - MYSQL_PASSWORD="root"
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=jobConvos
+        - MYSQL_USER=root
+        - MYSQL_PASSWORD=root
       volumes:
         - ./mySQLBackup:/mySQLBackup
       ports:
         - "3307:3306"
     web-server:
-      image: nginx:alpine
+      image: engynginx:latest #Have to run docker build -t engynginx:latest . first
       restart: always
       container_name: nginx
       volumes:
-        - ./dist:/var/www/html
+        - ./sqlMiddleware:/var/sqlMiddleWare #npm install needed here. TODO: npm install not working yet in the container so have to run locally. Also will need to run sqlMiddleware/src/index.js with a db password (see docker-compose.yml for creds).
+        - ./public:/usr/share/nginx/html
       ports:
-        - "8080:80"
+        - "8080:80" #http serve for react
+        - "8081:8081" #htttpserve for sqlMiddleWare

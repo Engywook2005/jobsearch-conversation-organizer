@@ -2,7 +2,7 @@
  * Created by Greg on 7/22/2017.
  */
 
-const mysql = require('../mysql/');
+const mysql = require('../mysql/index');
 
 class NodeJSDataServer {
     constructor(mySqlConnex) {

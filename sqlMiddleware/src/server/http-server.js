@@ -1,10 +1,9 @@
-/**
- * Created by Greg on 7/22/2017.
- */
+/* global module */
+/* global require */
 
 const http = require('http');
 const NodeJSDataServer = require('./node-js-data-server');
-const mysql = require('../mysql');
+const mysql = require('../mysql/index');
 const QueryConstants = require('../support/query-constants');
 
 class HTTPServer {
@@ -33,6 +32,8 @@ class HTTPServer {
             if(mySQLResponse) {
                 response.write(JSON.stringify(mySQLResponse));
             } else if(err) {
+
+
                 console.log('oops: ' + err);
                 response.write("oops, something went wrong: " + err.message);
             }
@@ -44,31 +45,33 @@ class HTTPServer {
     startServerOnMySQLReady(err, mySQLConnex) {
         console.log("sql ready");
         if(err) {
-            console.log("error connecting: " + err.message);
+            console.log("error connecting with SQL: " + err.message);
         }
         http.createServer((request, response) => {
             console.log('request received');
 
             const nodeJSDataServer = new NodeJSDataServer(mySQLConnex);
 
+            const fullQuery = (queryString) => {
+                this.fullQuery(response, nodeJSDataServer, queryString);
+            }
+
             // @TODO set up separate routing class, be able to do something with query params.
             // @TODO may need to set MIME types here as well.
             const routing = {
                 '/fish.json' : {
-                    'queryString' : QueryConstants.select.conversationMainTable,     
+                    'queryString' : QueryConstants.select.conversationMainTable,
                     'func' : (queryString) => {
-                        this.fullQuery(response, nodeJSDataServer, queryString);
+                        fullQuery(queryString);
                     }
-                }, 
+                },
                 '/' : {
-                    'queryString' : '',
-                    'func' : () => {
-                        response.writeHead("404", {'Content-Type': 'text/json'});
-                        response.write('We would love to welcome you home, but this site doesn not have a home. No method to call.');
-                        response.end();
+                    'queryString' : QueryConstants.select.activePositions,
+                    'func' : (queryString) => {
+                        fullQuery(queryString);
                     }
                 }
-            }
+            };
 
             const url = request.url;
 
@@ -81,7 +84,7 @@ class HTTPServer {
 
             routing[url].func(routing[url].queryString);
 
-        }).listen("8097");
+        }).listen("8081");
 
         console.log('server is running');
     }
