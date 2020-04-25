@@ -12,8 +12,8 @@ dateNamePosEmployerRecruiter.firstName,
 dateNamePosEmployerRecruiter.lastName,
 dateNamePosEmployerRecruiter.title,
 dateNamePosEmployerRecruiter.lastStatusChange,
-applicationStatus.status,
-conversationType.type,
+applicationstatus.status,
+conversationtype.type,
 dateNamePosEmployerRecruiter.employerName,
 dateNamePosEmployerRecruiter.recruiterName
 FROM
@@ -37,11 +37,11 @@ FROM
 		dateAndName.firstName,
 		dateAndName.lastName,
         dateAndName.convoType,
-		specificPosition.title,
-		specificPosition.employer,
-		specificPosition.recruiter,
-		specificPosition.status,
-		specificPosition.lastStatusChange
+		specificposition.title,
+		specificposition.employer,
+		specificposition.recruiter,
+		specificposition.status,
+		specificposition.lastStatusChange
 		FROM (
 			SELECT DISTINCT 
 			convoTable.conversationDate AS conversationDate, 
@@ -51,22 +51,22 @@ FROM
 			contactTable.firstName AS firstName,
 			contactTable.lastName AS lastName
 			FROM
-				conversationMainTable AS convoTable
-				INNER JOIN contactList AS contactTable
+				conversationmaintable AS convoTable
+				INNER JOIN contactlist AS contactTable
 				ON contactTable.contactID = convoTable.contactID
 		) AS dateAndName
-		INNER JOIN specificPosition
-		ON dateAndName.positionID = specificPosition.positionID
+		INNER JOIN specificposition
+		ON dateAndName.positionID = specificposition.positionID
 	) AS dateNamePos
 	INNER JOIN employer
 	ON employer.employerID = dateNamePos.employer
 	INNER JOIN recruiter
 	ON recruiter.recruiterID = dateNamePos.recruiter
 ) AS dateNamePosEmployerRecruiter
-INNER JOIN applicationStatus
-ON applicationStatus.applicationStatusID = dateNamePosEmployerRecruiter.status
-INNER JOIN conversationType
-ON conversationType.conversationTypeID = dateNamePosEmployerRecruiter.convoType
+INNER JOIN applicationstatus
+ON applicationstatus.applicationStatusID = dateNamePosEmployerRecruiter.status
+INNER JOIN conversationtype
+ON conversationtype.conversationTypeID = dateNamePosEmployerRecruiter.convoType
 #probably don't need these next three lines in the javascript but helpful in mysql workbench
 ORDER BY
 dateNamePosEmployerRecruiter.conversationDate,
