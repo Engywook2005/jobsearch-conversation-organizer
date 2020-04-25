@@ -1,9 +1,48 @@
- /**
- * Created by Greg on 7/22/2017.
- */
-
+// @TODO need to have macros for some of the filters. May want to look at last 30 days by default, but may want to also be able to look back further
+// OR could just set those as variables
 const QueryConstants = {
     select : {
+        activePositions : `
+SELECT 
+    positions.*
+	FROM (SELECT 
+			rawPosition.positionID AS ID,
+            rawPosition.title AS title,
+			employer.employerName AS employerName,
+            rawPosition.lastStatusChange AS lastStatusChange,
+            statuses.statusName AS currentStatus
+			FROM 
+            (SELECT 
+				* 
+            FROM
+			specificposition
+            WHERE 
+				lastStatusChange BETWEEN NOW() - INTERVAL 30 DAY AND NOW()
+                AND status NOT IN(5, 11, 19)
+            )
+            AS rawPosition
+            INNER JOIN
+            (SELECT 
+				employerID,
+                name AS employerName
+				FROM employer
+                WHERE employerID <> 1
+            )
+            AS employer
+            ON 
+				rawPosition.employer = employer.employerID
+			INNER JOIN
+			(SELECT 
+				applicationStatusID,
+                status AS statusName
+                FROM applicationstatus
+            ) 
+            AS statuses
+            ON statuses.applicationStatusID = rawPosition.status
+		) 
+	AS positions
+    ORDER BY lastStatusChange
+        `,
         conversationMainTable : `
         SELECT DISTINCT 
 dateNamePosEmployerRecruiter.conversationDate,
@@ -73,6 +112,6 @@ dateNamePosEmployerRecruiter.conversationDate,
 dateNamePosEmployerRecruiter.conversationTime 
         `
     }
-}
+};
 
 module.exports = QueryConstants;

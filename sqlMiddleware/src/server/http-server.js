@@ -52,21 +52,23 @@ class HTTPServer {
 
             const nodeJSDataServer = new NodeJSDataServer(mySQLConnex);
 
+            const fullQuery = (queryString) => {
+                this.fullQuery(response, nodeJSDataServer, queryString);
+            }
+
             // @TODO set up separate routing class, be able to do something with query params.
             // @TODO may need to set MIME types here as well.
             const routing = {
                 '/fish.json' : {
                     'queryString' : QueryConstants.select.conversationMainTable,
                     'func' : (queryString) => {
-                        this.fullQuery(response, nodeJSDataServer, queryString);
+                        fullQuery(queryString);
                     }
-                }, 
+                },
                 '/' : {
-                    'queryString' : '',
-                    'func' : () => {
-                        response.writeHead("404", {'Content-Type': 'text/json'});
-                        response.write('We would love to welcome you home, but this site does not have a home. No method to call.');
-                        response.end();
+                    'queryString' : QueryConstants.select.activePositions,
+                    'func' : (queryString) => {
+                        fullQuery(queryString);
                     }
                 }
             };

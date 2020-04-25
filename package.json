@@ -1,11 +1,11 @@
 {
   "name": "jobsearch-conversation-organizer",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Logs conversations I have had in the course of a job search.",
   "main": "index.js",
   "scripts": {
-    "startMySql": "docker exec -it nginx node /var/sqlMiddleWare/src/index.js root",
-    "restoreDB": "docker exec -it mariadb mysql -u root -proot jobConvos < ./mySQLBackup/jobConvosDump.sql"
+    "restoreDB": "docker exec -it mariadb mysql -u root -proot jobConvos < ./mySQLBackup/jobConvosDump.sql",
+    "startMySql": "docker exec -it nginx node /var/sqlMiddleWare/src/index.js root"
   },
   "repository": {
     "type": "git",
