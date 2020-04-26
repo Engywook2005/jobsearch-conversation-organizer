@@ -27,7 +27,7 @@ class App extends Component {
     ajaxHandler(stateHandler, url) {
         Ajax.doAjaxQuery(url)
             .then((data) => {
-                stateHandler('data', data);
+                stateHandler('data', JSON.parse(data));
                 stateHandler('greeting', 'Irons In The Fire')
             })
             .catch((err) => {
@@ -36,19 +36,22 @@ class App extends Component {
     }
 
     render() {
+        const stateSource = this.state || this.states;
+
         return(
             <div>
-                <Header greeting = {this.states.greeting} />
+                <Header greeting = {stateSource.greeting} />
                 <table>
                     <tbody>
                         <tr>
                             <th>Job Title</th>
                             <th>Employer</th>
                             <th>Status</th>
+                            <th>Last Status Change</th>
                         </tr>
                     {
                         // Here nodes of this.states.data become props in TableRow.
-                        this.states.data.map((position, i) => <TableRow
+                        stateSource.data.map((position, i) => <TableRow
                             key = {i}
                             data = {position}
                         />)
@@ -75,8 +78,9 @@ class TableRow extends Component {
         return(
             <tr data-position-id="{this.props.data.ID}">
                 <td>{this.props.data.title}</td>
-                <td>{this.props.data.employer}</td>
+                <td>{this.props.data.employerName}</td>
                 <td>{this.props.data.currentStatus}</td>
+                <td>{this.props.data.lastStatusChange}</td>
             </tr>
         );
     }
