@@ -6,7 +6,7 @@ class App extends Component {
         super();
 
         // State is mutable.
-        this.states = {
+        this.state = {
             data: [
             ],
             greeting: "Job Convos data loading"
@@ -24,6 +24,7 @@ class App extends Component {
         this.setState(newState);
     }
 
+    // Should we have a base class for App that other can extend with overrides of ajaxHandler?
     ajaxHandler(stateHandler, url) {
         Ajax.doAjaxQuery(url)
             .then((data) => {
@@ -37,9 +38,7 @@ class App extends Component {
 
     render() {
 
-        // @TODO I don't believe this should be necessary.
-        const stateSource = this.state || this.states,
-            textStyle = {
+        const textStyle = {
                 fontFamily: "helvetica, arial"
             },
             tableStyle = {
@@ -57,7 +56,7 @@ class App extends Component {
 
         return(
             <div style = {textStyle}>
-                <Header greeting = {stateSource.greeting} />
+                <Header greeting = {this.state.greeting} />
                 <table style = {tableStyle}>
                     <tbody>
                         <tr>
@@ -68,7 +67,7 @@ class App extends Component {
                         </tr>
                     {
                         // Here nodes of this.states.data become props in TableRow.
-                        stateSource.data.map((position, i) => <TableRow
+                        this.state.data.map((position, i) => <TableRow
                             cellStyle = {cellStyle}
                             key = {i}
                             data = {position}
@@ -93,8 +92,12 @@ class TableRow extends Component {
 
     // Props are immutable.
     render() {
+        this.rowClick = (e) => {
+            debugger;
+        };
+
         return(
-            <tr data-position-id={this.props.data.ID}>
+            <tr data-position-id={this.props.data.ID} onClick = {this.rowClick}>
                 <td style = {this.props.cellStyle}>{this.props.data.title}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.employerName}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.currentStatus}</td>

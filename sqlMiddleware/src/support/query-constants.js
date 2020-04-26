@@ -26,7 +26,6 @@ SELECT
 				employerID,
                 name AS employerName
 				FROM employer
-                WHERE employerID <> 1
             )
             AS employer
             ON 
