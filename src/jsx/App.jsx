@@ -1,4 +1,6 @@
+import Ajax from '../http/ajax';
 import React, { Component } from 'react';
+
 class App extends Component {
     constructor() {
         super();
@@ -6,40 +8,31 @@ class App extends Component {
         // State is mutable.
         this.states = {
             data: [
-                {
-                    "id": 0,
-                    "name": "Foo",
-                    "age": 20
-                },
-                {
-                    "id": 1,
-                    "name": "Bar",
-                    "age": 30
-                },
-                {
-                    "id": 2,
-                    "name": "Baz",
-                    "age": 40
-                }
             ],
-            greeting: "The subject was noses!"
+            greeting: "Job Convos data loading"
         };
 
         this.setStateHandler = this.setStateHandler.bind(this);
+
+        this.ajaxHandler(this.setStateHandler, 'http://localhost:8081/');
     }
 
-    setStateHandler() {
-        const newStateData = [];
+    setStateHandler(state, value) {
+        const newState = {};
+        newState[state] = value;
 
-        this.states.data.forEach((stateData) => {
-            stateData.age += 1;
+        this.setState(newState);
+    }
 
-            newStateData.push(stateData);
-        });
-
-        this.setState({
-            data: newStateData
-        });
+    ajaxHandler(stateHandler, url) {
+        Ajax.doAjaxQuery(url)
+            .then((data) => {
+                stateHandler('data', data);
+                stateHandler('greeting', 'Irons In The Fire')
+            })
+            .catch((err) => {
+                stateHandler('greeting', `Oops: ${err}`)
+            });
     }
 
     render() {
@@ -48,42 +41,20 @@ class App extends Component {
                 <Header greeting = {this.states.greeting} />
                 <table>
                     <tbody>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Employer</th>
+                            <th>Status</th>
+                        </tr>
                     {
                         // Here nodes of this.states.data become props in TableRow.
-                        this.states.data.map((person, i) => <TableRow
+                        this.states.data.map((position, i) => <TableRow
                             key = {i}
-                            data = {person}
+                            data = {position}
                         />)
                     }
                     </tbody>
                 </table>
-                <button onClick = {this.setStateHandler}>UPDATE STATE</button>
-                <RandomButton />
-            </div>
-        );
-    }
-}
-
-class RandomButton extends Component {
-    constructor() {
-        super();
-
-        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
-        this.clickCount = 1;
-    }
-
-    forceUpdateHandler() {
-        this.forceUpdate();
-
-        this.clickCount *= 2;
-    }
-
-    render() {
-        return(
-            <div>
-                <button onClick = { this.forceUpdateHandler }>FORCE UPDATE</button>
-                <p><strong>Random Number</strong> { Math.random() } </p>
-                <p>{ this.clickCount }</p>
             </div>
         );
     }
@@ -92,7 +63,7 @@ class RandomButton extends Component {
 class Header extends Component {
     render() {
         return(
-            <h1>{this.props.greeting}</h1>
+            <p>{this.props.greeting}</p>
         );
     }
 }
@@ -102,10 +73,10 @@ class TableRow extends Component {
     // Props are immutable.
     render() {
         return(
-            <tr>
-                <td>{this.props.data.id}</td>
-                <td>{this.props.data.name}</td>
-                <td>{this.props.data.age}</td>
+            <tr data-position-id="{this.props.data.ID}">
+                <td>{this.props.data.title}</td>
+                <td>{this.props.data.employer}</td>
+                <td>{this.props.data.currentStatus}</td>
             </tr>
         );
     }
