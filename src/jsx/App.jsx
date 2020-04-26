@@ -36,22 +36,40 @@ class App extends Component {
     }
 
     render() {
-        const stateSource = this.state || this.states;
+
+        // @TODO I don't believe this should be necessary.
+        const stateSource = this.state || this.states,
+            textStyle = {
+                fontFamily: "helvetica, arial"
+            },
+            tableStyle = {
+                width: "100%"
+            },
+            cellStyle = {
+                borderWidth: '1px',
+                borderColor: '#ffffff',
+                borderStyle: 'solid',
+                borderCollapse: 'collapse',
+                padding: '5px',
+                margin: '0px',
+                textAlign: 'left'
+            };
 
         return(
-            <div>
+            <div style = {textStyle}>
                 <Header greeting = {stateSource.greeting} />
-                <table>
+                <table style = {tableStyle}>
                     <tbody>
                         <tr>
-                            <th>Job Title</th>
-                            <th>Employer</th>
-                            <th>Status</th>
-                            <th>Last Status Change</th>
+                            <th style = {cellStyle}>Job Title</th>
+                            <th style = {cellStyle}>Employer</th>
+                            <th style = {cellStyle}>Status</th>
+                            <th style = {cellStyle}>Last Status Change</th>
                         </tr>
                     {
                         // Here nodes of this.states.data become props in TableRow.
                         stateSource.data.map((position, i) => <TableRow
+                            cellStyle = {cellStyle}
                             key = {i}
                             data = {position}
                         />)
@@ -76,11 +94,11 @@ class TableRow extends Component {
     // Props are immutable.
     render() {
         return(
-            <tr data-position-id="{this.props.data.ID}">
-                <td>{this.props.data.title}</td>
-                <td>{this.props.data.employerName}</td>
-                <td>{this.props.data.currentStatus}</td>
-                <td>{this.props.data.lastStatusChange}</td>
+            <tr data-position-id={this.props.data.ID}>
+                <td style = {this.props.cellStyle}>{this.props.data.title}</td>
+                <td style = {this.props.cellStyle}>{this.props.data.employerName}</td>
+                <td style = {this.props.cellStyle}>{this.props.data.currentStatus}</td>
+                <td style = {this.props.cellStyle}>{new Date(this.props.data.lastStatusChange).toDateString()}</td>
             </tr>
         );
     }
