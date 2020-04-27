@@ -14,6 +14,7 @@ class App extends Component {
 
         this.setStateHandler = this.setStateHandler.bind(this);
 
+        // @TODO should be called in componentDidMount
         this.ajaxHandler(this.setStateHandler, 'http://localhost:8081/');
     }
 
@@ -24,7 +25,7 @@ class App extends Component {
         this.setState(newState);
     }
 
-    // Should we have a base class for App that other can extend with overrides of ajaxHandler?
+    // @TODO Should we have a base class for App that other can extend with overrides of ajaxHandler?
     ajaxHandler(stateHandler, url) {
         Ajax.doAjaxQuery(url)
             .then((data) => {
@@ -93,6 +94,8 @@ class TableRow extends Component {
     // Props are immutable.
     render() {
         this.rowClick = (e) => {
+            // @TODO create a more detailed, editable overlay about the position, including conversations and such. Use React.createElement?
+
             debugger;
         };
 
