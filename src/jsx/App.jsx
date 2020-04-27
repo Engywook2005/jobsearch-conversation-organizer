@@ -7,14 +7,20 @@ class App extends Component {
 
         // State is mutable.
         this.state = {
-            data: [
+            positions: [
             ],
-            greeting: "Job Convos data loading"
+            positionDetails: {},
+            greeting: "Job Convos data loading",
+            stateHandler: () => {},
+            showingNewPositionTable: false
         };
 
         this.setStateHandler = this.setStateHandler.bind(this);
+    }
 
-        // @TODO should be called in componentDidMount
+    componentDidMount() {
+        this.setStateHandler('stateHandler', this.setStateHandler);
+
         this.ajaxHandler(this.setStateHandler, 'http://localhost:8081/');
     }
 
@@ -29,7 +35,7 @@ class App extends Component {
     ajaxHandler(stateHandler, url) {
         Ajax.doAjaxQuery(url)
             .then((data) => {
-                stateHandler('data', JSON.parse(data));
+                stateHandler('positions', JSON.parse(data));
                 stateHandler('greeting', 'Irons In The Fire')
             })
             .catch((err) => {
@@ -57,7 +63,11 @@ class App extends Component {
 
         return(
             <div style = {textStyle}>
-                <Header greeting = {this.state.greeting} />
+                <Header greeting = {this.state.greeting}
+                        stateHandler = {this.state.stateHandler}
+                        positionDetails = {this.state.positionDetails}
+                        showingNewPositionTable = {this.state.showingNewPositionTable}
+                />
                 <table style = {tableStyle}>
                     <tbody>
                         <tr>
@@ -68,7 +78,9 @@ class App extends Component {
                         </tr>
                     {
                         // Here nodes of this.states.data become props in TableRow.
-                        this.state.data.map((position, i) => <TableRow
+                        this.state.positions.map((position, i) => <TableRow
+                            stateHandler = {this.state.stateHandler}
+                            positionDetails = {this.state.positionDetails}
                             cellStyle = {cellStyle}
                             key = {i}
                             data = {position}
@@ -83,9 +95,35 @@ class App extends Component {
 
 class Header extends Component {
     render() {
-        return(
-            <p>{this.props.greeting}</p>
+        return (
+            <div>
+                <p>{this.props.greeting}</p>
+                <AddNewPos
+                    stateHandler = {this.props.stateHandler}
+                    positionDetails = {this.props.positionDetails}
+                    showingNewPositionTable = {this.props.showingNewPositionTable}
+                />
+            </div>
         );
+    }
+}
+
+class AddNewPos extends Component {
+
+    handleAddNewPosClick() {
+        this.props.stateHandler('showingNewPositionTable', true)
+    }
+
+    linkForAddNewPos() {
+        return (
+            <p onClick = {this.handleAddNewPosClick.bind(this)}>Click to add a new position</p>
+        );
+    };
+
+    render() {
+        return (
+            this.props.showingNewPositionTable ? <span>table will go here</span> : this.linkForAddNewPos()
+        )
     }
 }
 
@@ -94,7 +132,8 @@ class TableRow extends Component {
     // Props are immutable.
     render() {
         this.rowClick = (e) => {
-            // @TODO create a more detailed, editable overlay about the position, including conversations and such. Use React.createElement?
+            // @TODO create a more detailed, editable overlay about the position. Should be able to work with the same app as is used for adding a new position.
+
 
             debugger;
         };
