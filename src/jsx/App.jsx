@@ -1,4 +1,5 @@
 import Ajax from '../http/ajax';
+import EditPosition from './positions/EditPosition.jsx';
 import React, { Component } from 'react';
 
 class App extends Component {
@@ -12,7 +13,8 @@ class App extends Component {
             positionDetails: {},
             greeting: "Job Convos data loading",
             stateHandler: () => {},
-            showingNewPositionTable: false
+            showingNewPositionTable: false,
+            reloading: false // Set to true to trigger refresh of main positions table.
         };
 
         this.setStateHandler = this.setStateHandler.bind(this);
@@ -21,7 +23,7 @@ class App extends Component {
     componentDidMount() {
         this.setStateHandler('stateHandler', this.setStateHandler);
 
-        this.ajaxHandler(this.setStateHandler, 'http://localhost:8081/');
+        this.ajaxHandler(this.setStateHandler);
     }
 
     setStateHandler(state, value) {
@@ -32,18 +34,26 @@ class App extends Component {
     }
 
     // @TODO Should we have a base class for App that other can extend with overrides of ajaxHandler?
-    ajaxHandler(stateHandler, url) {
-        Ajax.doAjaxQuery(url)
+    ajaxHandler() {
+        this.state.stateHandler('reloading', false);
+
+        Ajax.doAjaxQuery('http://localhost:8081/')
             .then((data) => {
-                stateHandler('positions', JSON.parse(data));
-                stateHandler('greeting', 'Irons In The Fire')
+                this.state.stateHandler('positions', JSON.parse(data));
+                this.state.stateHandler('greeting', 'Irons In The Fire')
             })
             .catch((err) => {
-                stateHandler('greeting', `Oops: ${err}`)
+                this.state.stateHandler('greeting', `Oops: ${err}`)
             });
     }
 
     render() {
+
+        // If we're expected to reload, go back to the ajax call.
+        if(this.state.reloading) {
+            this.ajaxHandler();
+            return;
+        }
 
         const textStyle = {
                 fontFamily: "helvetica, arial"
@@ -118,11 +128,19 @@ class AddNewPos extends Component {
         return (
             <p onClick = {this.handleAddNewPosClick.bind(this)}>Click to add a new position</p>
         );
-    };
+    }
+
+    createNewPos() {
+        return (
+            <EditPosition
+                stateHandler = {this.props.stateHandler}
+            />
+        );
+    }
 
     render() {
         return (
-            this.props.showingNewPositionTable ? <span>table will go here</span> : this.linkForAddNewPos()
+            this.props.showingNewPositionTable ? this.createNewPos() : this.linkForAddNewPos()
         )
     }
 }
