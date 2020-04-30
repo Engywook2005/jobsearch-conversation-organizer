@@ -42,6 +42,8 @@ SELECT
 	AS positions
     ORDER BY lastStatusChange
         `,
+
+        // @TODO do we actually need this? Should start with this to show conversations linked to a position.
         conversationMainTable : `
         SELECT DISTINCT 
 dateNamePosEmployerRecruiter.conversationDate,
@@ -111,11 +113,22 @@ dateNamePosEmployerRecruiter.conversationDate,
 dateNamePosEmployerRecruiter.conversationTime`,
         employers:
         `
-        SELECT * from employer;
+        SELECT * from employer
+        ORDER BY name;
         `,
         recruiters:
         `
-        SELECT * FROM recruiter;
+        SELECT * FROM recruiter
+        ORDER BY name;
+        `,
+        positionTypes:
+        `
+        SELECT * FROM roletypes;
+        `,
+        applicationStatus:
+        `
+        SELECT * FROM applicationstatus
+        ORDER BY progression;
         `
     }
 };

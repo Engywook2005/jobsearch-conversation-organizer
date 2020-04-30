@@ -30,7 +30,7 @@ class EditPosition extends Component {
     }
 
     isInserting() {
-        return isNAN(this.props.positionID);
+        return isNaN(this.props.positionID);
     }
 
     // @TODO consider using redux and adding this to a store so there is only a need to hit all these db calls once.
@@ -42,40 +42,40 @@ class EditPosition extends Component {
             applicationStatus: []
         };
 
-        this.callAjax('http://localhost:8081/employers')
+        this.callAjax('http://localhost:8081/employers.json')
             .then((data) => {
                 newState.employers = data;
-                return this.callAjax('http://localhost:8081/recruiters');
+                return this.callAjax('http://localhost:8081/recruiters.json');
             })
             .then((data) => {
                 newState.recruiters = data;
-                return this.callAjax('http://localhost:8081/positionType');
+                return this.callAjax('http://localhost:8081/positionTypes.json');
             })
             .then((data) => {
                 newState.positionType = data;
-                return this.callAjax('http://localhost:8081/applicationStatus');
+                return this.callAjax('http://localhost:8081/applicationStatus.json');
             })
             .then((data) => {
+
+                 // @TODO add query and handle positionData for reviewing and editing a pre-existing position
                  newState.applicationStatus = data;
-                 return this.callAjax(`http://localhost:8081/positionData?posid=${this.props.positionID}`, this.isInserting());
+                 return this.callAjax(`http://localhost:8081/positionData.json?posid=${this.props.positionID}`, this.isInserting());
             })
             .then((data) => {
+
+                // @TODO add query and handle conversations for reviewing and editing conversations, and adding new conversations for a specific position.
                 this.setState({'positionData': data});
-                return this.callAjax(`http://localhost:8081/conversations?posid=${this.props.positionID}`, this.isInserting());
+                return this.callAjax(`http://localhost:8081/conversations.json?posid=${this.props.positionID}`, this.isInserting());
             })
             .then(() => {
                 this.setState({'employersRecruitersEtc': newState});
                 this.setState({'dataReady' : true})
             })
             .catch((err) => {
+                console.error(err) || console.log(err);
                 // @TODO set an error state
             })
 
-        // @TODO retrieve employers, position types, recruiters etc and store. Would be better ultimately to put this in a redux store.
-
-        // If we have a position id we need to load the specific position as well.
-
-        //  Once we have everything we can load the form by setting dataReady to true
      }
 
     componentDidMount() {
@@ -88,14 +88,40 @@ class EditPosition extends Component {
         )
     }
 
-    getDataReady() {
+    showPositionModal() {
+
+        // modal
+        const divStyle = {
+            position: 'fixed',
+            zIndex: 1,
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%',
+            overflow: 'auto',
+            backgroundColor: 'rgba(0,0,0,0.8)'
+        };
+
+        const lightboxStyle = {
+            backgroundColor: '#000000',
+            margin: '15% auto',
+            padding: '20px',
+            border: '1px solid #880',
+            color: '#00FFFF',
+            width: '80%'
+        };
+
         return (
-            <div>Ready for the good stuff</div>
+            <div style = {divStyle}>
+                <div style = {lightboxStyle}>
+                    Fish
+                </div>
+            </div>
         )
     }
 
     render () {
-        return this.state.dataReady ? this.getDataReady() : this.getDataNotReady();
+        return this.state.dataReady ? this.showPositionModal() : this.getDataNotReady();
     }
 }
 

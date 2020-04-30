@@ -59,7 +59,7 @@ class HTTPServer {
                 this.fullQuery(response, nodeJSDataServer, queryString);
             }
 
-            // @TODO set up separate routing class, be able to do something with query params.
+            // @TODO set up separate routing class, be able to do something with query params. Should just be able to use a hash table to determine which query to use.
             // @TODO may need to set MIME types here as well.
             const routing = {
                 '/fish.json' : {
@@ -82,6 +82,18 @@ class HTTPServer {
                 },
                 '/recruiters.json' : {
                     'queryString': QueryConstants.select.recruiters,
+                    'func': (queryString) => {
+                        fullQuery(queryString);
+                    }
+                },
+                '/positionTypes.json': {
+                    'queryString': QueryConstants.select.positionTypes,
+                    'func': (queryString) => {
+                        fullQuery(queryString);
+                    }
+                },
+                '/applicationStatus.json': {
+                    'queryString': QueryConstants.select.applicationStatus,
                     'func': (queryString) => {
                         fullQuery(queryString);
                     }
