@@ -10,7 +10,8 @@ class NodeJSDataServer {
     }
 
     execSelectQuery(callback, queryString) {
-        console.log('executing query');
+        const now = new Date();
+        console.log(`executing query ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
         const mysqlSelex = new mysql.SelexQuery(this.mySqlConnex);
         mysqlSelex.execQuery(callback, queryString);
     }

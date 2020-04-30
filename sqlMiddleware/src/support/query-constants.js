@@ -108,7 +108,14 @@ ON conversationtype.conversationTypeID = dateNamePosEmployerRecruiter.convoType
 #probably don't need these next three lines in the javascript but helpful in mysql workbench
 ORDER BY
 dateNamePosEmployerRecruiter.conversationDate,
-dateNamePosEmployerRecruiter.conversationTime 
+dateNamePosEmployerRecruiter.conversationTime`,
+        employers:
+        `
+        SELECT * from employer;
+        `,
+        recruiters:
+        `
+        SELECT * FROM recruiter;
         `
     }
 };

@@ -48,7 +48,10 @@ class HTTPServer {
             console.log("error connecting with SQL: " + err.message);
         }
         http.createServer((request, response) => {
-            console.log('request received');
+
+            // @TODO add utils.js and to that add a timestamper function
+            const now = new Date();
+            console.log(`request received ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
 
             const nodeJSDataServer = new NodeJSDataServer(mySQLConnex);
 
@@ -68,6 +71,18 @@ class HTTPServer {
                 '/' : {
                     'queryString' : QueryConstants.select.activePositions,
                     'func' : (queryString) => {
+                        fullQuery(queryString);
+                    }
+                },
+                '/employers.json' : {
+                    'queryString': QueryConstants.select.employers,
+                    'func': (queryString) => {
+                        fullQuery(queryString);
+                    }
+                },
+                '/recruiters.json' : {
+                    'queryString': QueryConstants.select.recruiters,
+                    'func': (queryString) => {
                         fullQuery(queryString);
                     }
                 }
