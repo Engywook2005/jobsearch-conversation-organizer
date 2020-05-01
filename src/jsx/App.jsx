@@ -27,6 +27,8 @@ class App extends Component {
     }
 
     setStateHandler(state, value) {
+        debugger;
+
         const newState = {};
         newState[state] = value;
 
@@ -83,6 +85,7 @@ class App extends Component {
                         <tr>
                             <th style = {cellStyle}>ID</th>
                             <th style = {cellStyle}>Job Title</th>
+                            <th style = {cellStyle}>Recruiter</th>
                             <th style = {cellStyle}>Employer</th>
                             <th style = {cellStyle}>Status</th>
                             <th style = {cellStyle}>Last Status Change</th>
@@ -162,6 +165,7 @@ class TableRow extends Component {
             <tr data-position-id={this.props.data.ID} onClick = {this.rowClick}>
                 <td style = {this.props.cellStyle}>{this.props.data.ID}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.title}</td>
+                <td style = {this.props.cellStyle}>{this.props.data.recruiterName}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.employerName}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.currentStatus}</td>
                 <td style = {this.props.cellStyle}>{new Date(this.props.data.lastStatusChange).toDateString()}</td>

@@ -8,6 +8,7 @@ SELECT
 	FROM (SELECT
 			rawPosition.positionID AS ID,
             rawPosition.title AS title,
+            recruiter.recruiterName AS recruiterName, 
 			employer.employerName AS employerName,
             rawPosition.lastStatusChange AS lastStatusChange,
             statuses.statusName AS currentStatus,
@@ -31,6 +32,15 @@ SELECT
             AS employer
             ON 
 				rawPosition.employer = employer.employerID
+            INNER JOIN
+            (SELECT
+                recruiterID,
+                name as recruiterName
+                FROM recruiter
+            )
+            AS recruiter
+            ON
+                rawPosition.recruiter = recruiter.recruiterID
 			INNER JOIN
 			(SELECT 
 				applicationStatusID,

@@ -102,16 +102,17 @@ class EditPosition extends Component {
             overflow: 'auto',
             backgroundColor: 'rgba(0,0,0,0.8)'
         },
+
+       // @TODO different for mobile
         lightboxStyle = {
             backgroundColor: '#000000',
-            marginLeft: '5%',
-            marginTop: '5%',
+            marginLeft: '25px',
+            marginTop: '25px',
             padding: '20px',
             border: '3px solid #880',
             borderRadius: '25px',
             color: '#00FFFF',
-            width: '85%',
-            height: '300px'
+            width: '87%'
         };
 
         return (
@@ -121,6 +122,9 @@ class EditPosition extends Component {
                         periphData = {this.state}
                         stateHandler = {this.props.stateHandler}
                     />
+                    <br/>
+                    <br/>
+                    <br/>
                 </div>
             </div>
         )
