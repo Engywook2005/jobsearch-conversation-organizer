@@ -1,29 +1,27 @@
-USE jobConvos;
-
-SELECT 
+SELECT
     positions.*
-	FROM (SELECT 
+	FROM (SELECT
 			rawPosition.positionID AS ID,
             rawPosition.title AS title,
 			employer.employerName AS employerName,
             rawPosition.lastStatusChange AS lastStatusChange,
-            statuses.statusName AS currentStatus
-			FROM 
-            (SELECT 
-				* 
+            statuses.statusName AS currentStatus,
+            rawPosition.resumeVersion AS resumeVersion
+			FROM
+            (SELECT
+				*
             FROM
 			specificposition
-            WHERE 
+            WHERE
 				lastStatusChange BETWEEN NOW() - INTERVAL 30 DAY AND NOW()
                 AND status NOT IN(5, 11, 19)
             )
             AS rawPosition
             INNER JOIN
-            (SELECT 
+            (SELECT
 				employerID,
                 name AS employerName
 				FROM employer
-                WHERE employerID <> 1
             )
             AS employer
             ON 
@@ -38,4 +36,4 @@ SELECT
             ON statuses.applicationStatusID = rawPosition.status
 		) 
 	AS positions
-    ORDER BY lastStatusChange
+    ORDER BY lastStatusChange;

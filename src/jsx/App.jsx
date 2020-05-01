@@ -81,10 +81,12 @@ class App extends Component {
                 <table style = {tableStyle}>
                     <tbody>
                         <tr>
+                            <th style = {cellStyle}>ID</th>
                             <th style = {cellStyle}>Job Title</th>
                             <th style = {cellStyle}>Employer</th>
                             <th style = {cellStyle}>Status</th>
                             <th style = {cellStyle}>Last Status Change</th>
+                            <th style = {cellStyle}>Resume Version</th>
                         </tr>
                     {
                         // Here nodes of this.states.data become props in TableRow.
@@ -158,10 +160,12 @@ class TableRow extends Component {
 
         return(
             <tr data-position-id={this.props.data.ID} onClick = {this.rowClick}>
+                <td style = {this.props.cellStyle}>{this.props.data.ID}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.title}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.employerName}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.currentStatus}</td>
                 <td style = {this.props.cellStyle}>{new Date(this.props.data.lastStatusChange).toDateString()}</td>
+                <td style = {this.props.cellStyle}>{this.props.data.resumeVersion}</td>
             </tr>
         );
     }

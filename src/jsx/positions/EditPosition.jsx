@@ -1,4 +1,5 @@
 import Ajax from '../../http/ajax';
+import PositionForm from './PositionForm.jsx';
 import React, { Component } from 'react';
 
 class EditPosition extends Component {
@@ -100,21 +101,26 @@ class EditPosition extends Component {
             height: '100%',
             overflow: 'auto',
             backgroundColor: 'rgba(0,0,0,0.8)'
-        };
-
-        const lightboxStyle = {
+        },
+        lightboxStyle = {
             backgroundColor: '#000000',
-            margin: '15% auto',
+            marginLeft: '5%',
+            marginTop: '5%',
             padding: '20px',
-            border: '1px solid #880',
+            border: '3px solid #880',
+            borderRadius: '25px',
             color: '#00FFFF',
-            width: '80%'
+            width: '85%',
+            height: '300px'
         };
 
         return (
             <div style = {divStyle}>
                 <div style = {lightboxStyle}>
-                    Fish
+                    <PositionForm
+                        periphData = {this.state}
+                        stateHandler = {this.props.stateHandler}
+                    />
                 </div>
             </div>
         )

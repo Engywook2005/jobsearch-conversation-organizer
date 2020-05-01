@@ -3,26 +3,27 @@
 const QueryConstants = {
     select : {
         activePositions : `
-SELECT 
+SELECT
     positions.*
-	FROM (SELECT 
+	FROM (SELECT
 			rawPosition.positionID AS ID,
             rawPosition.title AS title,
 			employer.employerName AS employerName,
             rawPosition.lastStatusChange AS lastStatusChange,
-            statuses.statusName AS currentStatus
-			FROM 
-            (SELECT 
-				* 
+            statuses.statusName AS currentStatus,
+            rawPosition.resumeVersion AS resumeVersion
+			FROM
+            (SELECT
+				*
             FROM
 			specificposition
-            WHERE 
+            WHERE
 				lastStatusChange BETWEEN NOW() - INTERVAL 30 DAY AND NOW()
                 AND status NOT IN(5, 11, 19)
             )
             AS rawPosition
             INNER JOIN
-            (SELECT 
+            (SELECT
 				employerID,
                 name AS employerName
 				FROM employer
@@ -40,7 +41,7 @@ SELECT
             ON statuses.applicationStatusID = rawPosition.status
 		) 
 	AS positions
-    ORDER BY lastStatusChange
+    ORDER BY lastStatusChange;
         `,
 
         // @TODO do we actually need this? Should start with this to show conversations linked to a position.
