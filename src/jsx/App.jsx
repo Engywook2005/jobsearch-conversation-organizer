@@ -27,8 +27,6 @@ class App extends Component {
     }
 
     setStateHandler(state, value) {
-        debugger;
-
         const newState = {};
         newState[state] = value;
 

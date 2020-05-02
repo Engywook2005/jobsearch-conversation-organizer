@@ -1,3 +1,4 @@
+import {InputText} from '../formElements';
 import React, { Component } from 'react';
 
 class PositionForm extends Component {
@@ -10,18 +11,33 @@ class PositionForm extends Component {
 
         const stateKeys = Object.keys(props);
 
-        this.state = {};
+        this.state = {
+            positionData: this.props.positionData || {}
+        };
 
         stateKeys.forEach((key) => {
             this.state[key] = this.props[key];
         });
     }
 
+    // @TODO ultimately we will want to put this in a redux store so data will persist even if user exits the form.
+    updatePositionData(prop, val) {
+        const newPositionData = this.state.positionData;
+
+        newPositionData[prop] = val;
+
+        this.setState({positionData : newPositionData});
+    }
+
+
+
     // @ TODO abstract this out to general form function.
-    getCurrentValueForTextInput(prop, myDefault) {
-        return (this.state.positionData && this.state.positionData[prop]) ?
+    getCurrentValue(prop, myDefault) {
+        const returnValue = (this.state.positionData[prop] || this.state.positionData[prop] === "") ?
             this.state.positionData[prop] :
             myDefault;
+
+        return returnValue;
     }
 
     render() {
@@ -40,18 +56,20 @@ class PositionForm extends Component {
             // @TODO different modules for each form input type.
             <div>
                 <div style = {nameDataPairingStyle}>
-                    <div>Title</div>
-                    <div>
-                        <input style = {textfieldValStyle}
-                            type            = "text"
-                            defaultValue    = {this.getCurrentValueForTextInput('title', 'Enter title here')}
-                            size            = "50"
-                        />
-                    </div>
+                    <InputText
+                        valueStyle              = {textfieldValStyle}
+                        defaultValue            = 'Enter title here'
+                        size                    = '50'
+                        updateData              = {this.updatePositionData.bind(this)}
+                        propName                = 'title'
+                        getCurrentValue         = {this.getCurrentValue.bind(this)}
+                    />
                 </div>
             </div>
         )
     }
+
+    // @TODO submit button
 }
 
 module.exports = PositionForm;
