@@ -17,8 +17,10 @@ class InputText extends FormElementBase {
     }
 
     render() {
+
+        // @TODO should debounce so we aren't making a call to setState on every keypress....
         return (
-        <div>
+        <div style = {this.props.divStyle}>
             <div>{this.props.header}</div>
             <div>
                 <input
