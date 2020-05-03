@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
+import FormElementBase from './FormElementBase.jsx';
 
-class InputText extends Component {
+class InputText extends FormElementBase {
     constructor(props) {
         super(props);
     }
 
-    updateValue(e) {
-        this.props.updateData(this.props.propName, e.target.value);
-    }
-
     clearDefault(e) {
-        if(e.target.value === this.props.defaultValue) {
+        if(e.target.value === this.props.originalDefault) {
             this.updateValue({
                 target: {
                     value: ''
@@ -22,7 +19,7 @@ class InputText extends Component {
     render() {
         return (
         <div>
-            <div>Title</div>
+            <div>{this.props.header}</div>
             <div>
                 <input
                     style               = {this.props.valueStyle}

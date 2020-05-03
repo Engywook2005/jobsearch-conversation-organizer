@@ -43,29 +43,30 @@ class EditPosition extends Component {
             applicationStatus: []
         };
 
+
         this.callAjax('http://localhost:8081/employers.json')
             .then((data) => {
-                newState.employers = data;
+                newState.employers = JSON.parse(data);
                 return this.callAjax('http://localhost:8081/recruiters.json');
             })
             .then((data) => {
-                newState.recruiters = data;
+                newState.recruiters = JSON.parse(data);
                 return this.callAjax('http://localhost:8081/positionTypes.json');
             })
             .then((data) => {
-                newState.positionType = data;
+                newState.positionType = JSON.parse(data);
                 return this.callAjax('http://localhost:8081/applicationStatus.json');
             })
             .then((data) => {
 
                  // @TODO add query and handle positionData for reviewing and editing a pre-existing position
-                 newState.applicationStatus = data;
+                 newState.applicationStatus = JSON.parse(data);
                  return this.callAjax(`http://localhost:8081/positionData.json?posid=${this.props.positionID}`, this.isInserting());
             })
             .then((data) => {
 
                 // @TODO add query and handle conversations for reviewing and editing conversations, and adding new conversations for a specific position.
-                this.setState({'positionData': data});
+                this.setState({'positionData': (data ? JSON.parse(data) : {})});
                 return this.callAjax(`http://localhost:8081/conversations.json?posid=${this.props.positionID}`, this.isInserting());
             })
             .then(() => {

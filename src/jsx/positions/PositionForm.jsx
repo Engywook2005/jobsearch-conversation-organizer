@@ -1,18 +1,20 @@
-import {InputText} from '../formElements';
+import {InputText, Pulldown, SubmitButton} from '../formElements';
 import React, { Component } from 'react';
 
 class PositionForm extends Component {
 
     // Use setstate at the level of PositionForm, should not affect App. Leave that authority to EditPosition.
     // @TODO when form is submitted or closed, call props.stateHandler and set reloading to true
-    // Seems that the above two remarks are contradictory. THink calling props.stateHandler after updating database is what we want to do.
+    // Seems that the above two remarks are contradictory. Think calling props.stateHandler after updating database is what we want to do.
     constructor(props) {
         super(props);
 
         const stateKeys = Object.keys(props);
 
         this.state = {
-            positionData: this.props.positionData || {}
+            positionData: this.props.positionData || {},
+            employers: this.props.periphData.employersRecruitersEtc.employers,
+            recruiters: this.props.periphData.employersRecruitersEtc.recruiters
         };
 
         stateKeys.forEach((key) => {
@@ -29,9 +31,8 @@ class PositionForm extends Component {
         this.setState({positionData : newPositionData});
     }
 
-
-
     // @ TODO abstract this out to general form function.
+    // Or would it make better sense to have this in FormElementBase?
     getCurrentValue(prop, myDefault) {
         const returnValue = (this.state.positionData[prop] || this.state.positionData[prop] === "") ?
             this.state.positionData[prop] :
@@ -48,23 +49,35 @@ class PositionForm extends Component {
             textfieldValStyle = {
                 backgroundColor: '#000000',
                 color: '#888800',
-                borderWidth: '0px'
+                borderWidth: '1px'
             };
 
         return (
-
-            // @TODO different modules for each form input type.
             <div>
                 <div style = {nameDataPairingStyle}>
                     <InputText
+                        header                  = 'Title'
                         valueStyle              = {textfieldValStyle}
-                        defaultValue            = 'Enter title here'
+                        originalDefault         = 'Enter title here'
+                        defaultValue            = {this.state.positionData.title || 'Enter title here'}
                         size                    = '50'
                         updateData              = {this.updatePositionData.bind(this)}
                         propName                = 'title'
                         getCurrentValue         = {this.getCurrentValue.bind(this)}
                     />
+                    <Pulldown
+                        header          = 'Employer'
+                        options         = {this.state.employers}
+                        defaultValue    = {this.state.positionData.employer || 0}
+                        primaryKey      = 'employerID'
+                        nameProp        = 'name'
+                        remarkProp      = 'remarks'
+                        propName        = 'employer'
+                        addNew          = 'true'
+                        getCurrentValue = {this.getCurrentValue.bind(this)}
+                    />
                 </div>
+                <SubmitButton/>
             </div>
         )
     }
