@@ -56,7 +56,8 @@ class App extends Component {
         }
 
         const textStyle = {
-                fontFamily: "helvetica, arial"
+                fontFamily: "helvetica, arial",
+                fontSize: "10px"
             },
             tableStyle = {
                 width: "100%"
@@ -85,6 +86,7 @@ class App extends Component {
                             <th style = {cellStyle}>Job Title</th>
                             <th style = {cellStyle}>Recruiter</th>
                             <th style = {cellStyle}>Employer</th>
+                            <th style = {cellStyle}>Role Type</th>
                             <th style = {cellStyle}>Status</th>
                             <th style = {cellStyle}>Last Status Change</th>
                             <th style = {cellStyle}>Resume Version</th>
@@ -181,8 +183,9 @@ class TableRow extends Component {
             <tr data-position-id={this.props.data.ID} onClick = {this.rowClick}>
                 <td style = {this.props.cellStyle}>{this.props.data.ID}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.title}</td>
-                <td style = {this.props.cellStyle}>{this.props.data.recruiterName}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.employerName}</td>
+                <td style = {this.props.cellStyle}>{this.props.data.recruiterName}</td>
+                <td style = {this.props.cellStyle}>{this.props.data.roleType}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.currentStatus}</td>
                 <td style = {this.props.cellStyle}>{new Date(this.props.data.lastStatusChange).toDateString()}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.resumeVersion}</td>

@@ -60,6 +60,7 @@ class HTTPServer {
             }
 
             // @TODO set up separate routing class, be able to do something with query params. Should just be able to use a hash table to determine which query to use.
+            // @TODO have these constants draw from the simpleQueries and apiQueryies folders... at the present it's very confusing that they don't.
             // @TODO may need to set MIME types here as well.
             const routing = {
                 '/fish.json' : {

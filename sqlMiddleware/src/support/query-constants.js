@@ -8,10 +8,11 @@ SELECT
 	FROM (SELECT
 			rawPosition.positionID AS ID,
             rawPosition.title AS title,
-            recruiter.recruiterName AS recruiterName, 
-			employer.employerName AS employerName,
-            rawPosition.lastStatusChange AS lastStatusChange,
+            employer.employerName AS employerName,
+            recruiter.recruiterName AS recruiterName,
+            roletypes.roleTypeName AS roleType,
             statuses.statusName AS currentStatus,
+            rawPosition.lastStatusChange AS lastStatusChange,
             rawPosition.resumeVersion AS resumeVersion
 			FROM
             (SELECT
@@ -49,9 +50,17 @@ SELECT
             ) 
             AS statuses
             ON statuses.applicationStatusID = rawPosition.status
+            INNER JOIN
+            (SELECT
+                roleTypeID,
+                type AS roleTypeName
+                FROM roletypes
+            )
+            AS roletypes
+            ON roletypes.roleTypeID = rawPosition.roletype
 		) 
 	AS positions
-    ORDER BY lastStatusChange;
+    ORDER BY lastStatusChange DESC;
         `,
 
         // @TODO do we actually need this? Should start with this to show conversations linked to a position.

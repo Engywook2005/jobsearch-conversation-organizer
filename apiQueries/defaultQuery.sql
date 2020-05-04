@@ -3,10 +3,11 @@ SELECT
 	FROM (SELECT
 			rawPosition.positionID AS ID,
             rawPosition.title AS title,
+            employer.employerName AS employerName,
             recruiter.recruiterName AS recruiterName,
-			employer.employerName AS employerName,
-            rawPosition.lastStatusChange AS lastStatusChange,
+            roletypes.roleTypeName AS roleType,
             statuses.statusName AS currentStatus,
+            rawPosition.lastStatusChange AS lastStatusChange,
             rawPosition.resumeVersion AS resumeVersion
 			FROM
             (SELECT
@@ -44,6 +45,14 @@ SELECT
             ) 
             AS statuses
             ON statuses.applicationStatusID = rawPosition.status
+            INNER JOIN
+            (SELECT
+                roleTypeID,
+                type AS roleTypeName
+                FROM roletypes
+            )
+            AS roletypes
+            ON roletypes.roleTypeID = rawPosition.roletype
 		) 
 	AS positions
     ORDER BY lastStatusChange;
