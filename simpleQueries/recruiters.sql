@@ -1,1 +1,2 @@
-select * from recruiter;
+select * from recruiter
+ORDER BY name;

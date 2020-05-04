@@ -34,17 +34,20 @@ class PositionForm extends Component {
         this.setState({positionData : newPositionData});
     }
 
-    // @TODO try to get to where we only need one function to update state for everything on this form. Would be helped by using redux storage?
+    // @FIXME gives me a case of the uggles, so it does
     // @TODO why isn't this wiping the default text when clicking the element?
-    // Wouldn't this be used to also collect recruiter data etc?
-    updateEmployerData(primaryKey, prop, val) {
-        const newEmployerData = this.state.employers;
+    updatePeripheralTables(table, positionVar, primaryKey, prop, val) {
+        const newPeripheralData = this.state[table];
 
         // @TODO I think what needs to happen is we get the employer/recruiter data back as an object rather than an array.
-        for(let i = 0; i < newEmployerData.length; i++) {
-            if(newEmployerData[i][primaryKey] === parseInt(this.state.positionData.employer)) {
-                newEmployerData[i][prop] = val;
-                this.setState({employers: newEmployerData})
+        for(let i = 0; i < newPeripheralData.length; i++) {
+            if(newPeripheralData[i][primaryKey] === parseInt(this.state.positionData[positionVar])) {
+                newPeripheralData[i][prop] = val;
+
+                const newState = {};
+                newState[table] = newPeripheralData;
+
+                this.setState(newState);
 
                 break;
             }
@@ -107,10 +110,29 @@ class PositionForm extends Component {
                         remarkProp      = 'remarks'
                         updateData      = {this.updatePositionData.bind(this)}
                         updateRemarks   = {(prop, val) => {
-                                                this.updateEmployerData('employerID', prop, val)
+                                                this.updatePeripheralTables('employers', 'employer', 'employerID', prop, val)
                                             }
                                           }
                         propName        = 'employer'
+                        addNew          = 'true'
+                        getCurrentValue = {this.getCurrentValue.bind(this)}
+                    />
+                    <Pulldown
+                        class           = "formItem"
+                        header          = 'Recruiter'
+                        options         = {this.state.recruiters}
+                        defaultValue    = {this.state.positionData.recruiter || 1}
+                        valueStyle      = {textfieldValStyle}
+                        divStyle        = {divStyle}
+                        primaryKey      = 'recruiterID'
+                        nameProp        = 'name'
+                        remarkProp      = 'remarks'
+                        updateData      = {this.updatePositionData.bind(this)}
+                        updateRemarks   = {(prop, val) => {
+                                                this.updatePeripheralTables('recruiters', 'recruiter', 'recruiterID', prop, val)
+                                            }
+                                          }
+                        propName        = 'recruiter'
                         addNew          = 'true'
                         getCurrentValue = {this.getCurrentValue.bind(this)}
                     />
