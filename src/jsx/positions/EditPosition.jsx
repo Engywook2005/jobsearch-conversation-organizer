@@ -8,7 +8,7 @@ class EditPosition extends Component {
 
         this.state = {
             dataReady: false,
-            positionData: {},
+            positionData: this.props.positionData || {},
             employersRecruitersEtc: {},
             conversations: []
         }
@@ -66,7 +66,7 @@ class EditPosition extends Component {
             .then((data) => {
 
                 // @TODO add query and handle conversations for reviewing and editing conversations, and adding new conversations for a specific position.
-                this.setState({'positionData': (data ? JSON.parse(data) : {})});
+                this.setState({'positionData': (data ? JSON.parse(data) : this.state.positionData )});
                 return this.callAjax(`http://localhost:8081/conversations.json?posid=${this.props.positionID}`, this.isInserting());
             })
             .then(() => {
@@ -122,6 +122,7 @@ class EditPosition extends Component {
                     <PositionForm
                         periphData = {this.state}
                         stateHandler = {this.props.stateHandler}
+                        positionData = {this.state.positionData}
                     />
                     <br/>
                     <br/>

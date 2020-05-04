@@ -12,11 +12,14 @@ class PositionForm extends Component {
         const stateKeys = Object.keys(props);
 
         this.state = {
+
+            // @TODO seems likely we don't need this next line. Or more likely don't need the stateKeys iterator.
             positionData: this.props.positionData || {},
             employers: this.props.periphData.employersRecruitersEtc.employers,
             recruiters: this.props.periphData.employersRecruitersEtc.recruiters
         };
 
+        // @TODO still think we need to do this?
         stateKeys.forEach((key) => {
             this.state[key] = this.props[key];
         });
@@ -32,6 +35,7 @@ class PositionForm extends Component {
     }
 
     // @TODO try to get to where we only need one function to update state for everything on this form. Would be helped by using redux storage?
+    // @TODO why isn't this wiping the default text when clicking the element?
     // Wouldn't this be used to also collect recruiter data etc?
     updateEmployerData(primaryKey, prop, val) {
         const newEmployerData = this.state.employers;
@@ -68,7 +72,8 @@ class PositionForm extends Component {
             textfieldValStyle = {
                 backgroundColor: '#000000',
                 color: '#888800',
-                borderWidth: '1px'
+                borderWidth: '1px',
+                marginTop: '0.25em'
             },
             divStyle = {
                 marginBottom: '0.5em'

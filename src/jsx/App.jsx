@@ -137,6 +137,11 @@ class AddNewPos extends Component {
         return (
             <EditPosition
                 stateHandler = {this.props.stateHandler}
+                positionData = {
+                    {
+                        employer: '1'
+                    }
+                }
             />
         );
     }
@@ -155,6 +160,17 @@ class TableRow extends Component {
         this.rowClick = (e) => {
             // @TODO create a more detailed, editable overlay about the position. Should be able to work with the same app as is used for adding a new position.
 
+            /*
+
+             <EditPosition
+             stateHandler = {this.props.stateHandler}
+             positionData = {
+             {
+             employer: '1' // in this case use the value associated with the clicked TableRow
+             }
+             }
+             />
+             */
 
             debugger;
         };
