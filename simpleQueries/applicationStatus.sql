@@ -1,1 +1,2 @@
-SELECT * FROM applicationstatus;
+SELECT * FROM applicationstatus
+ORDER BY progression;

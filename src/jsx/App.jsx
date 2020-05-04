@@ -139,7 +139,9 @@ class AddNewPos extends Component {
                 stateHandler = {this.props.stateHandler}
                 positionData = {
                     {
-                        employer: '1'
+                        employer: '1',
+                        recruiter: '1',
+                        applicationStatus: '1'
                     }
                 }
             />

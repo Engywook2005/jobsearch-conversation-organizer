@@ -15,8 +15,10 @@ class PositionForm extends Component {
 
             // @TODO seems likely we don't need this next line. Or more likely don't need the stateKeys iterator.
             positionData: this.props.positionData || {},
+
             employers: this.props.periphData.employersRecruitersEtc.employers,
-            recruiters: this.props.periphData.employersRecruitersEtc.recruiters
+            recruiters: this.props.periphData.employersRecruitersEtc.recruiters,
+            applicationStatus: this.props.periphData.employersRecruitersEtc.applicationStatus
         };
 
         // @TODO still think we need to do this?
@@ -78,7 +80,6 @@ class PositionForm extends Component {
                 marginBottom: '0.5em'
             };
 
-
         return (
             <div>
                 <div>
@@ -130,6 +131,18 @@ class PositionForm extends Component {
                                           }
                         propName        = 'recruiter'
                         addNew          = 'true'
+                        getCurrentValue = {this.getCurrentValue.bind(this)}
+                    />
+                    <Pulldown
+                        class           = "formItem"
+                        header          = 'Application Status'
+                        options         = {this.state.applicationStatus}
+                        defaultValue    = {this.state.positionData.applicationStatus || 1}
+                        valueStyle      = {textfieldValStyle}
+                        divStyle        = {divFieldStyle}
+                        primaryKey      = 'applicationStatusID'
+                        nameProp        = 'status'
+                        updateData      = {this.updatePositionData.bind(this)}
                         getCurrentValue = {this.getCurrentValue.bind(this)}
                     />
                 </div>

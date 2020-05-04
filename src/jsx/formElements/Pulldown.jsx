@@ -26,13 +26,17 @@ class Pulldown extends FormElementBase {
     render() {
         const optionsMappedToValues = {};
 
+        let remark = '';
+
         // @FIXME not a good way to do this; should be able to get the positions by both key and primary key
         // Why didn't setting key to be primary key work?
         this.props.options.forEach((option) => {
-             optionsMappedToValues[option[this.props.primaryKey]] = option;
+            optionsMappedToValues[option[this.props.primaryKey]] = option;
         });
 
-        const remark = optionsMappedToValues[this.props.defaultValue][this.props.remarkProp] || 'Enter remark here';
+        if(this.props.remarkProp) {
+            remark = optionsMappedToValues[this.props.defaultValue][this.props.remarkProp] || 'Enter remark here';
+        }
 
         return (
             <div style = {this.props.divStyle}>
