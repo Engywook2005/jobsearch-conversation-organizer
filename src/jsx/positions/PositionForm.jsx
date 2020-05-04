@@ -68,29 +68,25 @@ class PositionForm extends Component {
 
         // @TODO make sure all style declarations are here. Header's cyan style is elsewhere.
         // Or keep the styles in a constants file? Then no need to pass these styles down the chain.
-        const nameDataPairingStyle = {
-                float: 'left',
-                height: '3em'
-            },
-            textfieldValStyle = {
+        const textfieldValStyle = {
                 backgroundColor: '#000000',
                 color: '#888800',
                 borderWidth: '1px',
                 marginTop: '0.25em'
             },
-            divStyle = {
+            divFieldStyle = {
                 marginBottom: '0.5em'
             };
 
 
         return (
             <div>
-                <div style = {nameDataPairingStyle}>
+                <div>
                     <InputText
                         class           = "formItem"
                         header          = 'Title'
                         valueStyle      = {textfieldValStyle}
-                        divStyle        = {divStyle}
+                        divStyle        = {divFieldStyle}
                         originalDefault = 'Enter title here'
                         defaultValue    = {this.state.positionData.title || 'Enter title here'}
                         size            = '50'
@@ -104,7 +100,7 @@ class PositionForm extends Component {
                         options         = {this.state.employers}
                         defaultValue    = {this.state.positionData.employer || 1}
                         valueStyle      = {textfieldValStyle}
-                        divStyle        = {divStyle}
+                        divStyle        = {divFieldStyle}
                         primaryKey      = 'employerID'
                         nameProp        = 'name'
                         remarkProp      = 'remarks'
@@ -123,7 +119,7 @@ class PositionForm extends Component {
                         options         = {this.state.recruiters}
                         defaultValue    = {this.state.positionData.recruiter || 1}
                         valueStyle      = {textfieldValStyle}
-                        divStyle        = {divStyle}
+                        divStyle        = {divFieldStyle}
                         primaryKey      = 'recruiterID'
                         nameProp        = 'name'
                         remarkProp      = 'remarks'
@@ -141,8 +137,6 @@ class PositionForm extends Component {
             </div>
         )
     }
-
-    // @TODO submit button
 }
 
 module.exports = PositionForm;

@@ -93,7 +93,7 @@ class EditPosition extends Component {
     showPositionModal() {
 
         // modal
-        const divStyle = {
+        const modalStyle = {
             position: 'fixed',
             zIndex: 1,
             left: 0,
@@ -117,16 +117,13 @@ class EditPosition extends Component {
         };
 
         return (
-            <div style = {divStyle}>
+            <div style = {modalStyle}>
                 <div style = {lightboxStyle}>
                     <PositionForm
                         periphData = {this.state}
                         stateHandler = {this.props.stateHandler}
                         positionData = {this.state.positionData}
                     />
-                    <br/>
-                    <br/>
-                    <br/>
                 </div>
             </div>
         )
