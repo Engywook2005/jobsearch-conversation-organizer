@@ -1,4 +1,4 @@
-import {InputText, Pulldown, SubmitButton} from '../formElements';
+import {DateTimeLocal, InputText, Pulldown, SubmitButton} from '../formElements';
 import React, { Component } from 'react';
 
 class PositionForm extends Component {
@@ -18,7 +18,8 @@ class PositionForm extends Component {
 
             employers: this.props.periphData.employersRecruitersEtc.employers,
             recruiters: this.props.periphData.employersRecruitersEtc.recruiters,
-            applicationStatus: this.props.periphData.employersRecruitersEtc.applicationStatus
+            applicationStatus: this.props.periphData.employersRecruitersEtc.applicationStatus,
+            positionType: this.props.periphData.employersRecruitersEtc.positionType
         };
 
         // @TODO still think we need to do this?
@@ -135,6 +136,18 @@ class PositionForm extends Component {
                     />
                     <Pulldown
                         class           = "formItem"
+                        header          = 'Position Type'
+                        options         = {this.state.positionType}
+                        defaultValue    = {this.state.positionData.positionType || 1}
+                        valueStyle      = {textfieldValStyle}
+                        divStyle        = {divFieldStyle}
+                        primaryKey      = 'roleTypeID'
+                        nameProp        = 'type'
+                        updateData      = {this.updatePositionData.bind(this)}
+                        getCurrentValue = {this.getCurrentValue.bind(this)}
+                    />
+                    <Pulldown
+                        class           = "formItem"
                         header          = 'Application Status'
                         options         = {this.state.applicationStatus}
                         defaultValue    = {this.state.positionData.applicationStatus || 1}
@@ -143,6 +156,16 @@ class PositionForm extends Component {
                         primaryKey      = 'applicationStatusID'
                         nameProp        = 'status'
                         updateData      = {this.updatePositionData.bind(this)}
+                        getCurrentValue = {this.getCurrentValue.bind(this)}
+                    />
+                    <DateTimeLocal
+                        class           = "formItem"
+                        header          = 'Last status update'
+                        valueStyle      = {textfieldValStyle}
+                        divStyle        = {divFieldStyle}
+                        defaultValue    = {this.state.positionData.lastStatusChange}
+                        updateData      = {this.updatePositionData.bind(this)}
+                        propName        = 'lastStatusChange'
                         getCurrentValue = {this.getCurrentValue.bind(this)}
                     />
                 </div>

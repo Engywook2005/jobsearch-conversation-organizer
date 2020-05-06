@@ -84,8 +84,8 @@ class App extends Component {
                         <tr>
                             <th style = {cellStyle}>ID</th>
                             <th style = {cellStyle}>Job Title</th>
-                            <th style = {cellStyle}>Recruiter</th>
                             <th style = {cellStyle}>Employer</th>
+                            <th style = {cellStyle}>Recruiter</th>
                             <th style = {cellStyle}>Role Type</th>
                             <th style = {cellStyle}>Status</th>
                             <th style = {cellStyle}>Last Status Change</th>
