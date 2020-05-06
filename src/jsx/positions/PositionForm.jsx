@@ -75,10 +75,10 @@ class PositionForm extends Component {
                 backgroundColor: '#000000',
                 color: '#888800',
                 borderWidth: '1px',
-                marginTop: '0.25em'
+                marginTop: '0.5em'
             },
             divFieldStyle = {
-                marginBottom: '0.5em'
+                marginBottom: '1em'
             };
 
         return (
