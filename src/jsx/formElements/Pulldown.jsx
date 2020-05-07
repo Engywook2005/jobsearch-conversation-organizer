@@ -58,17 +58,20 @@ class Pulldown extends FormElementBase {
                     </select>
                 </div>
                 <div style = {{float:'left'}}>
-                    <EditPeripheralButton>
-                        header          = 'Add or Edit {this.props.header}'
-                        buttonStyle     = {this.props.buttonStyle}
-                        primaryKey      = {this.props.primaryKey}
-                        nameProp        = {this.props.nameProp}
-                        remarkProp      = {this.props.remarkPrp}
-                        updateData      = {this.props.updateData}
-                        updateEditPos   = {this.props.updateEditPos}
-                        propName        = {this.props.propName}
-                        currentValue    = {this.props.defaultValue}
-                    </EditPeripheralButton>
+                    { this.props.updateEditPos ?
+                        <EditPeripheralButton
+                            header          = 'Add or Edit {this.props.header}'
+                            buttonStyle     = {this.props.buttonStyle}
+                            primaryKey      = {this.props.primaryKey}
+                            nameProp        = {this.props.nameProp}
+                            remarkProp      = {this.props.remarkPrp}
+                            updateData      = {this.props.updateData}
+                            updateEditPos   = {this.props.updateEditPos}
+                            propName        = {this.props.propName}
+                            currentValue    = {this.props.defaultValue}
+                        /> :
+                        <div/>
+                    }
                 </div>
 
                 {

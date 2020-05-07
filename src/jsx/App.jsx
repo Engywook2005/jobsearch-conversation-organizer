@@ -75,7 +75,9 @@ class App extends Component {
                 cursor: "pointer",
                 textDecoration: "underline",
                 color: '#888800',
-                textDecorationColor: '#008888'
+                textDecorationColor: '#000088',
+                backgroundColor: '#000088',
+                marginLeft: '1em'
             };
 
         return(
