@@ -10,7 +10,15 @@ class EditPosition extends Component {
             dataReady: false,
             positionData: this.props.positionData || {},
             employersRecruitersEtc: {},
-            conversations: []
+            conversations: [],
+
+            // Editing or adding employer, recruiter, etc.
+            editingPeripheral: null,
+            addingPeripheral: null,
+
+            // Forms will need access to this to toggle which form is displaying.
+            updateEditPosState: this.updateState.bind(this)
+
         }
     }
 
@@ -32,6 +40,15 @@ class EditPosition extends Component {
 
     isInserting() {
         return isNaN(this.props.positionID);
+    }
+
+    isEditingPeripheral() {
+        return (this.state.editingPeripheral !== null || this.state.addingPeripheral !== null);
+    }
+
+    // Call this to toggle between editor view for employers, recruiters etc and the position editor view
+    updateState(newState) {
+        this.setState(newState);
     }
 
     // @TODO consider using redux and adding this to a store so there is only a need to hit all these db calls once.
@@ -125,9 +142,10 @@ class EditPosition extends Component {
             <div style = {modalStyle}>
                 <div style = {lightboxStyle}>
                     <PositionForm
-                        periphData = {this.state}
-                        stateHandler = {this.props.stateHandler}
-                        positionData = {this.state.positionData}
+                        periphData          = {this.state}
+                        stateHandler        = {this.props.stateHandler}
+                        positionData        = {this.state.positionData}
+                        updateEditPosState  = {this.state.updateEditPosState}
                     />
                 </div>
             </div>

@@ -115,12 +115,12 @@ class PositionForm extends Component {
                         nameProp        = 'name'
                         remarkProp      = 'remarks'
                         updateData      = {this.updatePositionData.bind(this)}
+                        updateEditPos   = {this.props.updateEditPosState}
                         updateRemarks   = {(prop, val) => {
                                                 this.updatePeripheralTables('employers', 'employer', 'employerID', prop, val)
                                             }
                                           }
                         propName        = 'employer'
-                        addNew          = 'true'
                         getCurrentValue = {this.getCurrentValue.bind(this)}
                     />
                     <Pulldown
@@ -134,6 +134,7 @@ class PositionForm extends Component {
                         nameProp        = 'name'
                         remarkProp      = 'remarks'
                         updateData      = {this.updatePositionData.bind(this)}
+                        updateEditPos   = {this.props.updateEditPosState}
                         updateRemarks   = {(prop, val) => {
                                                 this.updatePeripheralTables('recruiters', 'recruiter', 'recruiterID', prop, val)
                                             }
@@ -189,12 +190,12 @@ class PositionForm extends Component {
                         nameProp        = 'resumeVersionTag'
                         remarkProp      = 'resumeRemarks'
                         updateData      = {this.updatePositionData.bind(this)}
+                        updateEditPos   = {this.props.updateEditPosState}
                         updateRemarks   = {(prop, val) => {
                                                 this.updatePeripheralTables('resumeVersions', 'resumeVersion', 'resumeVersionID', prop, val)
                                             }
                                         }
                         propName        = 'resumeVersion'
-                        addNew          = 'true'
                         getCurrentValue = {this.getCurrentValue.bind(this)}
                     />
 

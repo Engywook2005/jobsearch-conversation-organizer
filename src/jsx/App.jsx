@@ -57,7 +57,7 @@ class App extends Component {
 
         const textStyle = {
                 fontFamily: "helvetica, arial",
-                fontSize: "10px"
+                fontSize: "12px"
             },
             tableStyle = {
                 width: "100%"
@@ -70,6 +70,12 @@ class App extends Component {
                 padding: '5px',
                 margin: '0px',
                 textAlign: 'left'
+            },
+            buttonStyle = {
+                cursor: "pointer",
+                textDecoration: "underline",
+                color: '#888800',
+                textDecorationColor: '#008888'
             };
 
         return(
@@ -78,6 +84,7 @@ class App extends Component {
                         stateHandler = {this.state.stateHandler}
                         positionDetails = {this.state.positionDetails}
                         showingNewPositionTable = {this.state.showingNewPositionTable}
+                        buttonStyle = {buttonStyle}
                 />
                 <table style = {tableStyle}>
                     <tbody>
@@ -117,6 +124,7 @@ class Header extends Component {
                     stateHandler = {this.props.stateHandler}
                     positionDetails = {this.props.positionDetails}
                     showingNewPositionTable = {this.props.showingNewPositionTable}
+                    buttonStyle = {this.props.buttonStyle}
                 />
             </div>
         );
@@ -131,7 +139,10 @@ class AddNewPos extends Component {
 
     linkForAddNewPos() {
         return (
-            <p onClick = {this.handleAddNewPosClick.bind(this)}>Click to add a new position</p>
+            <p style = {this.props.buttonStyle}
+                onClick = {this.handleAddNewPosClick.bind(this)}>
+                Click to add a new position
+            </p>
         );
     }
 
@@ -139,11 +150,13 @@ class AddNewPos extends Component {
         return (
             <EditPosition
                 stateHandler = {this.props.stateHandler}
+                buttonStyle = {this.props.buttonStyle}
                 positionData = {
                     {
                         employer: '1',
                         recruiter: '1',
-                        applicationStatus: '1'
+                        applicationStatus: '1',
+                        resumeVersion: '1'
                     }
                 }
             />
