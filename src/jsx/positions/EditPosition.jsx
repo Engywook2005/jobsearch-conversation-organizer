@@ -57,9 +57,9 @@ class EditPosition extends Component {
             employers: [],
             recruiters: [],
             positionType: [],
-            applicationStatus: []
+            applicationStatus: [],
+            resumeVersion: []
         };
-
 
         this.callAjax('http://localhost:8081/employers.json')
             .then((data) => {
@@ -136,24 +136,29 @@ class EditPosition extends Component {
             borderRadius: '25px',
             color: '#00FFFF',
             width: '87%'
-        };
+        },
+
+        formToDisplay = this.isEditingPeripheral() ?
+            <div>Edit form!</div> :
+            <PositionForm
+                periphData          = {this.state}
+                stateHandler        = {this.props.stateHandler}
+                positionData        = {this.state.positionData}
+                updateEditPosState  = {this.state.updateEditPosState}
+                buttonStyle         = {this.props.buttonStyle}
+            />;
 
         return (
             <div style = {modalStyle}>
                 <div style = {lightboxStyle}>
-                    <PositionForm
-                        periphData          = {this.state}
-                        stateHandler        = {this.props.stateHandler}
-                        positionData        = {this.state.positionData}
-                        updateEditPosState  = {this.state.updateEditPosState}
-                    />
+                    {formToDisplay}
                 </div>
             </div>
         )
     }
 
     render () {
-        return this.state.dataReady ? this.showPositionModal() : this.getDataNotReady();
+        return (this.state.dataReady || this.isEditingPeripheral()) ? this.showPositionModal() : this.getDataNotReady();
     }
 }
 

@@ -86,7 +86,8 @@ class PositionForm extends Component {
                 marginTop: '0.5em'
             },
             divFieldStyle = {
-                marginBottom: '1em'
+                marginBottom: '1em',
+                clear: 'left'
             };
 
         return (
@@ -111,6 +112,7 @@ class PositionForm extends Component {
                         defaultValue    = {this.state.positionData.employer || 1}
                         valueStyle      = {textfieldValStyle}
                         divStyle        = {divFieldStyle}
+                        buttonStyle     = {this.props.buttonStyle}
                         primaryKey      = 'employerID'
                         nameProp        = 'name'
                         remarkProp      = 'remarks'
@@ -130,6 +132,7 @@ class PositionForm extends Component {
                         defaultValue    = {this.state.positionData.recruiter || 1}
                         valueStyle      = {textfieldValStyle}
                         divStyle        = {divFieldStyle}
+                        buttonStyle     = {this.props.buttonStyle}
                         primaryKey      = 'recruiterID'
                         nameProp        = 'name'
                         remarkProp      = 'remarks'
@@ -186,6 +189,7 @@ class PositionForm extends Component {
                         defaultValue    = {this.state.positionData.resumeVersion || 1}
                         valueStyle      = {textfieldValStyle}
                         divStyle        = {divFieldStyle}
+                        buttonStyle     = {this.props.buttonStyle}
                         primaryKey      = 'resumeVersionID'
                         nameProp        = 'resumeVersionTag'
                         remarkProp      = 'resumeRemarks'

@@ -1,3 +1,4 @@
+import EditPeripheralButton from './EditPeripheralButton.jsx'
 import React, {Component} from 'react';
 import FormElementBase from './FormElementBase.jsx';
 import InputText from './InputText.jsx';
@@ -41,24 +42,40 @@ class Pulldown extends FormElementBase {
         return (
             <div style = {this.props.divStyle}>
                 <div>{this.props.header}</div>
-                <select
-                    id          = {this.randNum}
-                    style       = {this.props.valueStyle}
-                    onChange    = {this.updateValue.bind(this)}
-                >
-                    {
-                        this.props.options.map((option, i) => <Option
-                            val         = {option[this.props.primaryKey]}
-                            name        = {option[this.props.nameProp]}
-                            key         = {i}
-                        />)
-                    }
-                 </select>
+                <div style = {{float:'left'}}>
+                    <select
+                        id          = {this.randNum}
+                        style       = {this.props.valueStyle}
+                        onChange    = {this.updateValue.bind(this)}
+                    >
+                        {
+                            this.props.options.map((option, i) => <Option
+                                val         = {option[this.props.primaryKey]}
+                                name        = {option[this.props.nameProp]}
+                                key         = {i}
+                            />)
+                        }
+                    </select>
+                </div>
+                <div style = {{float:'left'}}>
+                    <EditPeripheralButton>
+                        header          = 'Add or Edit {this.props.header}'
+                        buttonStyle     = {this.props.buttonStyle}
+                        primaryKey      = {this.props.primaryKey}
+                        nameProp        = {this.props.nameProp}
+                        remarkProp      = {this.props.remarkPrp}
+                        updateData      = {this.props.updateData}
+                        updateEditPos   = {this.props.updateEditPos}
+                        propName        = {this.props.propName}
+                        currentValue    = {this.props.defaultValue}
+                    </EditPeripheralButton>
+                </div>
+
                 {
                     // @TODO there really isn't any need to have the remarks editable. We can have the remark appear in
                     // a <p/> tag; it does make better sense to have the remarks be editable in the edit/add form.
                     this.props.remarkProp ?
-                        <div>
+                        <div style = {{clear:'left'}}>
                             <InputText
                                 defaultValue    = {remark}
                                 originalDefault = 'Enter remark here'
