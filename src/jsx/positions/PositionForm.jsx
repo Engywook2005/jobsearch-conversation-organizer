@@ -20,7 +20,8 @@ class PositionForm extends Component {
             employers: this.props.periphData.employersRecruitersEtc.employers,
             recruiters: this.props.periphData.employersRecruitersEtc.recruiters,
             applicationStatus: this.props.periphData.employersRecruitersEtc.applicationStatus,
-            positionType: this.props.periphData.employersRecruitersEtc.positionType
+            positionType: this.props.periphData.employersRecruitersEtc.positionType,
+            resumeVersions: this.props.periphData.employersRecruitersEtc.resumeVersion
         };
 
         // @TODO still think we need to do this?
@@ -177,6 +178,26 @@ class PositionForm extends Component {
                         propName        = 'lastStatusChange'
                         getCurrentValue = {this.getCurrentValue.bind(this)}
                     />
+                    <Pulldown
+                        class           = "formItem"
+                        header          = 'Resume Versions'
+                        options         = {this.state.resumeVersions}
+                        defaultValue    = {this.state.positionData.resumeVersion || 1}
+                        valueStyle      = {textfieldValStyle}
+                        divStyle        = {divFieldStyle}
+                        primaryKey      = 'resumeVersionID'
+                        nameProp        = 'resumeVersionTag'
+                        remarkProp      = 'resumeRemarks'
+                        updateData      = {this.updatePositionData.bind(this)}
+                        updateRemarks   = {(prop, val) => {
+                                                this.updatePeripheralTables('resumeVersions', 'resumeVersion', 'resumeVersionID', prop, val)
+                                            }
+                                        }
+                        propName        = 'resumeVersion'
+                        addNew          = 'true'
+                        getCurrentValue = {this.getCurrentValue.bind(this)}
+                    />
+
                 </div>
                 <SubmitButton/>
             </div>

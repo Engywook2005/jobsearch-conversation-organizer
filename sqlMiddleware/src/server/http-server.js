@@ -98,6 +98,12 @@ class HTTPServer {
                     'func': (queryString) => {
                         fullQuery(queryString);
                     }
+                },
+                '/resumeVersions.json': {
+                    'queryString': QueryConstants.select.resumeVersions,
+                    'func': (queryString) => {
+                        fullQuery(queryString);
+                    }
                 }
             };
 

@@ -58,9 +58,14 @@ class EditPosition extends Component {
                 return this.callAjax('http://localhost:8081/applicationStatus.json');
             })
             .then((data) => {
+                newState.applicationStatus = JSON.parse(data);
+
+                return this.callAjax('http://localhost:8081/resumeVersions.json');
+            })
+            .then((data) => {
+                 newState.resumeVersion = JSON.parse(data);
 
                  // @TODO add query and handle positionData for reviewing and editing a pre-existing position
-                 newState.applicationStatus = JSON.parse(data);
                  return this.callAjax(`http://localhost:8081/positionData.json?posid=${this.props.positionID}`, this.isInserting());
             })
             .then((data) => {

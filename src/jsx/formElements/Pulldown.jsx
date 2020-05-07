@@ -55,6 +55,8 @@ class Pulldown extends FormElementBase {
                     }
                  </select>
                 {
+                    // @TODO there really isn't any need to have the remarks editable. We can have the remark appear in
+                    // a <p/> tag; it does make better sense to have the remarks be editable in the edit/add form.
                     this.props.remarkProp ?
                         <div>
                             <InputText

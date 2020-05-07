@@ -13,7 +13,7 @@ SELECT
             roletypes.roleTypeName AS roleType,
             statuses.statusName AS currentStatus,
             rawPosition.lastStatusChange AS lastStatusChange,
-            rawPosition.resumeVersion AS resumeVersion
+            resumeVersions.resumeVersion AS resumeVersion
 			FROM
             (SELECT
 				*
@@ -58,6 +58,13 @@ SELECT
             )
             AS roletypes
             ON roletypes.roleTypeID = rawPosition.roletype
+            INNER JOIN (SELECT
+                resumeVersionID,
+                resumeVersionTag as resumeVersion
+                FROM resumeVersions
+            )
+            AS resumeVersions
+            ON resumeVersions.resumeVersionID = rawPosition.resumeVersion
 		) 
 	AS positions
     ORDER BY lastStatusChange DESC;
@@ -149,6 +156,11 @@ dateNamePosEmployerRecruiter.conversationTime`,
         `
         SELECT * FROM applicationstatus
         ORDER BY progression;
+        `,
+        resumeVersions:
+        `
+        SELECT * FROM resumeVersions
+        ORDER BY resumeVersionTag DESC
         `
     }
 };
