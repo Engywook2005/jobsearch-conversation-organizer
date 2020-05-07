@@ -1,5 +1,6 @@
 import {DateTimeLocal, InputText, Pulldown, SubmitButton} from '../formElements';
 import React, { Component } from 'react';
+import TimeUtils from '../../utils/Time';
 
 class PositionForm extends Component {
 
@@ -30,6 +31,12 @@ class PositionForm extends Component {
 
     // @TODO ultimately we will want to put this in a redux store so data will persist even if user exits the form.
     updatePositionData(prop, val) {
+
+        // Update time of lastStatusChange if updating application status.
+        if(prop === 'applicationStatus') {
+            this.updatePositionData('lastStatusChange', TimeUtils.getDateForForm(new Date()));
+        }
+
         const newPositionData = this.state.positionData;
 
         newPositionData[prop] = val;
