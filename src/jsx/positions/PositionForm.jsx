@@ -108,6 +108,7 @@ class PositionForm extends Component {
                     <Pulldown
                         class           = "formItem"
                         header          = 'Employer'
+                        tableName       = 'employers'
                         options         = {this.state.employers}
                         defaultValue    = {this.state.positionData.employer || 1}
                         valueStyle      = {textfieldValStyle}
@@ -128,6 +129,7 @@ class PositionForm extends Component {
                     <Pulldown
                         class           = "formItem"
                         header          = 'Recruiter'
+                        tableName       = 'recruiters'
                         options         = {this.state.recruiters}
                         defaultValue    = {this.state.positionData.recruiter || 1}
                         valueStyle      = {textfieldValStyle}
@@ -185,6 +187,7 @@ class PositionForm extends Component {
                     <Pulldown
                         class           = "formItem"
                         header          = 'Resume Versions'
+                        tableName       = 'resumeVersions'
                         options         = {this.state.resumeVersions}
                         defaultValue    = {this.state.positionData.resumeVersion || 1}
                         valueStyle      = {textfieldValStyle}

@@ -64,7 +64,7 @@ class Pulldown extends FormElementBase {
                             buttonStyle     = {this.props.buttonStyle}
                             primaryKey      = {this.props.primaryKey}
                             nameProp        = {this.props.nameProp}
-                            remarkProp      = {this.props.remarkPrp}
+                            remarkProp      = {this.props.remarkProp}
                             updateData      = {this.props.updateData}
                             updateEditPos   = {this.props.updateEditPos}
                             propName        = {this.props.propName}

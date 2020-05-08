@@ -12,10 +12,6 @@ class EditPosition extends Component {
             employersRecruitersEtc: {},
             conversations: [],
 
-            // Editing or adding employer, recruiter, etc.
-            editingPeripheral: null,
-            addingPeripheral: null,
-
             // Forms will need access to this to toggle which form is displaying.
             updateEditPosState: this.updateState.bind(this)
 
@@ -43,7 +39,10 @@ class EditPosition extends Component {
     }
 
     isEditingPeripheral() {
-        return (this.state.editingPeripheral !== null || this.state.addingPeripheral !== null);
+        return (this.state.addOrEdit ?
+                true:
+                false
+               );
     }
 
     // Call this to toggle between editor view for employers, recruiters etc and the position editor view
