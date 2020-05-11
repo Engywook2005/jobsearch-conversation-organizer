@@ -60,7 +60,7 @@ class Pulldown extends FormElementBase {
                 <div style = {{float:'left'}}>
                     { this.props.updateEditPos ?
                         <EditPeripheralButton
-                            header          = 'Add or Edit {this.props.header}'
+                            header          = {this.props.header}
                             buttonStyle     = {this.props.buttonStyle}
                             primaryKey      = {this.props.primaryKey}
                             nameProp        = {this.props.nameProp}
@@ -69,6 +69,7 @@ class Pulldown extends FormElementBase {
                             updateEditPos   = {this.props.updateEditPos}
                             propName        = {this.props.propName}
                             currentValue    = {this.props.defaultValue}
+                            tableName       = {this.props.tableName}
                         /> :
                         <div/>
                     }

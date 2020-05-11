@@ -1,4 +1,5 @@
 import Ajax from '../../http/ajax';
+import AddOrEditPeripheral from './AddOrEditPeripheral.jsx';
 import PositionForm from './PositionForm.jsx';
 import React, { Component } from 'react';
 
@@ -14,7 +15,6 @@ class EditPosition extends Component {
 
             // Forms will need access to this to toggle which form is displaying.
             updateEditPosState: this.updateState.bind(this)
-
         }
     }
 
@@ -138,13 +138,21 @@ class EditPosition extends Component {
         },
 
         formToDisplay = this.isEditingPeripheral() ?
-            <div>Edit form!</div> :
+            <AddOrEditPeripheral
+                addOrEdit           = {this.state.addOrEdit}
+                positionData        = {this.state.positionData}
+                updateEditPos       = {this.state.updateEditPosState}
+                textfieldValStyle   = {this.props.textfieldValStyle}
+                divFieldStyle       = {this.props.divFieldStyle}
+            />:
             <PositionForm
                 periphData          = {this.state}
                 stateHandler        = {this.props.stateHandler}
                 positionData        = {this.state.positionData}
                 updateEditPosState  = {this.state.updateEditPosState}
                 buttonStyle         = {this.props.buttonStyle}
+                textfieldValStyle   = {this.props.textfieldValStyle}
+                divFieldStyle       = {this.props.divFieldStyle}
             />;
 
         return (

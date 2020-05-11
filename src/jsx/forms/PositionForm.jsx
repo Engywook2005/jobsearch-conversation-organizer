@@ -76,28 +76,14 @@ class PositionForm extends Component {
     }
 
     render() {
-
-        // @TODO make sure all style declarations are here. Header's cyan style is elsewhere.
-        // Or keep the styles in a constants file? Then no need to pass these styles down the chain.
-        const textfieldValStyle = {
-                backgroundColor: '#000000',
-                color: '#888800',
-                borderWidth: '1px',
-                marginTop: '0.5em'
-            },
-            divFieldStyle = {
-                marginBottom: '1em',
-                clear: 'left'
-            };
-
         return (
             <div>
                 <div>
                     <InputText
                         class           = "formItem"
                         header          = 'Title'
-                        valueStyle      = {textfieldValStyle}
-                        divStyle        = {divFieldStyle}
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
                         originalDefault = 'Enter title here'
                         defaultValue    = {this.state.positionData.title || 'Enter title here'}
                         size            = '50'
@@ -111,8 +97,8 @@ class PositionForm extends Component {
                         tableName       = 'employers'
                         options         = {this.state.employers}
                         defaultValue    = {this.state.positionData.employer || 1}
-                        valueStyle      = {textfieldValStyle}
-                        divStyle        = {divFieldStyle}
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
                         buttonStyle     = {this.props.buttonStyle}
                         primaryKey      = 'employerID'
                         nameProp        = 'name'
@@ -132,8 +118,8 @@ class PositionForm extends Component {
                         tableName       = 'recruiters'
                         options         = {this.state.recruiters}
                         defaultValue    = {this.state.positionData.recruiter || 1}
-                        valueStyle      = {textfieldValStyle}
-                        divStyle        = {divFieldStyle}
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
                         buttonStyle     = {this.props.buttonStyle}
                         primaryKey      = 'recruiterID'
                         nameProp        = 'name'
@@ -153,8 +139,8 @@ class PositionForm extends Component {
                         header          = 'Position Type'
                         options         = {this.state.positionType}
                         defaultValue    = {this.state.positionData.positionType || 1}
-                        valueStyle      = {textfieldValStyle}
-                        divStyle        = {divFieldStyle}
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
                         primaryKey      = 'roleTypeID'
                         nameProp        = 'type'
                         updateData      = {this.updatePositionData.bind(this)}
@@ -166,8 +152,8 @@ class PositionForm extends Component {
                         header          = 'Application Status'
                         options         = {this.state.applicationStatus}
                         defaultValue    = {this.state.positionData.applicationStatus || 1}
-                        valueStyle      = {textfieldValStyle}
-                        divStyle        = {divFieldStyle}
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
                         primaryKey      = 'applicationStatusID'
                         nameProp        = 'status'
                         updateData      = {this.updatePositionData.bind(this)}
@@ -177,8 +163,8 @@ class PositionForm extends Component {
                     <DateTimeLocal
                         class           = "formItem"
                         header          = 'Last status update'
-                        valueStyle      = {textfieldValStyle}
-                        divStyle        = {divFieldStyle}
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
                         defaultValue    = {this.state.positionData.lastStatusChange}
                         updateData      = {this.updatePositionData.bind(this)}
                         propName        = 'lastStatusChange'
@@ -190,8 +176,8 @@ class PositionForm extends Component {
                         tableName       = 'resumeVersions'
                         options         = {this.state.resumeVersions}
                         defaultValue    = {this.state.positionData.resumeVersion || 1}
-                        valueStyle      = {textfieldValStyle}
-                        divStyle        = {divFieldStyle}
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
                         buttonStyle     = {this.props.buttonStyle}
                         primaryKey      = 'resumeVersionID'
                         nameProp        = 'resumeVersionTag'

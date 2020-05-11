@@ -1,5 +1,5 @@
 import Ajax from '../http/ajax';
-import EditPosition from './positions/EditPosition.jsx';
+import EditPosition from './forms/EditPosition.jsx';
 import React, { Component } from 'react';
 
 class App extends Component {
@@ -8,13 +8,23 @@ class App extends Component {
 
         // State is mutable.
         this.state = {
-            positions: [
-            ],
+            positions: [],
             positionDetails: {},
             greeting: "Job Convos data loading",
-            stateHandler: () => {},
+            stateHandler: () => {
+            },
             showingNewPositionTable: false,
-            reloading: false // Set to true to trigger refresh of main positions table.
+            reloading: false,
+            textfieldValStyle: {
+                backgroundColor: '#000000',
+                color: '#888800',
+                borderWidth: '1px',
+                marginTop: '0.5em'
+            },
+            divFieldStyle: {
+                marginBottom: '1em',
+                clear: 'left'
+            }
         };
 
         this.setStateHandler = this.setStateHandler.bind(this);
@@ -87,6 +97,8 @@ class App extends Component {
                         positionDetails = {this.state.positionDetails}
                         showingNewPositionTable = {this.state.showingNewPositionTable}
                         buttonStyle = {buttonStyle}
+                        textfieldValStyle   = {this.state.textfieldValStyle}
+                        divFieldStyle       = {this.state.divFieldStyle}
                 />
                 <table style = {tableStyle}>
                     <tbody>
@@ -127,6 +139,8 @@ class Header extends Component {
                     positionDetails = {this.props.positionDetails}
                     showingNewPositionTable = {this.props.showingNewPositionTable}
                     buttonStyle = {this.props.buttonStyle}
+                    textfieldValStyle   = {this.props.textfieldValStyle}
+                    divFieldStyle       = {this.props.divFieldStyle}
                 />
             </div>
         );
@@ -151,9 +165,11 @@ class AddNewPos extends Component {
     createNewPos() {
         return (
             <EditPosition
-                stateHandler = {this.props.stateHandler}
-                buttonStyle = {this.props.buttonStyle}
-                positionData = {
+                stateHandler        = {this.props.stateHandler}
+                buttonStyle         = {this.props.buttonStyle}
+                textfieldValStyle   = {this.props.textfieldValStyle}
+                divFieldStyle       = {this.props.divFieldStyle}
+                positionData        = {
                     {
                         employer: '1',
                         recruiter: '1',
