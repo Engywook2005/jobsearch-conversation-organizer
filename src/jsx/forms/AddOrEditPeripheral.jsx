@@ -29,12 +29,16 @@ class AddOrEditPeripheral extends Component {
         this.updateState(newState);
     }
 
-    getCurrentValue() {
-        return this.state[this.props.addOrEdit.nameProp] || '';
+    getCurrentValue(prop) {
+        return this.state[prop] || '';
     }
 
     isUpdating() {
         return (this.props.addOrEdit.queryType === 'editingPeripheral');
+    }
+
+    handleClick() {
+
     }
 
     getForm() {
@@ -46,9 +50,21 @@ class AddOrEditPeripheral extends Component {
                         valueStyle      = {this.props.textfieldValStyle}
                         divStyle        = {this.props.divFieldStyle}
                         propName        = {this.props.addOrEdit.nameProp}
-                        getCurrentValue = {this.getCurrentValue.bind(this)}
+                        getCurrentValue = {this.getCurrentValue.bind(this, this.props.addOrEdit.nameProp)}
                         size            = '50'
                         updateData      = {this.addPropValToState.bind(this)}
+                    />
+                    <InputText
+                        header          = 'remarks'
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
+                        propName        = {this.props.addOrEdit.remarkProp}
+                        getCurrentValue = {this.getCurrentValue.bind(this, this.props.addOrEdit.remarkProp)}
+                        size            = '100'
+                        updateData      = {this.addPropValToState.bind(this)}
+                    />
+                    <SubmitButton
+                        handleClick = {this.handleClick.bind(this)}
                     />
                 </div> :
                 <div/>
