@@ -39,6 +39,10 @@ class AddOrEditPeripheral extends Component {
 
     handleClick() {
 
+        // @TODO make a constant along with all of those stylesheet things I'm not changing at runtime??
+        const tableQueryParams = `table=${this.props.addOrEdit.tableName}&props=${this.props.addOrEdit.nameProp},${this.props.addOrEdit.remarkProp}&values=${encodeURIComponent(this.state[this.props.addOrEdit.nameProp])},${encodeURIComponent(this.state[this.props.addOrEdit.remarkProp])}&updateQuery=${this.isUpdating()}&primaryKey=${this.props.addOrEdit.primaryKey}&primaryKeyValue=${this.props.addOrEdit.currentValue}`;
+
+        const url = `https://localhost:8081/updateSQL?${tableQueryParams}`
     }
 
     getForm() {
