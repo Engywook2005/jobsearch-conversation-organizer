@@ -2,8 +2,10 @@
 /* global require */
 
 const http = require('http');
+const url =  require('url');
 const NodeJSDataServer = require('./node-js-data-server');
 const mysql = require('../mysql/index');
+const InjectConstructor = require('../support/inject-constructor');
 const QueryConstants = require('../support/query-constants');
 
 class HTTPServer {
@@ -40,7 +42,26 @@ class HTTPServer {
             response.end();
         };
         nodeJSDataServer.execSelectQuery(mySQLResponseCallback, query);
-    };
+    }
+
+    // @TODO do we need a separate injectQuery?
+    injectQuery(response, nodeJSDataServer, query, params = null) {
+
+        const mySQLresponseCallback = function(err, mySQLResponse) {
+            response.writeHead("200", {'Content-Type': 'text/json'});
+            if(mySQLResponse) {
+                response.write(JSON.stringify(mySQLResponse));
+            } else if(err) {
+
+
+                console.log('oops: ' + err);
+                response.write("oops, something went wrong: " + err.message);
+            }
+            response.end();
+        };
+
+        nodeJSDataServer.execInjectQuery(mySQLresponseCallback, query);
+    }
 
     startServerOnMySQLReady(err, mySQLConnex) {
         console.log("sql ready");
@@ -49,6 +70,10 @@ class HTTPServer {
         }
         http.createServer((request, response) => {
 
+            const requestParts = url.parse(request.url,true),
+                pathName = requestParts.pathname,
+                queryParams = requestParts.query;
+
             // @TODO add utils.js and to that add a timestamper function
             const now = new Date();
             console.log(`request received ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
@@ -56,12 +81,12 @@ class HTTPServer {
             const nodeJSDataServer = new NodeJSDataServer(mySQLConnex);
 
             const fullQuery = (queryString) => {
-                this.fullQuery(response, nodeJSDataServer, queryString);
-            }
+                    this.fullQuery(response, nodeJSDataServer, queryString);
+                },
+                injectQuery = (queryString) => {
+                    this.injectQuery(response, nodeJSDataServer, queryString);
+                };
 
-            // @TODO set up separate routing class, be able to do something with query params. Should just be able to use a hash table to determine which query to use.
-            // @TODO have these constants draw from the simpleQueries and apiQueryies folders... at the present it's very confusing that they don't.
-            // @TODO may need to set MIME types here as well.
             const routing = {
                 '/fish.json' : {
                     'queryString' : QueryConstants.select.conversationMainTable,
@@ -104,19 +129,33 @@ class HTTPServer {
                     'func': (queryString) => {
                         fullQuery(queryString);
                     }
+                },
+                '/updateSQL.json' : {
+                    'constructQuery': () => {
+
+                        console.log(`CONSTRUCTING QUERY: ${JSON.stringify(queryParams)}`);
+
+                        return InjectConstructor.constructInjexQuery(queryParams.table, queryParams.props, queryParams.values);
+                    },
+                    'func': (queryString) => {
+                        // @TODO there is a response that included insertId... do something with that....
+                        injectQuery(queryString);
+                    }
                 }
             };
 
-            const url = request.url;
-
-            if(!routing[url]) {
+            if(!routing[pathName]) {
                 response.writeHead("404", {'Content-Type': 'text/json'});
-                response.write(`url ${url} not found`);
+                response.write(`url ${pathName} not found`);
                 response.end();
                 return;
             }
 
-            routing[url].func(routing[url].queryString);
+            if(routing[pathName].queryString) {
+                routing[pathName].func(routing[pathName].queryString);
+            } else if(routing[pathName].constructQuery) {
+              routing[pathName].func(routing[pathName].constructQuery());
+            }
 
         }).listen("8081");
 

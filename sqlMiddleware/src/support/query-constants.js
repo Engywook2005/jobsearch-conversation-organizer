@@ -20,8 +20,8 @@ SELECT
             FROM
 			specificposition
             WHERE
-				lastStatusChange BETWEEN NOW() - INTERVAL 30 DAY AND NOW()
-                AND status NOT IN(5, 11, 19)
+				lastStatusChange BETWEEN NOW() - INTERVAL 21 DAY AND NOW()
+                AND status NOT IN(5, 11, 19, 27)
             )
             AS rawPosition
             INNER JOIN

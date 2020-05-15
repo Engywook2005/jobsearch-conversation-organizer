@@ -40,9 +40,14 @@ class AddOrEditPeripheral extends Component {
     handleClick() {
 
         // @TODO make a constant along with all of those stylesheet things I'm not changing at runtime??
-        const tableQueryParams = `table=${this.props.addOrEdit.tableName}&props=${this.props.addOrEdit.nameProp},${this.props.addOrEdit.remarkProp}&values=${encodeURIComponent(this.state[this.props.addOrEdit.nameProp])},${encodeURIComponent(this.state[this.props.addOrEdit.remarkProp])}&updateQuery=${this.isUpdating()}&primaryKey=${this.props.addOrEdit.primaryKey}&primaryKeyValue=${this.props.addOrEdit.currentValue}`;
+        const tableQueryParams = `table=${this.props.addOrEdit.tableName}&props=${this.props.addOrEdit.nameProp},${this.props.addOrEdit.remarkProp}&values='${encodeURIComponent(this.state[this.props.addOrEdit.nameProp])}','${encodeURIComponent(this.state[this.props.addOrEdit.remarkProp])}'&updateQuery=${this.isUpdating()}&primaryKey=${this.props.addOrEdit.primaryKey}&primaryKeyValue=${this.props.addOrEdit.currentValue}`,
+            url = `http://localhost:8081/updateSQL.json?${tableQueryParams}`;
 
-        const url = `https://localhost:8081/updateSQL?${tableQueryParams}`
+        Ajax.doAjaxQuery(url).then((data) => {
+            console.log(data);
+        }).catch((err) => {
+            console.log(err);
+        });
     }
 
     getForm() {

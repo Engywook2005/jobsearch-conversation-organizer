@@ -1,7 +1,3 @@
-/**
- * Created by Greg on 7/22/2017.
- */
-
 const mysql = require('../mysql/index');
 
 class NodeJSDataServer {
@@ -11,9 +7,16 @@ class NodeJSDataServer {
 
     execSelectQuery(callback, queryString) {
         const now = new Date();
-        console.log(`executing query ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
+        console.log(`executing selexquery ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
         const mysqlSelex = new mysql.SelexQuery(this.mySqlConnex);
         mysqlSelex.execQuery(callback, queryString);
+    }
+
+    execInjectQuery(callback, queryString) {
+        const now = new Date();
+        console.log(`executing injexQuery ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
+        const mysqlInjex = new mysql.InjexQuery(this.mySqlConnex);
+        mysqlInjex.execQuery(callback, queryString);
     }
 }
 
