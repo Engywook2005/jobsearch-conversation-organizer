@@ -3,6 +3,7 @@ class Ajax {
         return new Promise((resolve, reject) => {
             const xhttp = new XMLHttpRequest();
 
+            // @TODO Use https.get instead - would also need to be able to serve https.
             xhttp.onloadend = function() {
                 if(this.status === 200 || this.status === 304) {
                     resolve(this.responseText);
