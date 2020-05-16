@@ -34,6 +34,12 @@ class EditPosition extends Component {
         })
     }
 
+    positionUpdated() {
+        this.updateState({'dataReady': false});
+        this.updateState({'addOrEdit': false});
+        this.loadAllFormData();
+    }
+
     isInserting() {
         return isNaN(this.props.positionID);
     }
@@ -144,6 +150,7 @@ class EditPosition extends Component {
                 updateEditPos       = {this.state.updateEditPosState}
                 textfieldValStyle   = {this.props.textfieldValStyle}
                 divFieldStyle       = {this.props.divFieldStyle}
+                positionUpdated     = {this.positionUpdated.bind(this)}
             />:
             <PositionForm
                 periphData          = {this.state}

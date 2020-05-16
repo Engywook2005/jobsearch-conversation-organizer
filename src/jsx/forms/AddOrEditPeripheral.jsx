@@ -44,7 +44,18 @@ class AddOrEditPeripheral extends Component {
             url = `http://localhost:8081/updateSQL.json?${tableQueryParams}`;
 
         Ajax.doAjaxQuery(url).then((data) => {
+
+            console.log(this);
             console.log(data);
+
+            const newState = this.props.positionData,
+                updateProp = this.props.addOrEdit.propName;
+
+            newState[updateProp] = JSON.parse(data).insertId;
+
+            this.props.updateEditPos(newState);
+            this.props.positionUpdated();
+
         }).catch((err) => {
             console.log(err);
         });
