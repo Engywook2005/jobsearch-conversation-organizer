@@ -115,7 +115,7 @@ class PositionForm extends Component {
                     <Pulldown
                         class           = "formItem"
                         header          = 'Recruiter'
-                        tableName       = 'recruiters'
+                        tableName       = 'recruiter'
                         options         = {this.state.recruiters}
                         defaultValue    = {this.state.positionData.recruiter || 1}
                         valueStyle      = {this.props.textfieldValStyle}
