@@ -1,11 +1,15 @@
 import {DateTimeLocal, InputText, Pulldown, SubmitButton} from '../formElements';
+import Ajax from '../../http/ajax';
 import React, { Component } from 'react';
 import TimeUtils from '../../utils/Time';
+import QueryBuilder from '../../utils/QueryBuilder';
+
+// @TODO add position-level remark
 
 class PositionForm extends Component {
 
     // Use setstate at the level of PositionForm, should not affect App. Leave that authority to EditPosition.
-    // @TODO when form is submitted or closed, call props.stateHandler and set reloading to true
+    // TODO when form is submitted or closed, call props.stateHandler and set reloading to true
     // Seems that the above two remarks are contradictory. Think calling props.stateHandler after updating database is what we want to do.
     constructor(props) {
         super(props);
@@ -16,7 +20,6 @@ class PositionForm extends Component {
 
             // @TODO seems likely we don't need this next line. Or more likely don't need the stateKeys iterator.
             positionData: this.props.positionData || {},
-
             employers: this.props.periphData.employersRecruitersEtc.employers,
             recruiters: this.props.periphData.employersRecruitersEtc.recruiters,
             applicationStatus: this.props.periphData.employersRecruitersEtc.applicationStatus,
@@ -73,6 +76,21 @@ class PositionForm extends Component {
             myDefault;
 
         return returnValue;
+    }
+
+    handleSubmit() {
+        const queryURL = QueryBuilder.createInsertQuery('specificposition', this.props.positionData);
+
+        // @TODO can we also centralize all ajax insert calls? Here's the thing: In a lot of cases, we need to know the id of the last thing we've inserted. Here, we don't.
+
+        Ajax.doAjaxQuery(queryURL).then((data) => {
+            console.log('done');
+
+            // @TODO update state at EditPosition so it will restart while including the new pos
+
+        }).catch((err) => {
+            console.log(err);
+        });
     }
 
     render() {
@@ -193,7 +211,9 @@ class PositionForm extends Component {
                     />
 
                 </div>
-                <SubmitButton/>
+                <SubmitButton
+                    handleClick         = {this.handleSubmit.bind(this)}
+                />
             </div>
         )
     }

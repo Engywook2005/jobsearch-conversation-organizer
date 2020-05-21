@@ -36,7 +36,7 @@ class Pulldown extends FormElementBase {
         });
 
         if(this.props.remarkProp) {
-            remark = optionsMappedToValues[this.props.defaultValue][this.props.remarkProp] || 'Enter remark here';
+            remark = optionsMappedToValues[this.props.defaultValue][this.props.remarkProp] || '';
         }
 
         return (
@@ -76,23 +76,9 @@ class Pulldown extends FormElementBase {
                 </div>
 
                 {
-                    // @TODO there really isn't any need to have the remarks editable. We can have the remark appear in
-                    // a <p/> tag; it does make better sense to have the remarks be editable in the edit/add form.
                     this.props.remarkProp ?
                         <div style = {{clear:'left'}}>
-                            <InputText
-                                defaultValue    = {remark}
-                                originalDefault = 'Enter remark here'
-                                propName        = {this.props.remarkProp}
-                                updateData      = {this.props.updateRemarks}
-                                valueStyle      = {this.props.valueStyle}
-                                size            = '100'
-                                getCurrentValue = {
-                                    () => {
-                                        return remark;
-                                    }
-                                }
-                            />
+                            <p><em>{remark}</em></p>
                         </div> :
                         <div/>
                 }
