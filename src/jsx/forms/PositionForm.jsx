@@ -162,7 +162,7 @@ class PositionForm extends Component {
                         primaryKey      = 'roleTypeID'
                         nameProp        = 'type'
                         updateData      = {this.updatePositionData.bind(this)}
-                        propName        = 'positionType'
+                        propName        = 'roleType'
                         getCurrentValue = {this.getCurrentValue.bind(this)}
                     />
                     <Pulldown
@@ -175,7 +175,7 @@ class PositionForm extends Component {
                         primaryKey      = 'applicationStatusID'
                         nameProp        = 'status'
                         updateData      = {this.updatePositionData.bind(this)}
-                        propName        = 'applicationStatus'
+                        propName        = 'status'
                         getCurrentValue = {this.getCurrentValue.bind(this)}
                     />
                     <DateTimeLocal

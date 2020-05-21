@@ -173,8 +173,9 @@ class AddNewPos extends Component {
                     {
                         employer: '1',
                         recruiter: '1',
-                        applicationStatus: '1',
-                        resumeVersion: '1'
+                        status: '1',
+                        resumeVersion: '1',
+                        roleType: '1'
                     }
                 }
             />
