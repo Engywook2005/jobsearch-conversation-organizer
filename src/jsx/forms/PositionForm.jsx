@@ -22,8 +22,8 @@ class PositionForm extends Component {
             positionData: this.props.positionData || {},
             employers: this.props.periphData.employersRecruitersEtc.employers,
             recruiters: this.props.periphData.employersRecruitersEtc.recruiters,
-            applicationStatus: this.props.periphData.employersRecruitersEtc.applicationStatus,
-            positionType: this.props.periphData.employersRecruitersEtc.positionType,
+            status: this.props.periphData.employersRecruitersEtc.status,
+            roleType: this.props.periphData.employersRecruitersEtc.roleType,
             resumeVersions: this.props.periphData.employersRecruitersEtc.resumeVersion
         };
 
@@ -37,7 +37,7 @@ class PositionForm extends Component {
     updatePositionData(prop, val) {
 
         // Update time of lastStatusChange if updating application status.
-        if(prop === 'applicationStatus') {
+        if(prop === 'status') {
             this.updatePositionData('lastStatusChange', TimeUtils.getDateForForm(new Date()));
         }
 
@@ -155,8 +155,8 @@ class PositionForm extends Component {
                     <Pulldown
                         class           = "formItem"
                         header          = 'Position Type'
-                        options         = {this.state.positionType}
-                        defaultValue    = {this.state.positionData.positionType || 1}
+                        options         = {this.state.roleType}
+                        defaultValue    = {this.state.positionData.roleType || 1}
                         valueStyle      = {this.props.textfieldValStyle}
                         divStyle        = {this.props.divFieldStyle}
                         primaryKey      = 'roleTypeID'
@@ -168,8 +168,8 @@ class PositionForm extends Component {
                     <Pulldown
                         class           = "formItem"
                         header          = 'Application Status'
-                        options         = {this.state.applicationStatus}
-                        defaultValue    = {this.state.positionData.applicationStatus || 1}
+                        options         = {this.state.status}
+                        defaultValue    = {this.state.positionData.status || 1}
                         valueStyle      = {this.props.textfieldValStyle}
                         divStyle        = {this.props.divFieldStyle}
                         primaryKey      = 'applicationStatusID'

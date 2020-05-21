@@ -61,8 +61,8 @@ class EditPosition extends Component {
         const newState = {
             employers: [],
             recruiters: [],
-            positionType: [],
-            applicationStatus: [],
+            roleType : [],
+            status: [],
             resumeVersion: []
         };
 
@@ -76,11 +76,11 @@ class EditPosition extends Component {
                 return this.callAjax('http://localhost:8081/positionTypes.json');
             })
             .then((data) => {
-                newState.positionType = JSON.parse(data);
+                newState.roleType = JSON.parse(data);
                 return this.callAjax('http://localhost:8081/applicationStatus.json');
             })
             .then((data) => {
-                newState.applicationStatus = JSON.parse(data);
+                newState.status = JSON.parse(data);
 
                 return this.callAjax('http://localhost:8081/resumeVersions.json');
             })
