@@ -109,8 +109,10 @@ class App extends Component {
                             <th style = {cellStyle}>Recruiter</th>
                             <th style = {cellStyle}>Role Type</th>
                             <th style = {cellStyle}>Status</th>
+                            <th style = {cellStyle}>Duration</th>
                             <th style = {cellStyle}>Last Status Change</th>
                             <th style = {cellStyle}>Resume Version</th>
+                            <th style = {cellStyle}>Remarks</th>
                         </tr>
                     {
                         // Here nodes of this.states.data become props in TableRow.
@@ -219,8 +221,10 @@ class TableRow extends Component {
                 <td style = {this.props.cellStyle}>{this.props.data.recruiterName}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.roleType}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.currentStatus}</td>
+                <td style = {this.props.cellStyle}>{this.props.data.duration}</td>
                 <td style = {this.props.cellStyle}>{new Date(this.props.data.lastStatusChange).toDateString()}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.resumeVersion}</td>
+                <td style = {this.props.cellStyle}>{this.props.data.positionRemarks}</td>
             </tr>
         );
     }

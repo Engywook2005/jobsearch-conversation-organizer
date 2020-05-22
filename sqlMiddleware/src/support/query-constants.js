@@ -8,12 +8,15 @@ SELECT
 	FROM (SELECT
 			rawPosition.positionID AS ID,
             rawPosition.title AS title,
+            rawPosition.link AS link, 
+			rawPosition.remarks AS positionRemarks,
             employer.employerName AS employerName,
             recruiter.recruiterName AS recruiterName,
             roletypes.roleTypeName AS roleType,
             statuses.statusName AS currentStatus,
             rawPosition.lastStatusChange AS lastStatusChange,
-            resumeVersions.resumeVersion AS resumeVersion
+            resumeVersions.resumeVersion AS resumeVersion,
+            rawPosition.durationInWeeks AS duration
 			FROM
             (SELECT
 				*
@@ -70,7 +73,7 @@ SELECT
     ORDER BY lastStatusChange DESC;
         `,
 
-        // @TODO do we actually need this? Should start with this to show conversations linked to a position.
+        // @TODO filter and use for the right side.
         conversationMainTable : `
         SELECT DISTINCT 
 dateNamePosEmployerRecruiter.conversationDate,

@@ -10,6 +10,7 @@ class QueryBuilder {
         for(let i = 0; i < doFields.length; i++) {
             const nextComma = (i < doFields.length - 1) ? ',':'';
 
+            // @TODO make sure field values are safe for SQL before inserting them into table.
             fieldString += `${doFields[i]}${nextComma}`;
             valuesString += `'${dataObject[doFields[i]]}'${nextComma}`;
         }
