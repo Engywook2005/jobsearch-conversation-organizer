@@ -6,6 +6,7 @@ class App extends Component {
     constructor() {
         super();
 
+        // @TODO move all other style shit up here, use constants for colors.
         // State is mutable.
         this.state = {
             positions: [],
@@ -24,6 +25,9 @@ class App extends Component {
             divFieldStyle: {
                 marginBottom: '1em',
                 clear: 'left'
+            },
+            linkStyle: {
+                color: '#888800'
             }
         };
 
@@ -79,7 +83,8 @@ class App extends Component {
                 borderCollapse: 'collapse',
                 padding: '5px',
                 margin: '0px',
-                textAlign: 'left'
+                textAlign: 'left',
+                verticalAlign: 'top',
             },
             buttonStyle = {
                 cursor: "pointer",
@@ -120,6 +125,7 @@ class App extends Component {
                             stateHandler = {this.state.stateHandler}
                             positionDetails = {this.state.positionDetails}
                             cellStyle = {cellStyle}
+                            linkStyle = {this.state.linkStyle}
                             key = {i}
                             data = {position}
                         />)
@@ -213,10 +219,17 @@ class TableRow extends Component {
             debugger;
         };
 
+        const posTitle = this.props.data.link ?
+                <a
+                    style = {this.props.linkStyle}
+                    href = {this.props.data.link}
+                    target = "_blank">{this.props.data.title}</a> :
+                this.props.data.title;
+
         return(
-            <tr data-position-id={this.props.data.ID} onClick = {this.rowClick}>
-                <td style = {this.props.cellStyle}>{this.props.data.ID}</td>
-                <td style = {this.props.cellStyle}>{this.props.data.title}</td>
+            <tr data-position-id={this.props.data.ID}>
+                <td onClick = {this.rowClick} style = {this.props.cellStyle}>{this.props.data.ID}</td>
+                <td style = {this.props.cellStyle}>{posTitle}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.employerName}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.recruiterName}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.roleType}</td>
