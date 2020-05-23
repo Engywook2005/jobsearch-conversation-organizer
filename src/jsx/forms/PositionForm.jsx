@@ -109,6 +109,18 @@ class PositionForm extends Component {
                         propName        = 'title'
                         getCurrentValue = {this.getCurrentValue.bind(this)}
                     />
+                    <InputText
+                        class           = "formItem"
+                        header          = 'Link'
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
+                        originalDefault = 'Link to job description'
+                        defaultValue    = {this.state.positionData.link || 'Link to job description'}
+                        size            = '50'
+                        updateData      = {this.updatePositionData.bind(this)}
+                        propName        = 'link'
+                        getCurrentValue = {this.getCurrentValue.bind(this)}
+                    />
                     <Pulldown
                         class           = "formItem"
                         header          = 'Employer'
@@ -209,7 +221,30 @@ class PositionForm extends Component {
                         propName        = 'resumeVersion'
                         getCurrentValue = {this.getCurrentValue.bind(this)}
                     />
-
+                    <InputText
+                        class           = "formItem"
+                        header          = 'Duration if contractor role'
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
+                        originalDefault = ''
+                        defaultValue    = {this.state.positionData.durationInWeeks || ''}
+                        size            = '3'
+                        updateData      = {this.updatePositionData.bind(this)}
+                        propName        = 'durationInWeeks'
+                        getCurrentValue = {this.getCurrentValue.bind(this)}
+                    />
+                    <InputText
+                        class           = "formItem"
+                        header          = 'Remarks'
+                        valueStyle      = {this.props.textfieldValStyle}
+                        divStyle        = {this.props.divFieldStyle}
+                        originalDefault = 'Enter any position remarks here'
+                        defaultValue    = {this.state.positionData.remarks || 'Enter any position remarks here'}
+                        size            = '50'
+                        updateData      = {this.updatePositionData.bind(this)}
+                        propName        = 'remarks'
+                        getCurrentValue = {this.getCurrentValue.bind(this)}
+                    />
                 </div>
                 <SubmitButton
                     handleClick         = {this.handleSubmit.bind(this)}
