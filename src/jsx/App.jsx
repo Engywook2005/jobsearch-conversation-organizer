@@ -40,6 +40,7 @@ class App extends Component {
         this.ajaxHandler(this.setStateHandler);
     }
 
+    // @TODO need to handle more than one state change at a time.
     setStateHandler(state, value) {
         const newState = {};
         newState[state] = value;
@@ -49,12 +50,13 @@ class App extends Component {
 
     // @TODO Should we have a base class for App that other can extend with overrides of ajaxHandler?
     ajaxHandler() {
-        this.state.stateHandler('reloading', false);
+        this.state.reloading = false;
 
         Ajax.doAjaxQuery('http://localhost:8081/')
             .then((data) => {
                 this.state.stateHandler('positions', JSON.parse(data));
-                this.state.stateHandler('greeting', 'Irons In The Fire')
+                this.state.stateHandler('greeting', 'Irons In The Fire');
+                this.state.stateHandler('showingNewPositionTable', false);
             })
             .catch((err) => {
                 this.state.stateHandler('greeting', `Oops: ${err}`)
@@ -66,7 +68,7 @@ class App extends Component {
         // If we're expected to reload, go back to the ajax call.
         if(this.state.reloading) {
             this.ajaxHandler();
-            return;
+            return null;
         }
 
         const textStyle = {
@@ -202,7 +204,7 @@ class TableRow extends Component {
     // Props are immutable.
     render() {
         this.rowClick = (e) => {
-            // @TODO create a more detailed, editable overlay about the position. Should be able to work with the same app as is used for adding a new position.
+            // @TODO create a more detailed, editable overlay about the position. Should be able to work with the same component as is used for adding a new position.
 
             /*
 

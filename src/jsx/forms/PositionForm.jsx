@@ -86,7 +86,7 @@ class PositionForm extends Component {
         Ajax.doAjaxQuery(queryURL).then((data) => {
             console.log('done');
 
-            // @TODO update state at EditPosition so it will restart while including the new pos
+            this.props.stateHandler('reloading', true);
 
         }).catch((err) => {
             console.log(err);
