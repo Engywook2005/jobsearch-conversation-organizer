@@ -32,6 +32,7 @@ class App extends Component {
         };
 
         this.setStateHandler = this.setStateHandler.bind(this);
+        this.updateMultiState = this.updateMultiState.bind(this);
     }
 
     componentDidMount() {
@@ -45,6 +46,11 @@ class App extends Component {
         const newState = {};
         newState[state] = value;
 
+        this.setState(newState);
+    }
+
+    // @TODO going to be a bit of a refactor but all state updates should go through here.
+    updateMultiState(newState) {
         this.setState(newState);
     }
 
@@ -103,6 +109,8 @@ class App extends Component {
                         stateHandler = {this.state.stateHandler}
                         positionDetails = {this.state.positionDetails}
                         showingNewPositionTable = {this.state.showingNewPositionTable}
+                        positionID = {this.state.positionID}
+                        updateMultiState = {this.updateMultiState}
                         buttonStyle = {buttonStyle}
                         textfieldValStyle   = {this.state.textfieldValStyle}
                         divFieldStyle       = {this.state.divFieldStyle}
@@ -124,6 +132,7 @@ class App extends Component {
                     {
                         // Here nodes of this.states.data become props in TableRow.
                         this.state.positions.map((position, i) => <TableRow
+                            updateMultiState = {this.updateMultiState}
                             stateHandler = {this.state.stateHandler}
                             positionDetails = {this.state.positionDetails}
                             cellStyle = {cellStyle}
@@ -145,12 +154,14 @@ class Header extends Component {
             <div>
                 <p>{this.props.greeting}</p>
                 <AddNewPos
-                    stateHandler = {this.props.stateHandler}
-                    positionDetails = {this.props.positionDetails}
+                    stateHandler            = {this.props.stateHandler}
+                    positionDetails         = {this.props.positionDetails}
                     showingNewPositionTable = {this.props.showingNewPositionTable}
-                    buttonStyle = {this.props.buttonStyle}
-                    textfieldValStyle   = {this.props.textfieldValStyle}
-                    divFieldStyle       = {this.props.divFieldStyle}
+                    buttonStyle             = {this.props.buttonStyle}
+                    textfieldValStyle       = {this.props.textfieldValStyle}
+                    divFieldStyle           = {this.props.divFieldStyle}
+                    positionID              = {this.props.positionID}
+                    updateMultiState        = {this.props.updateMultiState}
                 />
             </div>
         );
@@ -176,6 +187,7 @@ class AddNewPos extends Component {
         return (
             <EditPosition
                 stateHandler        = {this.props.stateHandler}
+                updateMultiState    = {this.props.updateMultiState}
                 buttonStyle         = {this.props.buttonStyle}
                 textfieldValStyle   = {this.props.textfieldValStyle}
                 divFieldStyle       = {this.props.divFieldStyle}
@@ -188,6 +200,7 @@ class AddNewPos extends Component {
                         roleType: '1'
                     }
                 }
+                positionID          = {this.props.positionID}
             />
         );
     }
@@ -201,7 +214,6 @@ class AddNewPos extends Component {
 
 class TableRow extends Component {
 
-    // Props are immutable.
     render() {
         this.rowClick = (e) => {
             // @TODO create a more detailed, editable overlay about the position. Should be able to work with the same component as is used for adding a new position.
@@ -218,7 +230,10 @@ class TableRow extends Component {
              />
              */
 
-            debugger;
+            this.props.updateMultiState({
+                showingNewPositionTable: true,
+                positionID: this.props.data.ID
+            });
         };
 
         const posTitle = this.props.data.link ?
