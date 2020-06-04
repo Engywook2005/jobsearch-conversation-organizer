@@ -86,7 +86,10 @@ class PositionForm extends Component {
         Ajax.doAjaxQuery(queryURL).then((data) => {
             console.log('done');
 
-            this.props.stateHandler('reloading', true);
+            this.props.updateMultiState({
+                showingNewPositionTable: false,
+                reloading: true
+            });
 
         }).catch((err) => {
             console.log(err);

@@ -7,6 +7,8 @@ class EditPosition extends Component {
     constructor(props) {
         super(props);
 
+        this.isUnmounted = false;
+
         this.state = {
             dataReady: false,
             positionData: this.props.positionData || {},
@@ -37,6 +39,8 @@ class EditPosition extends Component {
     positionUpdated() {
         this.updateState({'dataReady': false});
         this.updateState({'addOrEdit': false});
+
+        // @TODO why?
         this.loadAllFormData();
     }
 
@@ -108,7 +112,15 @@ class EditPosition extends Component {
      }
 
     componentDidMount() {
+        if(this.isUnmounted) {
+            return;
+        }
+
         this.loadAllFormData();
+    }
+
+    componentWillUnmount() {
+        this.isUnmounted = true;
     }
 
     getDataNotReady() {
@@ -155,6 +167,7 @@ class EditPosition extends Component {
             <PositionForm
                 periphData          = {this.state}
                 stateHandler        = {this.props.stateHandler}
+                updateMultiState    = {this.props.updateMultiState}
                 positionData        = {this.state.positionData}
                 updateEditPosState  = {this.state.updateEditPosState}
                 buttonStyle         = {this.props.buttonStyle}
