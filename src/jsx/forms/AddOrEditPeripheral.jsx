@@ -45,9 +45,6 @@ class AddOrEditPeripheral extends Component {
 
         Ajax.doAjaxQuery(url).then((data) => {
 
-            console.log(this);
-            console.log(data);
-
             const newState = this.props.positionData,
                 updateProp = this.props.addOrEdit.propName;
 

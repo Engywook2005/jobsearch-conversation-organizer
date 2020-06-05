@@ -12,8 +12,8 @@ class EditPosition extends Component {
         this.state = {
             dataReady: false,
             positionData: this.props.positionData || {},
+            conversations: this.props.conversations || [],
             employersRecruitersEtc: {},
-            conversations: [],
 
             // Forms will need access to this to toggle which form is displaying.
             updateEditPosState: this.updateState.bind(this)
@@ -94,13 +94,14 @@ class EditPosition extends Component {
             })
             .then((data) => {
 
-                // @TODO update position data with output
-                this.setState({'positionData': (data ? JSON.parse(data) : this.state.positionData )});
+                // If we are editing the position, then we need to  know all about the position we are editing.
+                this.setState({'positionData': (data ? JSON.parse(data)[0] : this.state.positionData )});
                 return this.callAjax(`http://localhost:8081/conversations.json?posid=${this.props.positionID}`, this.isInserting());
             })
-            .then(() => {
+            .then((data) => {
 
-                // @TODO handle conversations for reviewing and editing conversations, and adding new conversations for a specific position.
+                // Conversation data.
+                this.setState({'conversations': (data ? JSON.parse(data) : this.state.conversations )});
                 this.setState({'employersRecruitersEtc': newState});
                 this.setState({'dataReady' : true})
             })
