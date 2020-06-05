@@ -130,6 +130,18 @@ class HTTPServer {
                         fullQuery(queryString);
                     }
                 },
+                '/positionData.json': {
+                    'queryString': `${QueryConstants.select.positionData} WHERE positionID=${queryParams.posid};`,
+                    'func': (queryString) => {
+                        fullQuery(queryString);
+                    }
+                },
+                '/conversations.json': {
+                    'queryString': `${QueryConstants.select.conversations} WHERE specificPositionID=${queryParams.posid} ORDER BY conversationDate DESC, conversationTime DESC;`,
+                    'func': (queryString) => {
+                        fullQuery(queryString);
+                    }
+                },
                 '/updateSQL.json' : {
                     'constructQuery': () => {
 

@@ -164,6 +164,14 @@ dateNamePosEmployerRecruiter.conversationTime`,
         `
         SELECT * FROM resumeVersions
         ORDER BY resumeVersionTag DESC
+        `,
+        positionData:
+        `
+        SELECT * FROM specificposition
+        `,
+        conversations:
+        `
+        SELECT * FROM conversationmaintable
         `
     }
 };

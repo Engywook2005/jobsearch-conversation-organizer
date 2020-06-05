@@ -40,7 +40,6 @@ class EditPosition extends Component {
         this.updateState({'dataReady': false});
         this.updateState({'addOrEdit': false});
 
-        // @TODO why?
         this.loadAllFormData();
     }
 
@@ -91,16 +90,17 @@ class EditPosition extends Component {
             .then((data) => {
                  newState.resumeVersion = JSON.parse(data);
 
-                 // @TODO add query and handle positionData for reviewing and editing a pre-existing position
                  return this.callAjax(`http://localhost:8081/positionData.json?posid=${this.props.positionID}`, this.isInserting());
             })
             .then((data) => {
 
-                // @TODO add query and handle conversations for reviewing and editing conversations, and adding new conversations for a specific position.
+                // @TODO update position data with output
                 this.setState({'positionData': (data ? JSON.parse(data) : this.state.positionData )});
                 return this.callAjax(`http://localhost:8081/conversations.json?posid=${this.props.positionID}`, this.isInserting());
             })
             .then(() => {
+
+                // @TODO handle conversations for reviewing and editing conversations, and adding new conversations for a specific position.
                 this.setState({'employersRecruitersEtc': newState});
                 this.setState({'dataReady' : true})
             })
