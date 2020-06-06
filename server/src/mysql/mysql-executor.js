@@ -1,6 +1,7 @@
-const mysql = require('../mysql/index');
+const InjexQuery = require('./inject.query');
+const SelexQuery = require('./select.query');
 
-class NodeJSDataServer {
+class MySQLExecutor {
     constructor(mySqlConnex) {
         this.mySqlConnex = mySqlConnex;
     }
@@ -8,16 +9,16 @@ class NodeJSDataServer {
     execSelectQuery(callback, queryString) {
         const now = new Date();
         console.log(`executing selexquery ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
-        const mysqlSelex = new mysql.SelexQuery(this.mySqlConnex);
+        const mysqlSelex = new SelexQuery(this.mySqlConnex);
         mysqlSelex.execQuery(callback, queryString);
     }
 
     execInjectQuery(callback, queryString) {
         const now = new Date();
         console.log(`executing injexQuery ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
-        const mysqlInjex = new mysql.InjexQuery(this.mySqlConnex);
+        const mysqlInjex = new InjexQuery(this.mySqlConnex);
         mysqlInjex.execQuery(callback, queryString);
     }
 }
 
-module.exports = NodeJSDataServer;
+module.exports = MySQLExecutor;

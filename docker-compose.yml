@@ -13,13 +13,3 @@ services:
         - ./mySQLBackup:/mySQLBackup
       ports:
         - "3307:3306"
-    web-server:
-      image: engynginx:latest #Have to run docker build -t engynginx:latest . first
-      restart: always
-      container_name: nginx
-      volumes:
-        - ./sqlMiddleware:/var/sqlMiddleWare #npm install needed here. TODO: npm install not working yet in the container so have to run locally. Also will need to run sqlMiddleware/src/index.js with a db password (see docker-compose.yml for creds).
-        - ./public:/usr/share/nginx/html
-      ports:
-        - "8080:80" #http serve for jsx
-        - "8081:8081" #htttpserve for sqlMiddleWare
