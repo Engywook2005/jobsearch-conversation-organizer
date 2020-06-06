@@ -1,6 +1,6 @@
-const mysql = require('../mysql/index');
+const mysql = require('./index');
 
-class NodeJSDataServer {
+class MySQLExecutor {
     constructor(mySqlConnex) {
         this.mySqlConnex = mySqlConnex;
     }
@@ -20,4 +20,4 @@ class NodeJSDataServer {
     }
 }
 
-module.exports = NodeJSDataServer;
+module.exports = MySQLExecutor;
