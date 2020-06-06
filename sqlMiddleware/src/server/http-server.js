@@ -142,7 +142,7 @@ class HTTPServer {
                         fullQuery(queryString);
                     }
                 },
-                '/updateSQL.json' : {
+                '/insertSQL.json' : {
                     'constructQuery': () => {
 
                         console.log(`CONSTRUCTING QUERY: ${JSON.stringify(queryParams)}`);
@@ -151,6 +151,16 @@ class HTTPServer {
                     },
                     'func': (queryString) => {
                         // @TODO there is a response that included insertId... do something with that....
+                        injectQuery(queryString);
+                    }
+                },
+                '/updateSQL.json' : {
+                    'constructQuery' : () => {
+                        console.log(`CONSTRUCTING QUERY: ${JSON.stringify(queryParams)}`);
+
+                        return InjectConstructor.constructUpdateQuery(queryParams.table, queryParams.updatedata, queryParams.where);
+                    },
+                    'func': (queryString) => {
                         injectQuery(queryString);
                     }
                 }

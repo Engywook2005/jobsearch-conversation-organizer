@@ -79,7 +79,9 @@ class PositionForm extends Component {
     }
 
     handleSubmit() {
-        const queryURL = QueryBuilder.createInsertQuery('specificposition', this.props.positionData);
+        const queryURL = this.props.updatingPos ?
+            QueryBuilder.createUpdateQuery('specificposition', this.props.positionData, {'positionID': this.props.positionData.positionID}) :
+            QueryBuilder.createInsertQuery('specificposition', this.props.positionData);
 
         // @TODO can we also centralize all ajax insert calls? Here's the thing: In a lot of cases, we need to know the id of the last thing we've inserted. Here, we don't.
 
@@ -251,6 +253,7 @@ class PositionForm extends Component {
                 </div>
                 <SubmitButton
                     handleClick         = {this.handleSubmit.bind(this)}
+                    buttonText          = {this.props.updatingPos ? 'Update Position Details' : 'Add New Position' }
                 />
             </div>
         )

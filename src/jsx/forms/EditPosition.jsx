@@ -174,6 +174,7 @@ class EditPosition extends Component {
                 buttonStyle         = {this.props.buttonStyle}
                 textfieldValStyle   = {this.props.textfieldValStyle}
                 divFieldStyle       = {this.props.divFieldStyle}
+                updatingPos         = {!this.isInserting()}
             />;
 
         return (

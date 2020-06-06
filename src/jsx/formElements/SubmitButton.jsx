@@ -7,7 +7,7 @@ class SubmitButton extends Component {
                 <button
                     type = "button"
                     onClick = {this.props.handleClick}
-                >Submit</button>
+                >{this.props.buttonText}</button>
             </div>
         );
     }
