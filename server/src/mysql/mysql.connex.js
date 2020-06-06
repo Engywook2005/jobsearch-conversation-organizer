@@ -13,8 +13,8 @@ class MySqlConnexJS {
         const connection = this.mysqlInstance.createConnection(
             {
                 user: "root",
-                host: "mariadb",
-                port: "3306",
+                host: "127.0.0.1",
+                port: "3307",
                 database: "jobConvos",
                 password: "root"
             }

@@ -5,7 +5,7 @@ const express = require('express');
 const http = require('http');
 const url =  require('url');
 const MySQLExecutor = require('./src/mysql/mysql-executor');
-const mysql = require('./src/mysql/index');
+const mysql = require('./src/mysql');
 const InjectConstructor = require('./src/support/inject-constructor');
 const QueryConstants = require('./src/support/query-constants');
 
@@ -17,7 +17,6 @@ class HTTPServer {
     }
 
     createMySQLInstance(password) {
-        // const mySQLConnex = new mysql.MySqlConnexJS();
         new mysql.MySqlConnexJS().connectToSQLServer(this.startServerOnMySQLReady.bind(this), password);
     }
 
@@ -98,15 +97,19 @@ class HTTPServer {
                 'func': this.fullQuery
             },
             '/positionData.json': {
-                'queryString': `${QueryConstants.select.positionData} WHERE positionID=${queryParams.posid};`,
+                'constructQuery': (queryParams) => {
+                    return `${QueryConstants.select.positionData} WHERE positionID=${queryParams.posid};`;
+                },
                 'func': this.fullQuery
             },
             '/conversations.json': {
-                'queryString': `${QueryConstants.select.conversations} WHERE specificPositionID=${queryParams.posid} ORDER BY conversationDate DESC, conversationTime DESC;`,
+                'constructQuery': (queryParams) => {
+                    return `${QueryConstants.select.conversations} WHERE specificPositionID=${queryParams.posid} ORDER BY conversationDate DESC, conversationTime DESC;`
+                },
                 'func': this.fullQuery
             },
             '/insertSQL.json' : {
-                'constructQuery': () => {
+                'constructQuery': (queryParams) => {
 
                     console.log(`CONSTRUCTING QUERY: ${JSON.stringify(queryParams)}`);
 
@@ -115,7 +118,7 @@ class HTTPServer {
                 'func': this.injectQuery
             },
             '/updateSQL.json' : {
-                'constructQuery' : () => {
+                'constructQuery' : (queryParams) => {
                     console.log(`CONSTRUCTING QUERY: ${JSON.stringify(queryParams)}`);
 
                     return InjectConstructor.constructUpdateQuery(queryParams.table, queryParams.updatedata, queryParams.where);
@@ -124,18 +127,27 @@ class HTTPServer {
             }
         };
 
-        app.get(pathName, (request, response) => {
+        app.use(express.static('public'));
+
+        app.get('/[A-Za-z0-9_-]*\.json', (request, response) => {
+            const urlParts = url.parse(request.url, true),
+                now = new Date(),
+                pathName = urlParts.pathname,
+                queryParams = urlParts.query;
+
             console.log(`request received ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
 
-            const queryParams = url.parse(request.url, true).query();
-
-
             if(!routing[pathName]) {
-                // @TODO serve from public
-            } else if(routing[pathName].queryString) {
+                response.writeHead("404", {'Content-Type': 'text/json'});
+                response.write(`url ${pathName} not found`);
+                response.end();
+                return;
+            }
+
+            if(routing[pathName].queryString) {
                 routing[pathName].func(response, mysqlExecutor, routing[pathName].queryString);
             } else if(routing[pathName].constructQuery) {
-                routing[pathName].func(response, mysqlExecutor, routing[pathName].constructQuery());
+                routing[pathName].func(response, mysqlExecutor, routing[pathName].constructQuery(queryParams));
             }
 
         });

@@ -58,7 +58,7 @@ class App extends Component {
     ajaxHandler() {
         this.state.reloading = false;
 
-        Ajax.doAjaxQuery('http://localhost:8081/')
+        Ajax.doAjaxQuery('http://localhost:8081/defaultq.json')
             .then((data) => {
                 this.state.stateHandler('positions', JSON.parse(data));
                 this.state.stateHandler('greeting', 'Irons In The Fire');
