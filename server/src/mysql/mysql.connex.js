@@ -20,21 +20,31 @@ class MySqlConnexJS {
             }
         );
 
-        connection.connect(function(err) {
-            //console.log(callback)
+        connection.connect((err) => {
+
             if(err) {
                 callback(err)
             } else {
 
-                // Keep alive when server tries to go to sleep after about 10 minutes...
+                // Not much we can do about it right now, but we learn from our mistakes. And yours.
                 connection.on('error', (err) => {
                     console.log(`Caught mysql error: ${err}`);
-                    // @TODO will need to call connectToSQLServer again IF the error is Connection lost: The server closed the connection
-                    // Actually will we be able to work with the same connection if we do this?
                 });
 
                 callback(null, connection);
+
+                this.keepAlive(connection);
             }
+        });
+    }
+
+    keepAlive(connex) {
+        console.log(`whacking that dead man's switch`);
+
+        connex.query('SELECT 1;', () => {
+            setTimeout(() => {
+                this.keepAlive(connex);
+            }, 540000);
         });
     }
 }

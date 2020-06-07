@@ -5,7 +5,7 @@ class SelexQuery {
 
     execQuery(callback = function(err, result) {
         if(err) {
-            console.log("oope!");
+            console.log("oops!");
         } else {
             console.log(result);
         }
