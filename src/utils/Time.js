@@ -13,7 +13,7 @@ class TimeUtils {
                 return ts < 10 ? `0${ts}` : `${ts}`;
             };
 
-        return `${date.getFullYear()}-${formatMonth(date)}-${formatDateTimeStamp(date.getDate())}T${formatDateTimeStamp(date.getHours())}:${formatDateTimeStamp(date.getMinutes())}`
+        return `${date.getFullYear()}-${formatMonth(date)}-${formatDateTimeStamp(date.getDate())}T${formatDateTimeStamp(date.getHours())}:${formatDateTimeStamp(date.getMinutes())}:${formatDateTimeStamp(date.getSeconds())}.000`
     }
 }
 

@@ -41,7 +41,7 @@ class AddOrEditPeripheral extends Component {
 
         // @FIXME this should definitely be out in a utility function, outside of any component. We need something more abstracted to handle - so use QueryBuilder.js
         const tableQueryParams = `table=${this.props.addOrEdit.tableName}&props=${this.props.addOrEdit.nameProp},${this.props.addOrEdit.remarkProp}&values='${encodeURIComponent(this.state[this.props.addOrEdit.nameProp])}','${encodeURIComponent(this.state[this.props.addOrEdit.remarkProp])}'&updateQuery=${this.isUpdating()}&primaryKey=${this.props.addOrEdit.primaryKey}&primaryKeyValue=${this.props.addOrEdit.currentValue}`,
-            url = `http://localhost:8081/updateSQL.json?${tableQueryParams}`;
+            url = `http://localhost:8081/insertSQL.json?${tableQueryParams}`;
 
         Ajax.doAjaxQuery(url).then((data) => {
 
@@ -82,6 +82,7 @@ class AddOrEditPeripheral extends Component {
                     />
                     <SubmitButton
                         handleClick = {this.handleClick.bind(this)}
+                        buttonText = "Submit"
                     />
                 </div> :
                 <div/>
