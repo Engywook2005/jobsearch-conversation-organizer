@@ -30,7 +30,6 @@ class EditPeripheralButton extends FormElementBase {
         newState.addOrEdit.queryType = addOrEdit;
 
         this.props.updateEditPos(newState);
-
     }
 
     render() {

@@ -57,7 +57,6 @@ class Pulldown extends FormElementBase {
                         }
                     </select>
                 </div>
-                <!-- @TODO send options prop to button as well so there is no need to re-query the table-->
                 <div style = {{float:'left'}}>
                     { this.props.updateEditPos ?
                         <EditPeripheralButton
@@ -71,6 +70,7 @@ class Pulldown extends FormElementBase {
                             propName        = {this.props.propName}
                             currentValue    = {this.props.defaultValue}
                             tableName       = {this.props.tableName}
+                            optionList      = {this.props.options}
                         /> :
                         <div/>
                     }

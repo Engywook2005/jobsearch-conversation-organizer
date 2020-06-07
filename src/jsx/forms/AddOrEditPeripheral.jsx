@@ -7,14 +7,27 @@ class AddOrEditPeripheral extends Component {
         super(props);
 
         this.state = {};
+
+        if(this.isUpdating()) {
+            const primaryKey = this.props.addOrEdit.primaryKey,
+                nameProp = this.props.addOrEdit.nameProp,
+                remarkProp = this.props.addOrEdit.remarkProp,
+
+                // @FIXME this really should just be a for loop because we should only ever be getting one value.
+                selectedItem = this.props.addOrEdit.optionList.filter((opt) => {
+                    if(opt[primaryKey] === this.props.addOrEdit.currentValue) {
+                        return opt;
+                    }
+                },
+            );
+
+            this.state[nameProp] = selectedItem[0][nameProp];
+            this.state[remarkProp] = selectedItem[0][remarkProp]
+        }
     }
 
     componentDidMount() {
-        if(this.isUpdating()) {
-            // @TODO - Ajax to pull data from current peripheral table id, then set state with it to fill in form.
-        } else {
-            this.updateState({isReady: true});
-        }
+        this.updateState({isReady: true});
     };
 
     updateState(newState) {
@@ -37,7 +50,7 @@ class AddOrEditPeripheral extends Component {
         return (this.props.addOrEdit.queryType === 'editingPeripheral');
     }
 
-    handleClick() {
+    handleInsertClick() {
 
         // @FIXME this should definitely be out in a utility function, outside of any component. We need something more abstracted to handle - so use QueryBuilder.js
         const tableQueryParams = `table=${this.props.addOrEdit.tableName}&props=${this.props.addOrEdit.nameProp},${this.props.addOrEdit.remarkProp}&values='${encodeURIComponent(this.state[this.props.addOrEdit.nameProp])}','${encodeURIComponent(this.state[this.props.addOrEdit.remarkProp])}'&updateQuery=${this.isUpdating()}&primaryKey=${this.props.addOrEdit.primaryKey}&primaryKeyValue=${this.props.addOrEdit.currentValue}`,
@@ -58,7 +71,14 @@ class AddOrEditPeripheral extends Component {
         });
     }
 
+    // @FIXME this is so similar to handleInsertClick; can at least part of this be made into the same function?
+    handleUpdateClick() {
+        debugger;
+    }
+
     getForm() {
+
+
         return(
             this.state.isReady ?
                 <div>
@@ -81,8 +101,16 @@ class AddOrEditPeripheral extends Component {
                         updateData      = {this.addPropValToState.bind(this)}
                     />
                     <SubmitButton
-                        handleClick = {this.handleClick.bind(this)}
-                        buttonText = "Submit"
+                        handleClick = {
+                            this.isUpdating() ?
+                                this.handleUpdateClick.bind(this) :
+                                this.handleInsertClick.bind(this)
+                        }
+                        buttonText = {
+                           this.isUpdating() ?
+                               'Update' :
+                               'Edit'
+                        }
                     />
                 </div> :
                 <div/>
