@@ -44,7 +44,7 @@ class EditPosition extends Component {
     }
 
     isInserting() {
-        return isNaN(this.props.positionID);
+        return (this.props.positionID === 0 || isNaN(this.props.positionID));
     }
 
     isEditingPeripheral() {
@@ -174,6 +174,7 @@ class EditPosition extends Component {
                 buttonStyle         = {this.props.buttonStyle}
                 textfieldValStyle   = {this.props.textfieldValStyle}
                 divFieldStyle       = {this.props.divFieldStyle}
+                getPristineState    = {this.props.getPristineState}
                 updatingPos         = {!this.isInserting()}
             />;
 

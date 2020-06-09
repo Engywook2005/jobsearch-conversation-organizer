@@ -8,12 +8,21 @@ class App extends Component {
 
         // @TODO move all other style shit up here, use constants for colors.
         // State is mutable.
-        this.state = {
+
+        this.setStateHandler = this.setStateHandler.bind(this);
+        this.updateMultiState = this.updateMultiState.bind(this);
+
+        this.state = this.getPristineState();
+    }
+
+    getPristineState() {
+        this.state = {};
+
+        return {
             positions: [],
             positionDetails: {},
             greeting: "Job Convos data loading",
-            stateHandler: () => {
-            },
+            stateHandler: this.setStateHandler,
             showingNewPositionTable: false,
             reloading: false,
             textfieldValStyle: {
@@ -30,14 +39,9 @@ class App extends Component {
                 color: '#888800'
             }
         };
-
-        this.setStateHandler = this.setStateHandler.bind(this);
-        this.updateMultiState = this.updateMultiState.bind(this);
     }
 
     componentDidMount() {
-        this.setStateHandler('stateHandler', this.setStateHandler);
-
         this.ajaxHandler(this.setStateHandler);
     }
 
@@ -70,7 +74,6 @@ class App extends Component {
     }
 
     render() {
-
         // If we're expected to reload, go back to the ajax call.
         if(this.state.reloading) {
             this.ajaxHandler();
@@ -110,7 +113,8 @@ class App extends Component {
                         positionDetails = {this.state.positionDetails}
                         showingNewPositionTable = {this.state.showingNewPositionTable}
                         positionID = {this.state.positionID}
-                        updateMultiState = {this.updateMultiState}
+                        updateMultiState = {this.updateMultiState.bind(this)}
+                        getPristineState = {this.getPristineState.bind(this)}
                         buttonStyle = {buttonStyle}
                         textfieldValStyle   = {this.state.textfieldValStyle}
                         divFieldStyle       = {this.state.divFieldStyle}
@@ -162,6 +166,7 @@ class Header extends Component {
                     divFieldStyle           = {this.props.divFieldStyle}
                     positionID              = {this.props.positionID}
                     updateMultiState        = {this.props.updateMultiState}
+                    getPristineState        = {this.props.getPristineState}
                 />
             </div>
         );
@@ -201,6 +206,7 @@ class AddNewPos extends Component {
                     }
                 }
                 positionID          = {this.props.positionID}
+                getPristineState    = {this.props.getPristineState}
             />
         );
     }
