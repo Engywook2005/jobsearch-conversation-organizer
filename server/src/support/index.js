@@ -3,5 +3,8 @@
  */
 
 const QueryConstants = require('./query-constants');
+const InjectConstructor = require('./inject-constructor')
 
+
+module.exports.InjectConstructor = InjectConstructor;
 module.exports.QueryConstants = QueryConstants;

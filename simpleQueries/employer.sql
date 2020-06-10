@@ -1,1 +1,2 @@
-select * from employer;
+select * from employer
+ORDER BY name;

@@ -1,7 +1,3 @@
-/**
- * Created by Greg on 7/11/2017.
- */
-
 class SelexQuery {
     constructor(connex) {
         this.connex = connex;
@@ -9,7 +5,7 @@ class SelexQuery {
 
     execQuery(callback = function(err, result) {
         if(err) {
-            console.log("oope!");
+            console.log("oops!");
         } else {
             console.log(result);
         }
