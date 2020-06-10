@@ -1,5 +1,6 @@
 import {InputText, SubmitButton} from '../formElements';
 import Ajax from '../../http/ajax';
+import QueryBuilder from '../../utils/QueryBuilder';
 import React, { Component } from 'react';
 
 class AddOrEditPeripheral extends Component {
@@ -73,12 +74,24 @@ class AddOrEditPeripheral extends Component {
 
     // @FIXME this is so similar to handleInsertClick; can at least part of this be made into the same function?
     handleUpdateClick() {
-        debugger;
+        const dataObject = {},
+            whereObject = {};
+
+        // @FIXME argh. Terrible terrible. See what I can come up with that's better for the conversations side.
+        dataObject[this.props.addOrEdit.nameProp] = this.state[this.props.addOrEdit.nameProp];
+        dataObject[this.props.addOrEdit.remarkProp] = this.state[this.props.addOrEdit.remarkProp];
+        whereObject[this.props.addOrEdit.primaryKey] = this.props.addOrEdit.currentValue;
+
+        const queryURL = QueryBuilder.createUpdateQuery(this.props.addOrEdit.tableName, dataObject, whereObject);
+
+        Ajax.doAjaxQuery(queryURL).then((data) => {
+            this.props.positionUpdated();
+        }).catch((err) => {
+            console.log(err);
+        });
     }
 
     getForm() {
-
-
         return(
             this.state.isReady ?
                 <div>
@@ -109,7 +122,7 @@ class AddOrEditPeripheral extends Component {
                         buttonText = {
                            this.isUpdating() ?
                                'Update' :
-                               'Edit'
+                               'Add'
                         }
                     />
                 </div> :
