@@ -6,6 +6,7 @@ const http = require('http');
 const url =  require('url');
 const MySQLExecutor = require('./src/mysql/mysql-executor');
 const mysql = require('./src/mysql');
+const ConversationQuery = require('./src/support/conversation-query');
 const InjectConstructor = require('./src/support/inject-constructor');
 const QueryConstants = require('./src/support/query-constants');
 
@@ -122,6 +123,12 @@ class HTTPServer {
                     console.log(`CONSTRUCTING QUERY: ${JSON.stringify(queryParams)}`);
 
                     return InjectConstructor.constructUpdateQuery(queryParams.table, queryParams.updatedata, queryParams.where);
+                },
+                'func': this.injectQuery
+            },
+            '/convoq.json': {
+                'constructQuery': (queryParams) => {
+                    return ConversationQuery(queryParams.pid);
                 },
                 'func': this.injectQuery
             }
