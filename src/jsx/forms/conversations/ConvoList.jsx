@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 class ConvoList extends Component {
 
     render() {
+        // @TODO need to be able to add conversations as well.
         return(
             <div style = {styles.convoStyle}>
                 {
