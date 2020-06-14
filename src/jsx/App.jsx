@@ -1,3 +1,4 @@
+import styles from '../constants/styles';
 import Ajax from '../http/ajax';
 import EditPosition from './forms/EditPosition.jsx';
 import React, { Component } from 'react';
@@ -96,14 +97,6 @@ class App extends Component {
                 margin: '0px',
                 textAlign: 'left',
                 verticalAlign: 'top',
-            },
-            buttonStyle = {
-                cursor: "pointer",
-                textDecoration: "underline",
-                color: '#888800',
-                textDecorationColor: '#000088',
-                backgroundColor: '#000088',
-                marginLeft: '1em'
             };
 
         return(
@@ -115,7 +108,7 @@ class App extends Component {
                         positionID = {this.state.positionID}
                         updateMultiState = {this.updateMultiState.bind(this)}
                         getPristineState = {this.getPristineState.bind(this)}
-                        buttonStyle = {buttonStyle}
+                        buttonStyle = {styles.buttonStyle}
                         textfieldValStyle   = {this.state.textfieldValStyle}
                         divFieldStyle       = {this.state.divFieldStyle}
                 />
@@ -161,7 +154,7 @@ class Header extends Component {
                     stateHandler            = {this.props.stateHandler}
                     positionDetails         = {this.props.positionDetails}
                     showingNewPositionTable = {this.props.showingNewPositionTable}
-                    buttonStyle             = {this.props.buttonStyle}
+                    buttonStyle             = {styles.buttonStyle}
                     textfieldValStyle       = {this.props.textfieldValStyle}
                     divFieldStyle           = {this.props.divFieldStyle}
                     positionID              = {this.props.positionID}

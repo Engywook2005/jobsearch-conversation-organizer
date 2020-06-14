@@ -8,6 +8,9 @@ class ConvoList extends Component {
         // @TODO need to be able to add conversations as well.
         return(
             <div style = {styles.convoStyle}>
+                <div
+                    style = {styles.buttonStyle}
+                >Add new conversation</div>
                 {
                     this.props.viewProps.data.map((convo, i) =>
                         <Convo

@@ -7,11 +7,7 @@ SELECT
     contactID,
     contactRole,
     lastName,
-    firstName, 
-    linkedIn, 
-    email, 
-    phone, 
-    contactRemark
+    firstName
 FROM 
 	(
 	SELECT  

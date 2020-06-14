@@ -9,11 +9,7 @@ module.exports = (positionID) => {
         contactID,
         contactRole,
         lastName,
-        firstName, 
-        linkedIn, 
-        email, 
-        phone, 
-        contactRemark
+        firstName 
     FROM 
         (
         SELECT  
@@ -25,11 +21,7 @@ module.exports = (positionID) => {
             lastName, 
             firstName,
             linkedIn,
-            email,
-            phone,
             contactType,
-            contactRemark,
-            resumeLastSent,
             convoRemark
          FROM (
             SELECT
