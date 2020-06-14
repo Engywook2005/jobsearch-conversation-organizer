@@ -148,7 +148,8 @@ class EditPosition extends Component {
             border: '3px solid #880',
             borderRadius: '25px',
             color: '#00FFFF',
-            width: '87%'
+            width: '44%',
+            float: 'left'
         },
 
         formToDisplay = this.isEditingPeripheral() ?
@@ -160,29 +161,33 @@ class EditPosition extends Component {
                 divFieldStyle       = {this.props.divFieldStyle}
                 positionUpdated     = {this.positionUpdated.bind(this)}
             />:
-            <div>
-                <PositionForm
-                    periphData          = {this.state}
-                    stateHandler        = {this.props.stateHandler}
-                    updateMultiState    = {this.props.updateMultiState}
-                    positionData        = {this.state.positionData}
-                    updateEditPosState  = {this.state.updateEditPosState}
-                    buttonStyle         = {this.props.buttonStyle}
-                    textfieldValStyle   = {this.props.textfieldValStyle}
-                    divFieldStyle       = {this.props.divFieldStyle}
-                    getPristineState    = {this.props.getPristineState}
-                    updatingPos         = {!this.isInserting()}
-                />
-                <ConvoViews
-                    posID               = {this.props.positionID}
-                />
-            </div>;
+            <PositionForm
+                periphData          = {this.state}
+                stateHandler        = {this.props.stateHandler}
+                updateMultiState    = {this.props.updateMultiState}
+                positionData        = {this.state.positionData}
+                updateEditPosState  = {this.state.updateEditPosState}
+                buttonStyle         = {this.props.buttonStyle}
+                textfieldValStyle   = {this.props.textfieldValStyle}
+                divFieldStyle       = {this.props.divFieldStyle}
+                getPristineState    = {this.props.getPristineState}
+                updatingPos         = {!this.isInserting()}
+            />,
+
+            convoInfo = this.props.positionID ?
+                <div style = {lightboxStyle}>
+                    <ConvoViews
+                        posID = {this.props.positionID}
+                    />
+                </div>:
+                <div/>;
 
         return (
             <div style = {modalStyle}>
                 <div style = {lightboxStyle}>
                     {formToDisplay}
                 </div>
+                {convoInfo}
             </div>
         )
     }
