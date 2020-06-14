@@ -103,12 +103,6 @@ class HTTPServer {
                 },
                 'func': this.fullQuery
             },
-            '/conversations.json': {
-                'constructQuery': (queryParams) => {
-                    return `${QueryConstants.select.conversations} WHERE specificPositionID=${queryParams.posid} ORDER BY conversationDate DESC, conversationTime DESC;`
-                },
-                'func': this.fullQuery
-            },
             '/insertSQL.json' : {
                 'constructQuery': (queryParams) => {
 
