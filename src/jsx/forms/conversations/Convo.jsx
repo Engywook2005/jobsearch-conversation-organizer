@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 class Convo extends Component {
 
     handleConvoClick(e) {
-        debugger;
+        this.props.updateFunction.changeView('convoEdit', this.props.convoData);
     }
 
     render() {

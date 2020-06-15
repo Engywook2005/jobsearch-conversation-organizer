@@ -103,10 +103,17 @@ class HTTPServer {
                 },
                 'func': this.fullQuery
             },
+            '/generalSelex.json' : {
+                'constructQuery' : (queryParams) => {
+                    console.log(`CONSTRUCTING SELEX QUERY: ${JSON.stringify(queryParams)}`);
+
+                    return InjectConstructor.constructSelexQuery(queryParams.table, queryParams.where);
+                },
+                'func': this.injectQuery
+            },
             '/insertSQL.json' : {
                 'constructQuery': (queryParams) => {
-
-                    console.log(`CONSTRUCTING QUERY: ${JSON.stringify(queryParams)}`);
+                    console.log(`CONSTRUCTING INSERT QUERY: ${JSON.stringify(queryParams)}`);
 
                     return InjectConstructor.constructInjexQuery(queryParams.table, queryParams.props, queryParams.values);
                 },
@@ -114,7 +121,7 @@ class HTTPServer {
             },
             '/updateSQL.json' : {
                 'constructQuery' : (queryParams) => {
-                    console.log(`CONSTRUCTING QUERY: ${JSON.stringify(queryParams)}`);
+                    console.log(`CONSTRUCTING UPDATE QUERY: ${JSON.stringify(queryParams)}`);
 
                     return InjectConstructor.constructUpdateQuery(queryParams.table, queryParams.updatedata, queryParams.where);
                 },

@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 class ConvoList extends Component {
 
     handleAddConvoClick(e) {
-        this.props.viewProps.updateFunction.changeView('convoEdit', null);
+        this.props.viewProps.updateFunction.changeView('convoEdit', {});
     }
 
     render() {
