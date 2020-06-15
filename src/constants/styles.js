@@ -7,7 +7,8 @@ module.exports = {
     },
 
     'singleConvoStyle': {
-        marginBottom: '1em'
+        marginBottom: '1em',
+        cursor: 'pointer'
     },
 
     'buttonStyle': {

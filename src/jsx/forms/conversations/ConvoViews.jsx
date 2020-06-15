@@ -1,6 +1,7 @@
 import styles from '../../../constants/styles';
 import Ajax from '../../../http/ajax';
 import ConvoList from './ConvoList.jsx';
+import ConvoEdit from './ConvoEdit.jsx';
 import React, { Component } from 'react';
 
 class ConvoViews extends Component {
@@ -79,11 +80,16 @@ class ConvoViews extends Component {
     render() {
         const viewProps = {
                 data: this.state.viewData,
-                updateFunction: this.passUpdateFunctions
+                updateFunction: this.passUpdateFunctions,
+                posID: this.props.posID
             },
             views = {
                 'list' :
                     <ConvoList
+                        viewProps = {viewProps}
+                    />,
+                'convoEdit' :
+                    <ConvoEdit
                         viewProps = {viewProps}
                     />
             };
@@ -96,7 +102,7 @@ class ConvoViews extends Component {
             return(<div style = {styles.convoStyle}>Stand by for conversation data.</div>);
         }
 
-        return(views[this.state.currentView]);
+        return(views[this.state.currentView] || null);
     }
 }
 

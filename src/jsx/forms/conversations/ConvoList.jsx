@@ -4,17 +4,22 @@ import React, { Component } from 'react';
 
 class ConvoList extends Component {
 
+    handleAddConvoClick(e) {
+        this.props.viewProps.updateFunction.changeView('convoEdit', null);
+    }
+
     render() {
-        // @TODO need to be able to add conversations as well.
         return(
             <div style = {styles.convoStyle}>
-                <div
+                <p><span
                     style = {styles.buttonStyle}
-                >Add new conversation</div>
+                    onClick = {this.handleAddConvoClick.bind(this)}
+                >Add new conversation</span></p>
                 {
                     this.props.viewProps.data.map((convo, i) =>
                         <Convo
                             convoData       = {convo}
+                            posID           = {this.props.posID}
                             updateFunction  = {this.props.viewProps.updateFunction}
                             key             = {i}
                         />
