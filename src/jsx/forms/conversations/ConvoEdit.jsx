@@ -1,4 +1,5 @@
 import Ajax from '../../../http/ajax';
+import ContactSelector from '../../formElements/convos/ContactSelector.jsx';
 import React, { Component } from 'react';
 
 class ConvoEdit extends Component {
@@ -9,28 +10,30 @@ class ConvoEdit extends Component {
             ready: false
         };
 
-        this.peripherals = {};
+        this.contactList = [];
+        this.convoTypes = [];
     }
 
     updateState(newState) {
         this.setState(newState);
     }
 
-    loadConversationData(table, where = {}, pass = false) {
+    loadConversationData(table, where = null, skipCall = false) {
         return new Promise((resolve, reject) => {
-            if(pass) {
-                resolve(null);
+            if(skipCall) {
+                resolve({});
                 return;
-            } else {
-                const url = `./generalSelex.json?table=${table}&where=${JSON.stringify(where)}`;
-
-                Ajax.doAjaxQuery(url)
-                    .then((data) => {
-                        this.peripherals[table] = data;
-                        resolve(JSON.parse(data));
-                    })
             }
-        })
+
+            const whereClause = where ?
+                `&where=${JSON.stringify(where)}`:
+                '',
+                url = `./generalSelex.json?table=${table}${whereClause}`;
+            Ajax.doAjaxQuery(url)
+                .then((data) => {
+                    resolve(JSON.parse(data));
+                });
+        });
     }
 
     componentDidMount() {
@@ -42,22 +45,22 @@ class ConvoEdit extends Component {
 
             this.loadConversationData(
                     'conversationmaintable',
-                    {'conversationID': convoID},
+                    convoID ?
+                        {'conversationID': convoID}:
+                        null,
                     convoID ? false: true
                 )
-
-                // @TODO shouldn't the newState headings be the same as tableName passed to loadConversationData?
 
                 .then((data) => {
                     newState.currentConvoData = data;
                     return this.loadConversationData('contactlist');
                 })
                 .then((data) => {
-                    newState.contactList = data;
+                    this.contactList = data;
                     return this.loadConversationData('conversationtype')
                 })
                 .then((data) => {
-                    newState.convoType = data;
+                    this.convoTypes = data;
 
                     // Ready or not...
                     newState.ready = true;
@@ -71,7 +74,14 @@ class ConvoEdit extends Component {
             return(<div>Stand by for conversation details.</div>)
         }
 
-        return(<div>ready</div>);
+        return (
+            <div>
+                <ContactSelector
+                    contactID   = {this.state.currentConvoData.contactID || null}
+                    contactList = {this.contactList}
+                />
+            </div>
+        );
     }
 }
 
