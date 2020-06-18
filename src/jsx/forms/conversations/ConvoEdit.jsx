@@ -7,18 +7,26 @@ class ConvoEdit extends Component {
         super(props);
 
         this.state = {
-            ready: false
+            ready:      false,
+            updating:   false
         };
 
         this.contactList = [];
         this.convoTypes = [];
     }
 
+    componentDidUpdate() {
+        if(this.state.updating) {
+            this.setState({'updating': false});
+        }
+    }
+
     updateState(newState) {
+        newState.updating = true;
         this.setState(newState);
     }
 
-    loadConversationData(table, where = null, skipCall = false) {
+    loadConversationData(table, where = null, orderBy, skipCall = false) {
         return new Promise((resolve, reject) => {
             if(skipCall) {
                 resolve({});
@@ -28,7 +36,7 @@ class ConvoEdit extends Component {
             const whereClause = where ?
                 `&where=${JSON.stringify(where)}`:
                 '',
-                url = `./generalSelex.json?table=${table}${whereClause}`;
+                url = `./generalSelex.json?table=${table}${whereClause} ${orderBy}`;
             Ajax.doAjaxQuery(url)
                 .then((data) => {
                     resolve(JSON.parse(data));
@@ -45,15 +53,18 @@ class ConvoEdit extends Component {
 
             this.loadConversationData(
                     'conversationmaintable',
-                    convoID ?
-                        {'conversationID': convoID}:
-                        null,
+                    {'conversationID': convoID},
+                    '',
                     convoID ? false: true
                 )
 
                 .then((data) => {
-                    newState.currentConvoData = data;
-                    return this.loadConversationData('contactlist');
+                    newState.currentConvoData = data[0];
+                    return this.loadConversationData(
+                        'contactlist',
+                        null,
+                        'ORDER BY lastName, firstName'
+                    );
                 })
                 .then((data) => {
                     this.contactList = data;
@@ -70,6 +81,10 @@ class ConvoEdit extends Component {
     }
 
     render() {
+        if(this.state.updating) {
+            return(<div>Updating</div>);
+        }
+
         if(!this.state.ready) {
             return(<div>Stand by for conversation details.</div>)
         }
@@ -77,8 +92,11 @@ class ConvoEdit extends Component {
         return (
             <div>
                 <ContactSelector
-                    contactID   = {this.state.currentConvoData.contactID || null}
-                    contactList = {this.contactList}
+                    convoData               = {this.state.currentConvoData || {}}
+                    contactList             = {this.contactList}
+                    updateFunction          = {this.props.updateFunction}
+                    updateState             = {this.updateState.bind(this)}
+                    loadConversationData    = {this.loadConversationData.bind(this)}
                 />
             </div>
         );
