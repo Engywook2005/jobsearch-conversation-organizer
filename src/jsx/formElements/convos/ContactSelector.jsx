@@ -1,3 +1,5 @@
+import styles from '../../../constants/styles';
+import ContactDetails from '../../forms/conversations/ContactDetails.jsx';
 import React, { Component } from 'react';
 
 class ContactSelector extends Component {
@@ -18,6 +20,10 @@ class ContactSelector extends Component {
         }
     }
 
+    changeView(newView) {
+        this.setState({viewstate: newView})
+    }
+
     // Is OK to do one at a time.
     updateDetails(prop, val) {
         const newState = {
@@ -32,9 +38,16 @@ class ContactSelector extends Component {
     }
 
     render() {
+        // @TODO option to create new contact
         if(this.state.viewstate === 'select') {
             return(<div>
-                <p>name</p>
+                <p>name: <span
+                    style = {styles.buttonStyle}
+                    onClick = {
+                    (e) => {
+                        this.changeView('details');
+                    }
+                }>Add new contact</span></p>
                 <select
                     onChange = {(e) => {
                         this.updateDetails.call(this, 'contactID', e.target.value);
@@ -48,7 +61,13 @@ class ContactSelector extends Component {
                 </select>
             </div>);
         } else if(this.state.viewstate === 'details') {
-            return(<div>Details</div>);
+            return(<div>
+                <ContactDetails
+                    contactList             = {this.props.contactList}
+                    convoData               = {this.state.convoData}
+                    loadConversationData    = {this.props.loadConversationData}
+                />
+            </div>);
         }
     }
 }

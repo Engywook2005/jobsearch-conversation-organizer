@@ -26,7 +26,7 @@ class ConvoEdit extends Component {
         this.setState(newState);
     }
 
-    loadConversationData(table, where = null, orderBy, skipCall = false) {
+    loadConversationData(table, where = null, orderBy = '', skipCall = false) {
         return new Promise((resolve, reject) => {
             if(skipCall) {
                 resolve({});
