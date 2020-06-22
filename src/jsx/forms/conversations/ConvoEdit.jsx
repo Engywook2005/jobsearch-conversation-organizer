@@ -26,6 +26,11 @@ class ConvoEdit extends Component {
         this.setState(newState);
     }
 
+    setNewContactID(newContactID) {
+        this.state.currentConvoData = this.state.currentConvoData || {};
+        this.state.currentConvoData.contactID = newContactID;
+    }
+
     loadConversationData(table, where = null, orderBy = '', skipCall = false) {
         return new Promise((resolve, reject) => {
             if(skipCall) {
@@ -97,6 +102,7 @@ class ConvoEdit extends Component {
                     updateFunction          = {this.props.updateFunction}
                     updateState             = {this.updateState.bind(this)}
                     loadConversationData    = {this.loadConversationData.bind(this)}
+                    setNewContactID         = {this.setNewContactID.bind(this)}
                 />
             </div>
         );

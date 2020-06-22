@@ -66,6 +66,7 @@ class ContactSelector extends Component {
                     contactList             = {this.props.contactList}
                     convoData               = {this.state.convoData}
                     loadConversationData    = {this.props.loadConversationData}
+                    setNewContactID         = {this.props.setNewContactID}
                 />
             </div>);
         }

@@ -1,4 +1,5 @@
 import Ajax from '../../../http/ajax';
+import QueryBuilder from '../../../utils/QueryBuilder';
 import React, { Component } from 'react'
 
 // Gets its own submit button. We do not update ConvoViews when submitted.
@@ -45,6 +46,35 @@ class ContactDetails extends Component {
         this.props.loadConversationData('contacttype')
             .then((data) => {
                 this.setState({'contacttypes': data});
+            })
+    }
+
+    handleSubmit() {
+        const fieldsAndProps = this.state.contactDetails,
+            queryProps = {
+                'Insert': {
+                    'buildQueryURL': () => {
+                        return QueryBuilder.createInsertQuery('contactlist', fieldsAndProps)
+                    },
+                    'handleResponse': (data) => {
+                        const contactID = JSON.parse(data).insertId;
+
+                        this.state.contactDetails.contactID = contactID;
+                        this.props.setNewContactID(contactID);
+                        this.setState({'queryType' : 'Update'});
+                    }
+                },
+                'Update': {
+                    'buildQueryURL': () => {
+                        return QueryBuilder.createUpdateQuery('contactlist', fieldsAndProps, {'contactID': this.props.convoData.contactID})
+                    }
+                }
+            },
+            queryProp = queryProps[this.state.queryType];
+
+        Ajax.doAjaxQuery(queryProp.buildQueryURL())
+            .then((data) => {
+                queryProp.handleResponse(data);
             })
     }
 
@@ -151,7 +181,9 @@ class ContactDetails extends Component {
                 </select>
             </div>
             <div>
-                <button>{this.state.queryType} Contact</button>
+                <button
+                    onClick = {this.handleSubmit.bind(this)}
+                >{this.state.queryType} Contact</button>
             </div>
         </div>)
     }
