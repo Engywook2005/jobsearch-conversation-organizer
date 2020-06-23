@@ -11,7 +11,8 @@ class ContactDetails extends Component {
         super(props);
 
         this.state = {
-            contactDetails: this.findCurrentContact(this.props.contactList, this.props.convoData)
+            contactDetails: this.findCurrentContact(this.props.contactList, this.props.convoData),
+            processing: false
         };
 
         // If insert we will need to kick this upstairs. Hmm.... where best?
@@ -61,16 +62,24 @@ class ContactDetails extends Component {
 
                         this.state.contactDetails.contactID = contactID;
                         this.props.setNewContactID(contactID);
-                        this.setState({'queryType' : 'Update'});
+                        this.setState(
+                            {'queryType' : 'Update'},
+                            {'processing': false}
+                        );
                     }
                 },
                 'Update': {
                     'buildQueryURL': () => {
                         return QueryBuilder.createUpdateQuery('contactlist', fieldsAndProps, {'contactID': this.props.convoData.contactID})
+                    },
+                    'handleResponse': (data) => {
+                        this.setState({'processing': false})
                     }
                 }
             },
             queryProp = queryProps[this.state.queryType];
+
+        this.setState({'processing': true});
 
         Ajax.doAjaxQuery(queryProp.buildQueryURL())
             .then((data) => {
@@ -82,6 +91,12 @@ class ContactDetails extends Component {
         if(!this.state.contacttypes) {
             return(
                 <div>Stand by for contact details</div>
+            )
+        }
+
+        if(this.state.processing) {
+            return(
+                <div>Processing. Stand by.</div>
             )
         }
 

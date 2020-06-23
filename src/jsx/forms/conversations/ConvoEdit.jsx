@@ -1,5 +1,6 @@
 import Ajax from '../../../http/ajax';
 import ContactSelector from '../../formElements/convos/ContactSelector.jsx';
+import ConvoDetails from './convoDetails.jsx';
 import React, { Component } from 'react';
 
 class ConvoEdit extends Component {
@@ -95,6 +96,9 @@ class ConvoEdit extends Component {
         }
 
         return (
+            // @TODO should make insert or update based on whether a conversation id exists.
+            // @TODO insert/submit button should be at this level.
+
             <div>
                 <ContactSelector
                     convoData               = {this.state.currentConvoData || {}}
@@ -103,6 +107,11 @@ class ConvoEdit extends Component {
                     updateState             = {this.updateState.bind(this)}
                     loadConversationData    = {this.loadConversationData.bind(this)}
                     setNewContactID         = {this.setNewContactID.bind(this)}
+                />
+                <ConvoDetails
+                    convoData               = {this.state.currentConvoData || {}}
+                    convoTypes              = {this.convoTypes}
+                    updateState             = {this.updateState.bind(this)}
                 />
             </div>
         );
