@@ -13,18 +13,38 @@ class ConvoDetails extends Component {
             currentConvoData: this.props.convoData
         },
             prop = e.target.getAttribute('data-prop'),
-            val = e.target.value;
+            timeStamp = this.getDateTime();
 
-        newState.currentConvoData[prop] = val;
+        newState.currentConvoData[prop] = e.target.value;
+
+        // Set date and time if not explicit.
+        if(prop !== 'conversationDate') {
+            newState.currentConvoData.conversationDate = timeStamp.convoDate;
+        }
+
+        if(prop !== 'conversationTime') {
+            newState.currentConvoData.conversationTime = timeStamp.convoTime;
+        }
 
         this.props.updateState(newState, false);
     }
 
-    render() {
+    getDateTime() {
         const convoData = this.props.convoData,
             currentTime = Time.getDateForForm(new Date()),
             convoDate = (convoData.conversationDate || currentTime).split('T')[0],
             convoTime = convoData.conversationTime || currentTime.split('T')[1];
+
+        return {
+            convoDate: convoDate,
+            convoTime: convoTime
+        }
+    }
+
+    render() {
+        const convoData = this.props.convoData,
+            convoDate = this.getDateTime().convoDate,
+            convoTime = this.getDateTime().convoTime;
 
         return(<div>
             <div>

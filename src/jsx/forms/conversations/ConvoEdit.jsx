@@ -1,6 +1,7 @@
 import Ajax from '../../../http/ajax';
 import ContactSelector from '../../formElements/convos/ContactSelector.jsx';
 import ConvoDetails from './convoDetails.jsx';
+import QueryBuilder from '../../../utils/QueryBuilder';
 import React, { Component } from 'react';
 
 class ConvoEdit extends Component {
@@ -14,12 +15,34 @@ class ConvoEdit extends Component {
 
         this.contactList = [];
         this.convoTypes = [];
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidUpdate() {
         if(this.state.updating) {
             this.setState({'updating': false});
         }
+    }
+
+    handleSubmit(e) {
+        const convoData = this.state.currentConvoData;
+
+        convoData.specificPositionID = this.props.viewProps.posID;
+
+        let url = this.isUpdating() ?
+            'http://www.fish.com' :
+            QueryBuilder.createInsertQuery('conversationmaintable', convoData);
+
+        Ajax.doAjaxQuery(url)
+            .then((data) => {
+                // @TODO go back to view showing all conversations.
+
+                debugger;
+            })
+    }
+
+    isUpdating() {
+        return this.state.currentConvoData && this.state.currentConvoData.conversationID;
     }
 
     updateState(newState, needUpdate = true) {
@@ -119,6 +142,12 @@ class ConvoEdit extends Component {
                     convoTypes              = {this.convoTypes}
                     updateState             = {this.updateState.bind(this)}
                 />
+                <button
+                    onClick={this.handleSubmit}
+                >{this.isUpdating() ?
+                    'Update conversation':
+                    'Add conversation'
+                }</button>
             </div>
         );
     }
