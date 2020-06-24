@@ -22,8 +22,10 @@ class ConvoEdit extends Component {
         }
     }
 
-    updateState(newState) {
-        newState.updating = true;
+    updateState(newState, needUpdate = true) {
+        if(needUpdate) {
+            newState.updating = true;
+        }
         this.setState(newState);
     }
 
