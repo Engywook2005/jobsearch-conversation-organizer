@@ -14,7 +14,6 @@ class ConvoDetails extends Component {
 
         return(<div>
             <div>
-                When
                 <div>
                     Date:&nbsp;&nbsp;
                     <input
@@ -28,7 +27,7 @@ class ConvoDetails extends Component {
                     />
                 </div>
                 <div>
-                    Conversation Type:<br/>
+                    Conversation Type&nbsp;&nbsp;
                     <select
                         value = {convoData.conversationType || 1}
                     >
@@ -39,6 +38,13 @@ class ConvoDetails extends Component {
                             >{convoType.type}</option>)
                         }
                     </select>
+                </div>
+                <div>
+                    Remarks<br/>
+                    <textarea
+                        rows = "4"
+                        cols = "80"
+                    >{convoData.remark || ''}</textarea>
                 </div>
             </div>
         </div>);

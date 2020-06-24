@@ -74,7 +74,11 @@ class ConvoEdit extends Component {
                 })
                 .then((data) => {
                     this.contactList = data;
-                    return this.loadConversationData('conversationtype')
+                    return this.loadConversationData(
+                        'conversationtype',
+                        null,
+                        'ORDER BY contactLevel'
+                    )
                 })
                 .then((data) => {
                     this.convoTypes = data;
