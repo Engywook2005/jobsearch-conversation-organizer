@@ -30,7 +30,9 @@ class ConvoEdit extends Component {
         convoData.specificPositionID = this.props.viewProps.posID;
 
         let url = this.isUpdating() ?
-            'http://www.fish.com' :
+            QueryBuilder.createUpdateQuery('conversationmaintable', convoData, {
+                'conversationID': this.state.currentConvoData.conversationID
+            }) :
             QueryBuilder.createInsertQuery('conversationmaintable', convoData);
 
         Ajax.doAjaxQuery(url)
