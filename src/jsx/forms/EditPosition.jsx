@@ -188,6 +188,10 @@ class EditPosition extends Component {
                     {formToDisplay}
                 </div>
                 {convoInfo}
+                <span
+                    style   = {this.props.buttonStyle}
+                    onClick = {this.props.handleCloseClick}
+                >&nbsp;X&nbsp;</span>
             </div>
         )
     }

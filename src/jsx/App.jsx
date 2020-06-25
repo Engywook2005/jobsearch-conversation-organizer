@@ -172,6 +172,10 @@ class AddNewPos extends Component {
         this.props.stateHandler('showingNewPositionTable', true)
     }
 
+    handleCloseClick() {
+        this.props.stateHandler('showingNewPositionTable', false);
+    }
+
     linkForAddNewPos() {
         return (
             <p style = {this.props.buttonStyle}
@@ -189,6 +193,7 @@ class AddNewPos extends Component {
                 buttonStyle         = {this.props.buttonStyle}
                 textfieldValStyle   = {this.props.textfieldValStyle}
                 divFieldStyle       = {this.props.divFieldStyle}
+                handleCloseClick    = {this.handleCloseClick.bind(this)}
                 positionData        = {
                     {
                         employer: '1',
