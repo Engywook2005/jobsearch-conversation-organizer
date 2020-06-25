@@ -86,11 +86,18 @@ class ConvoViews extends Component {
             views = {
                 'list' :
                     <ConvoList
-                        viewProps = {viewProps}
+                        viewProps           = {viewProps}
+                        textfieldValStyle   = {this.props.textfieldValStyle}
+                        divFieldStyle       = {this.props.divFieldStyle}
+                        buttonStyle         = {this.props.buttonStyle}
                     />,
                 'convoEdit' :
                     <ConvoEdit
-                        viewProps = {viewProps}
+                        viewProps           = {viewProps}
+                        textfieldValStyle   = {this.props.textfieldValStyle}
+                        divFieldStyle       = {this.props.divFieldStyle}
+                        buttonStyle         = {this.props.buttonStyle}
+                        linkStyle           = {this.props.linkStyle}
                     />
             };
 

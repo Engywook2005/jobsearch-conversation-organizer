@@ -111,6 +111,7 @@ class App extends Component {
                         buttonStyle = {styles.buttonStyle}
                         textfieldValStyle   = {this.state.textfieldValStyle}
                         divFieldStyle       = {this.state.divFieldStyle}
+                        linkStyle           = {this.state.linkStyle}
                 />
                 <table style = {tableStyle}>
                     <tbody>
@@ -157,6 +158,7 @@ class Header extends Component {
                     buttonStyle             = {styles.buttonStyle}
                     textfieldValStyle       = {this.props.textfieldValStyle}
                     divFieldStyle           = {this.props.divFieldStyle}
+                    linkStyle               = {this.props.linkStyle}
                     positionID              = {this.props.positionID}
                     updateMultiState        = {this.props.updateMultiState}
                     getPristineState        = {this.props.getPristineState}
@@ -193,6 +195,7 @@ class AddNewPos extends Component {
                 buttonStyle         = {this.props.buttonStyle}
                 textfieldValStyle   = {this.props.textfieldValStyle}
                 divFieldStyle       = {this.props.divFieldStyle}
+                linkStyle           = {this.props.linkStyle}
                 handleCloseClick    = {this.handleCloseClick.bind(this)}
                 positionData        = {
                     {

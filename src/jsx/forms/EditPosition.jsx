@@ -177,7 +177,11 @@ class EditPosition extends Component {
             convoInfo = this.props.positionID ?
                 <div style = {lightboxStyle}>
                     <ConvoViews
-                        posID = {this.props.positionID}
+                        posID               = {this.props.positionID}
+                        textfieldValStyle   = {this.props.textfieldValStyle}
+                        divFieldStyle       = {this.props.divFieldStyle}
+                        buttonStyle         = {this.props.buttonStyle}
+                        linkStyle           = {this.props.linkStyle}
                     />
                 </div>:
                 <div/>;
