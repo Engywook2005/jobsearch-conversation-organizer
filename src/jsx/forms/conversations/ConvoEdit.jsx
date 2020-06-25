@@ -35,9 +35,7 @@ class ConvoEdit extends Component {
 
         Ajax.doAjaxQuery(url)
             .then((data) => {
-                // @TODO go back to view showing all conversations.
-
-                debugger;
+                this.props.viewProps.updateFunction.refreshList();
             })
     }
 
