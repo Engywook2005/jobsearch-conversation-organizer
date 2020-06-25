@@ -62,9 +62,10 @@ class ContactDetails extends Component {
 
                         this.state.contactDetails.contactID = contactID;
                         this.props.setNewContactID(contactID);
-                        this.setState(
-                            {'queryType' : 'Update'},
-                            {'processing': false}
+                        this.setState({
+                                'queryType' : 'Update',
+                                'processing': false
+                            }
                         );
                     }
                 },
