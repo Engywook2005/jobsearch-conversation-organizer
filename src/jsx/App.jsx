@@ -113,7 +113,9 @@ class App extends Component {
                         divFieldStyle       = {this.state.divFieldStyle}
                         linkStyle           = {this.state.linkStyle}
                 />
-                <table style = {tableStyle}>
+                <table
+                    style = {tableStyle}
+                >
                     <tbody>
                         <tr>
                             <th style = {cellStyle}>ID</th>
@@ -135,6 +137,7 @@ class App extends Component {
                             positionDetails = {this.state.positionDetails}
                             cellStyle = {cellStyle}
                             linkStyle = {this.state.linkStyle}
+                            buttonStyle = {styles.buttonStyle}
                             key = {i}
                             data = {position}
                         />)
@@ -238,7 +241,7 @@ class TableRow extends Component {
 
         return(
             <tr data-position-id={this.props.data.ID}>
-                <td onClick = {this.rowClick} style = {this.props.cellStyle}>{this.props.data.ID}</td>
+                <td onClick = {this.rowClick} style = {this.props.cellStyle}><span style = {this.props.buttonStyle}>{this.props.data.ID}</span></td>
                 <td style = {this.props.cellStyle}>{posTitle}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.employerName}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.recruiterName}</td>
