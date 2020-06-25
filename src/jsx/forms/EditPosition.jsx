@@ -1,5 +1,6 @@
 import Ajax from '../../http/ajax';
 import AddOrEditPeripheral from './AddOrEditPeripheral.jsx';
+import ConvoViews from './conversations/ConvoViews.jsx';
 import PositionForm from './PositionForm.jsx';
 import React, { Component } from 'react';
 
@@ -94,14 +95,8 @@ class EditPosition extends Component {
             })
             .then((data) => {
 
-                // If we are editing the position, then we need to  know all about the position we are editing.
-                this.setState({'positionData': (data ? JSON.parse(data)[0] : this.state.positionData )});
-                return this.callAjax(`http://localhost:8081/conversations.json?posid=${this.props.positionID}`, this.isInserting());
-            })
-            .then((data) => {
-
                 // Conversation data.
-                this.setState({'conversations': (data ? JSON.parse(data) : this.state.conversations )});
+                this.setState({'positionData': (data ? JSON.parse(data)[0] : this.state.positionData )});
                 this.setState({'employersRecruitersEtc': newState});
                 this.setState({'dataReady' : true})
             })
@@ -153,7 +148,8 @@ class EditPosition extends Component {
             border: '3px solid #880',
             borderRadius: '25px',
             color: '#00FFFF',
-            width: '87%'
+            width: '44%',
+            float: 'left'
         },
 
         formToDisplay = this.isEditingPeripheral() ?
@@ -176,13 +172,22 @@ class EditPosition extends Component {
                 divFieldStyle       = {this.props.divFieldStyle}
                 getPristineState    = {this.props.getPristineState}
                 updatingPos         = {!this.isInserting()}
-            />;
+            />,
+
+            convoInfo = this.props.positionID ?
+                <div style = {lightboxStyle}>
+                    <ConvoViews
+                        posID = {this.props.positionID}
+                    />
+                </div>:
+                <div/>;
 
         return (
             <div style = {modalStyle}>
                 <div style = {lightboxStyle}>
                     {formToDisplay}
                 </div>
+                {convoInfo}
             </div>
         )
     }

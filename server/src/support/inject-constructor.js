@@ -43,6 +43,40 @@ class InjectConstructor {
         return returnQuery;
     }
 
+    static constructSelexQuery(table, where = null) {
+        let query = `SELECT DISTINCT * FROM ${table}${InjectConstructor.whereQuery(where)};`;
+
+        console.log(query);
+
+        return query;
+    }
+
+    static whereQuery(where) {
+        if(!where) {
+            return '';
+        }
+
+        const whereObj = JSON.parse(where),
+            whereKeys = Object.keys(whereObj);
+
+        if(Object.keys(whereObj).length === 0) {
+            return '';
+        }
+
+        let wherePart = ' WHERE ';
+
+        for(let i = 0; i < whereKeys.length; i++) {
+            const key = whereKeys[i],
+                val = whereObj[key],
+                nextAnd = i < whereKeys.length - 1 ?
+                    ' AND ' :
+                    '';
+
+            wherePart += `${key} = ${val}${nextAnd}`;
+        }
+
+        return wherePart;
+    }
 }
 
 module.exports = InjectConstructor;

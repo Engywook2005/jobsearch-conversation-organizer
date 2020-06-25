@@ -1,3 +1,4 @@
+import styles from '../constants/styles';
 import Ajax from '../http/ajax';
 import EditPosition from './forms/EditPosition.jsx';
 import React, { Component } from 'react';
@@ -96,14 +97,6 @@ class App extends Component {
                 margin: '0px',
                 textAlign: 'left',
                 verticalAlign: 'top',
-            },
-            buttonStyle = {
-                cursor: "pointer",
-                textDecoration: "underline",
-                color: '#888800',
-                textDecorationColor: '#000088',
-                backgroundColor: '#000088',
-                marginLeft: '1em'
             };
 
         return(
@@ -115,7 +108,7 @@ class App extends Component {
                         positionID = {this.state.positionID}
                         updateMultiState = {this.updateMultiState.bind(this)}
                         getPristineState = {this.getPristineState.bind(this)}
-                        buttonStyle = {buttonStyle}
+                        buttonStyle = {styles.buttonStyle}
                         textfieldValStyle   = {this.state.textfieldValStyle}
                         divFieldStyle       = {this.state.divFieldStyle}
                 />
@@ -161,7 +154,7 @@ class Header extends Component {
                     stateHandler            = {this.props.stateHandler}
                     positionDetails         = {this.props.positionDetails}
                     showingNewPositionTable = {this.props.showingNewPositionTable}
-                    buttonStyle             = {this.props.buttonStyle}
+                    buttonStyle             = {styles.buttonStyle}
                     textfieldValStyle       = {this.props.textfieldValStyle}
                     divFieldStyle           = {this.props.divFieldStyle}
                     positionID              = {this.props.positionID}
@@ -222,20 +215,6 @@ class TableRow extends Component {
 
     render() {
         this.rowClick = (e) => {
-            // @TODO create a more detailed, editable overlay about the position. Should be able to work with the same component as is used for adding a new position.
-
-            /*
-
-             <EditPosition
-             stateHandler = {this.props.stateHandler}
-             positionData = {
-             {
-             employer: '1' // in this case use the value associated with the clicked TableRow
-             }
-             }
-             />
-             */
-
             this.props.updateMultiState({
                 showingNewPositionTable: true,
                 positionID: this.props.data.ID
