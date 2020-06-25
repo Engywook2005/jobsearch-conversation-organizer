@@ -1,6 +1,6 @@
 {
   "name": "jobsearch-conversation-organizer",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Logs conversations I have had in the course of a job search.",
   "main": "index.js",
   "scripts": {
