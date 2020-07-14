@@ -1,6 +1,7 @@
 import styles from '../constants/styles';
 import Ajax from '../http/ajax';
 import EditPosition from './forms/EditPosition.jsx';
+import PositionFilterTool from './forms/filters/PositionFilterTool.jsx';
 import React, { Component } from 'react';
 
 class App extends Component {
@@ -152,21 +153,21 @@ class App extends Component {
 class Header extends Component {
     render() {
         return (
-            <div>
-                <p>{this.props.greeting}</p>
-                <AddNewPos
-                    stateHandler            = {this.props.stateHandler}
-                    positionDetails         = {this.props.positionDetails}
-                    showingNewPositionTable = {this.props.showingNewPositionTable}
-                    buttonStyle             = {styles.buttonStyle}
-                    textfieldValStyle       = {this.props.textfieldValStyle}
-                    divFieldStyle           = {this.props.divFieldStyle}
-                    linkStyle               = {this.props.linkStyle}
-                    positionID              = {this.props.positionID}
-                    updateMultiState        = {this.props.updateMultiState}
-                    getPristineState        = {this.props.getPristineState}
-                />
-            </div>
+          <div>
+            <AddNewPos
+                stateHandler            = {this.props.stateHandler}
+                positionDetails         = {this.props.positionDetails}
+                showingNewPositionTable = {this.props.showingNewPositionTable}
+                buttonStyle             = {styles.buttonStyle}
+                textfieldValStyle       = {this.props.textfieldValStyle}
+                divFieldStyle           = {this.props.divFieldStyle}
+                linkStyle               = {this.props.linkStyle}
+                positionID              = {this.props.positionID}
+                updateMultiState        = {this.props.updateMultiState}
+                getPristineState        = {this.props.getPristineState}
+            />
+            <PositionFilterTool />
+          </div>
         );
     }
 }
@@ -183,10 +184,12 @@ class AddNewPos extends Component {
 
     linkForAddNewPos() {
         return (
-            <p style = {this.props.buttonStyle}
+            <button
+                style = {this.props.buttonStyle}
+                type="button"
                 onClick = {this.handleAddNewPosClick.bind(this)}>
                 Click to add a new position
-            </p>
+            </button>
         );
     }
 
