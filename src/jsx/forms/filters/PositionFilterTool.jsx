@@ -62,7 +62,10 @@ class PositionFilterTool extends Component {
         }
       }
 
-      props.updateState({foundSearchString: target.value})
+      props.updateState({
+        foundSearchString: target.value,
+        foundId: 0
+      })
       FormHelper.debounceAction(target, callback);
     }
 
@@ -141,7 +144,7 @@ class PositionFilterTool extends Component {
       props.updateState(
         {
           foundSearchString: props.resultItem.value,
-          foundId: props.id
+          foundId: props.ind
         }
       )
     };
