@@ -9,7 +9,7 @@ class Ajax {
                     resolve(this.responseText);
                 }
                 else {
-                    reject('Not a response we can use');
+                    reject(`Not a response we can use: ${this.status}`);
                 }
             };
 

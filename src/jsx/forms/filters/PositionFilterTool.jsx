@@ -99,7 +99,7 @@ class PositionFilterTool extends Component {
           const searchResults = JSON.parse(data);
           if(searchResults.length === 0) {
             searchResults[0] = {err: 'Nothing found'}
-          } else if(props.searchResults[0].value === props.searchString) {
+          } else if(props.searchResults.length === 1 && props.searchResults[0].value === props.searchString) {
             props.updateState({
               searchResults: [],
               searchString: ''
@@ -137,7 +137,6 @@ class PositionFilterTool extends Component {
   }
 
   SearchResultButton(props) {
-
     const onClick = () => {
       props.updateState(
         {
@@ -148,7 +147,9 @@ class PositionFilterTool extends Component {
     };
 
     if(props.resultItem.err) {
-      return(<div>{props.resultItem.err}</div>);
+      return(<div
+        className="err"
+      >{props.resultItem.err}</div>);
     }
 
     return(<button

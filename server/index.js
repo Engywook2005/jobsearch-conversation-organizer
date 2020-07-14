@@ -6,6 +6,7 @@ const http = require('http');
 const url =  require('url');
 const MySQLExecutor = require('./src/mysql/mysql-executor');
 const mysql = require('./src/mysql');
+const ComplexSelex = require('./src/mysql/complex.selex');
 const ConversationQuery = require('./src/support/conversation-query');
 const InjectConstructor = require('./src/support/inject-constructor');
 const QueryConstants = require('./src/support/query-constants');
@@ -22,11 +23,11 @@ class HTTPServer {
     }
 
     /**
-     * 
+     *
      * @param {*} response          Response object where output will be written.
      * @param {MySQLExecutor}    Data server handling the query
-     * @param {String} query        Query string passed through 
-     * @param {*} params            Query params on request. 
+     * @param {String} query        Query string passed through
+     * @param {*} params            Query params on request.
      */
     fullQuery(response, mysqlExecutor, query, params = null) {
 
@@ -132,6 +133,12 @@ class HTTPServer {
                     return ConversationQuery(queryParams.pid);
                 },
                 'func': this.injectQuery
+            },
+            '/search/findFilters.json': {
+                'constructQuery': (queryParams) => {
+                    return ComplexSelex.findFilter(queryParams.filter, queryParams.searchString);
+                },
+                'func': this.fullQuery
             }
         };
 
@@ -146,6 +153,7 @@ class HTTPServer {
             console.log(`request received ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
 
             if(!routing[pathName]) {
+                console.log(pathName);
                 response.writeHead("404", {'Content-Type': 'text/json'});
                 response.write(`url ${pathName} not found`);
                 response.end();
