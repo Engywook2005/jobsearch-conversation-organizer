@@ -20,6 +20,15 @@ const ComplexSelex = {
         WHERE 
           name LIKE '%${lookFor}%' 
         ;
+      `,
+      Recruiter: `
+        SELECT
+          recruiterID AS id,
+          name AS value
+        FROM recruiter
+        WHERE
+          name LIKE '%${lookFor}%'
+        ;
       `
     }
 

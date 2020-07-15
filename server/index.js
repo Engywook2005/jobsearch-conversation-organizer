@@ -147,6 +147,9 @@ class HTTPServer {
                     const querySet = {
                         Employer: () => {
                             return QueryConstants.select.activePositions(`WHERE employerID = ${searchId}`)
+                        },
+                        Recruiter: () => {
+                            return QueryConstants.select.activePositions(`WHERE recruiterID = ${searchId}`)
                         }
                     }
 
