@@ -39,7 +39,8 @@ class App extends Component {
             },
             linkStyle: {
                 color: '#888800'
-            }
+            },
+            altPositionQuery: ''
         };
     }
 
@@ -60,15 +61,17 @@ class App extends Component {
         this.setState(newState);
     }
 
-    // @TODO Should we have a base class for App that other can extend with overrides of ajaxHandler?
     ajaxHandler() {
         this.state.reloading = false;
 
-        Ajax.doAjaxQuery('http://localhost:8081/defaultq.json')
+        const positionsQueryURL = this.state.altPositionQuery || 'defaultq.json';
+
+        Ajax.doAjaxQuery(positionsQueryURL)
             .then((data) => {
                 this.state.stateHandler('positions', JSON.parse(data));
                 this.state.stateHandler('greeting', 'Irons In The Fire');
                 this.state.stateHandler('showingNewPositionTable', false);
+                this.state.stateHandler('altPositionQuery', '');
             })
             .catch((err) => {
                 this.state.stateHandler('greeting', `Oops: ${err}`)
@@ -76,6 +79,7 @@ class App extends Component {
     }
 
     render() {
+
         // If we're expected to reload, go back to the ajax call.
         if(this.state.reloading) {
             this.ajaxHandler();
@@ -166,7 +170,16 @@ class Header extends Component {
                 updateMultiState        = {this.props.updateMultiState}
                 getPristineState        = {this.props.getPristineState}
             />
-            <PositionFilterTool />
+            <PositionFilterTool
+              handleSearch={(altPositionQueryURL) => {
+
+                  // Change URL specifying query to run
+                  this.props.stateHandler('altPositionQuery', altPositionQueryURL);
+
+                  // Trigger refresh of table.
+                  this.props.stateHandler('reloading', true);
+              }}
+            />
           </div>
         );
     }

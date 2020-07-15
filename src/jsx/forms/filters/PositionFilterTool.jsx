@@ -39,7 +39,9 @@ class PositionFilterTool extends Component {
         searchResults={this.state.searchResults}
         updateState={this.updateState}
         foundSearchString={this.state.foundSearchString}
+        foundId={this.state.foundId}
         component={this}
+        handleSearch={this.props.handleSearch}
       />
     </section>);
   }
@@ -69,6 +71,20 @@ class PositionFilterTool extends Component {
       FormHelper.debounceAction(target, callback);
     }
 
+    const handleSearchClick = () => {
+      const searchURL = `/search/doFilterSearch.json?filter=${props.selectedFilter}&searchId=${props.foundId}`;
+
+      props.handleSearch(searchURL);
+    }
+
+    const searchButton = props.foundId === 0
+      ? <span/>
+      : <button
+          onClick={handleSearchClick}
+          type="button"
+          className="searchButton"
+        >Search</button>
+
     return(
       <div>
         <input
@@ -77,6 +93,7 @@ class PositionFilterTool extends Component {
           placeholder={props.selectedFilter}
           value={props.foundSearchString}
         />
+        {searchButton}
         <props.component.MatchList
           searchString={props.searchString}
           searchResults={props.searchResults}
