@@ -75,7 +75,7 @@ class HTTPServer {
 
         const routing = {
             '/defaultq.json' : {
-                'queryString' : QueryConstants.select.activePositions,
+                'queryString' : QueryConstants.select.activePositions(),
                 'func': this.fullQuery
             },
             '/employers.json' : {
@@ -137,6 +137,20 @@ class HTTPServer {
             '/search/findFilters.json': {
                 'constructQuery': (queryParams) => {
                     return ComplexSelex.findFilter(queryParams.filter, queryParams.searchString);
+                },
+                'func': this.fullQuery
+            },
+            '/search/doFilterSearch.json': {
+                'constructQuery': (queryParams) => {
+                    const {filter} = queryParams;
+                    const {searchId} = queryParams;
+                    const querySet = {
+                        Employer: () => {
+                            return QueryConstants.select.activePositions(`WHERE employerID = ${searchId}`)
+                        }
+                    }
+
+                    return querySet[filter]();
                 },
                 'func': this.fullQuery
             }
