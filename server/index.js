@@ -150,6 +150,27 @@ class HTTPServer {
                         },
                         Recruiter: () => {
                             return QueryConstants.select.activePositions(`WHERE recruiterID = ${searchId}`)
+                        },
+                        Contact: () => {
+                            const kernelQuery = QueryConstants.select.activePositions(`WHERE 1`);
+                            const fullContactQuery = `
+                                SELECT * FROM 
+                                    (SELECT DISTINCT
+                                        specificPositionID FROM conversationmaintable
+                                        WHERE contactID = ${searchId} 
+                                    )
+                                AS convoPos    
+                                INNER JOIN ( 
+                                    ${kernelQuery}
+                                )
+                                AS kernel
+                                ON kernel.ID = convoPos.specificPositionID        
+                            `;
+
+                            // Will definitely be the easiest thing in the world to break this.
+                            // console.log(fullContactQuery);
+
+                            return fullContactQuery;
                         }
                     }
 
@@ -180,7 +201,16 @@ class HTTPServer {
             if(routing[pathName].queryString) {
                 routing[pathName].func(response, mysqlExecutor, routing[pathName].queryString);
             } else if(routing[pathName].constructQuery) {
-                routing[pathName].func(response, mysqlExecutor, routing[pathName].constructQuery(queryParams));
+                const queryToRun = routing[pathName].constructQuery(queryParams);
+
+                if(!queryToRun) {
+                    response.writeHead("500", {'Content-Type': 'text/json'});
+                    response.write('query is empty');
+                    response.end();
+                    return;
+                }
+
+                routing[pathName].func(response, mysqlExecutor, queryToRun);
             }
 
         });

@@ -78,7 +78,7 @@ SELECT
 		) 
 	AS positions
 	  ${specialFilterRule}
-    ORDER BY lastStatusChange DESC;
+    ORDER BY lastStatusChange DESC
         `)
         },
 

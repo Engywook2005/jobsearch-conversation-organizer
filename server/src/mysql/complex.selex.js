@@ -29,6 +29,14 @@ const ComplexSelex = {
         WHERE
           name LIKE '%${lookFor}%'
         ;
+      `,
+      Contact: `
+        SELECT 
+          contactID as id,
+          CONCAT(firstName, ' ', lastName) AS value
+        FROM contactlist
+        WHERE
+          CONCAT(firstName, ' ', lastName) LIKE '%${lookFor}%'          
       `
     }
 
