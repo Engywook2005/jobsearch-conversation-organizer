@@ -40,7 +40,8 @@ class App extends Component {
             linkStyle: {
                 color: '#888800'
             },
-            altPositionQuery: ''
+            altPositionQuery: '',
+            showingSearchResults: false
         };
     }
 
@@ -117,6 +118,7 @@ class App extends Component {
                         textfieldValStyle   = {this.state.textfieldValStyle}
                         divFieldStyle       = {this.state.divFieldStyle}
                         linkStyle           = {this.state.linkStyle}
+                        showingSearchResults = {this.state.showingSearchResults}
                 />
                 <table
                     style = {tableStyle}
@@ -173,7 +175,11 @@ class Header extends Component {
             <PositionFilterTool
               buttonStyle             = {styles.buttonStyle}
               textfieldValStyle       = {this.props.textfieldValStyle}
+              showingSearchResults = {this.props.showingSearchResults}
               handleSearch={(altPositionQueryURL) => {
+                  const showingSearchResults = !!altPositionQueryURL;
+
+                  this.props.stateHandler('showingSearchResults', showingSearchResults);
 
                   // Change URL specifying query to run
                   this.props.stateHandler('altPositionQuery', altPositionQueryURL);

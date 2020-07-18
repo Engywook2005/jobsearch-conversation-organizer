@@ -35,6 +35,7 @@ class PositionFilterTool extends Component {
         updateState={this.updateState}
         foundSearchString={this.state.foundSearchString}
         foundId={this.state.foundId}
+        showingSearchResults={this.props.showingSearchResults}
         component={this}
         handleSearch={this.props.handleSearch}
         buttonStyle={this.props.buttonStyle}
@@ -74,8 +75,19 @@ class PositionFilterTool extends Component {
       props.handleSearch(searchURL);
     }
 
+    const handleClearClick = () => {
+      props.handleSearch('');
+    }
+
     const searchButton = props.foundId === 0
-      ? <span/>
+      ? props.showingSearchResults
+        ? <button
+          style={props.buttonStyle}
+          onClick={handleClearClick}
+          type="button"
+          className="searchButton"
+        >Clear</button>
+        : <span/>
       : <button
           style={props.buttonStyle}
           onClick={handleSearchClick}
