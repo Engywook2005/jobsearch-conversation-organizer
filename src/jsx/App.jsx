@@ -171,6 +171,8 @@ class Header extends Component {
                 getPristineState        = {this.props.getPristineState}
             />
             <PositionFilterTool
+              buttonStyle             = {styles.buttonStyle}
+              textfieldValStyle       = {this.props.textfieldValStyle}
               handleSearch={(altPositionQueryURL) => {
 
                   // Change URL specifying query to run

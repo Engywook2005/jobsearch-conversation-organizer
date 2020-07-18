@@ -22,14 +22,9 @@ class PositionFilterTool extends Component {
   }
 
   render() {
-    const selectorStyle = {
-      float: 'left'
-    }
-
-    return (<section
-      style={selectorStyle}
-    >
+    return (<div>
       <this.FilterPulldown
+        textfieldValStyle={this.props.textfieldValStyle}
         updateState={this.updateState}
         selectedFilter={this.state.selectedFilter}
       />
@@ -42,8 +37,10 @@ class PositionFilterTool extends Component {
         foundId={this.state.foundId}
         component={this}
         handleSearch={this.props.handleSearch}
+        buttonStyle={this.props.buttonStyle}
+        textfieldValStyle={this.props.textfieldValStyle}
       />
-    </section>);
+    </div>);
   }
 
   SelectText(props) {
@@ -80,6 +77,7 @@ class PositionFilterTool extends Component {
     const searchButton = props.foundId === 0
       ? <span/>
       : <button
+          style={props.buttonStyle}
           onClick={handleSearchClick}
           type="button"
           className="searchButton"
@@ -89,6 +87,7 @@ class PositionFilterTool extends Component {
       <div>
         <input
           type="text"
+          style={props.textfieldValStyle}
           onChange={handleTextChange}
           placeholder={props.selectedFilter}
           value={props.foundSearchString}
@@ -100,6 +99,7 @@ class PositionFilterTool extends Component {
           selectedFilter={props.selectedFilter}
           updateState={props.updateState}
           component={props.component}
+          buttonStyle={props.buttonStyle}
         />
       </div>
     );
@@ -138,6 +138,8 @@ class PositionFilterTool extends Component {
       return <div>Searching...</div>;
     }
 
+    const oldButtonStyle = props.buttonStyle;
+    const buttonStyle = Object.assign({}, oldButtonStyle, {marginTop: "0.2rem", marginLeft: "0.2rem"});
     // If some results are found (even just an error)
     return(
       <div>
@@ -146,6 +148,7 @@ class PositionFilterTool extends Component {
               <props.component.SearchResultButton
                 updateState={props.updateState}
                 resultItem={result}
+                buttonStyle={buttonStyle}
                 key={result.id || i}
                 ind={result.id || i}
               />
@@ -174,6 +177,7 @@ class PositionFilterTool extends Component {
 
     return(<button
       type="button"
+      style={props.buttonStyle}
       onClick={onClick}
     >{props.resultItem.value}</button>)
   }
@@ -181,6 +185,7 @@ class PositionFilterTool extends Component {
   FilterPulldown(props) {
     return(
       <select
+        style={props.textfieldValStyle}
         onChange={(e) => {
           props.updateState(
               {

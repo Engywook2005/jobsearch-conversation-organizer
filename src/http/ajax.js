@@ -1,3 +1,5 @@
+// @TODO post requests can send data as JSON.
+
 class Ajax {
     static doAjaxQuery(url) {
         return new Promise((resolve, reject) => {
