@@ -136,11 +136,18 @@ class ConvoEdit extends Component {
                     updateState             = {this.updateState.bind(this)}
                     loadConversationData    = {this.loadConversationData.bind(this)}
                     setNewContactID         = {this.setNewContactID.bind(this)}
+                    linkStyle               = {this.props.linkStyle}
+                    textfieldValStyle       = {this.props.textfieldValStyle}
+                    divFieldStyle           = {this.props.divFieldStyle}
+                    buttonStyle             = {this.props.buttonStyle}
                 />
                 <ConvoDetails
                     convoData               = {this.state.currentConvoData || {}}
                     convoTypes              = {this.convoTypes}
                     updateState             = {this.updateState.bind(this)}
+                    textfieldValStyle       = {this.props.textfieldValStyle}
+                    divFieldStyle           = {this.props.divFieldStyle}
+                    buttonStyle             = {this.props.buttonStyle}
                 />
                 <button
                     onClick={this.handleSubmit}

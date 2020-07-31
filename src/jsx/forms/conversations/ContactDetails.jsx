@@ -110,93 +110,118 @@ class ContactDetails extends Component {
             contacttype = this.state.contactDetails.contactType || '',
             firstAndLast = `${firstName} ${lastName}`,
             firstAndLastLinkedIn = linkedIn ?
-                <a href = {linkedIn} target='_blank'>{firstAndLast}</a>:
+                <a
+                    href = {linkedIn}
+                    target='_blank'
+                    style={this.props.linkStyle}
+                >{firstAndLast}</a>:
                 firstAndLast;
 
         return(<div>
             <p>{firstAndLastLinkedIn}</p>
-            <div>
-                Last name:
+            <div
+                style = {this.props.divFieldStyle}
+            >
+                Last name &nbsp;
                 <input
                     type = "text"
                     value = {lastName || ''}
                     size = "20"
+                    style = {this.props.textfieldValStyle}
                     onChange = {(e) => {
                         this.onFieldChange.call(this, 'lastName', e.target.value);
                     }}
                 />&nbsp;&nbsp;
-                First name:
+                First name &nbsp;
                 <input
                     type = "text"
                     value = {firstName || ''}
                     size = "20"
+                    style = {this.props.textfieldValStyle}
                     onChange = {(e) => {
                         this.onFieldChange.call(this, 'firstName', e.target.value);
                     }}
                 />
             </div>
-            <div>
-                LinkedIn:
+            <div
+                style = {this.props.divFieldStyle}
+            >
+                LinkedIn &nbsp;
                 <input
                     type = "text"
                     value = {linkedIn || ''}
-                    size = "100"
+                    size = "80"
+                    style = {this.props.textfieldValStyle}
                     onChange = {(e) => {
                         this.onFieldChange.call(this, 'linkedIn', e.target.value);
                     }}
                 />
             </div>
-            <div>
-                Email:
+            <div
+                style = {this.props.divFieldStyle}
+            >
+                Email &nbsp;
                 <input
                     type = "text"
                     value = {email || ''}
-                    size = "100"
+                    size = "80"
+                    style = {this.props.textfieldValStyle}
                     onChange = {(e) => {
                         this.onFieldChange.call(this, 'email', e.target.value);
                     }}
                 />
             </div>
-            <div>
-                Phone:
+            <div
+                style = {this.props.divFieldStyle}
+            >
+                Phone &nbsp;
                 <input
                     type = "text"
                     value = {phone || ''}
                     size = "15"
+                    style = {this.props.textfieldValStyle}
                     onChange = {(e) => {
                         this.onFieldChange.call(this, 'phone', e.target.value);
                     }}
                 />
             </div>
-            <div>
-                Remarks:
-                <input
-                    type = "text"
-                    value = {remark || ''}
-                    size = "100"
-                    onChange = {(e) => {
-                        this.onFieldChange.call(this, 'remark', e.target.value);
-                    }}
-                />
-            </div>
-            <div>
-                Contact type:
+            <div
+                style = {this.props.divFieldStyle}
+            >
+                Contact type &nbsp;
                 <select
                     value = {contacttype}
+                    style = {this.props.textfieldValStyle}
                     onChange = {(e) => {
                         this.onFieldChange.call(this, 'contactType', parseInt(e.target.value));
                     }}
                 >
                     {this.state.contacttypes.map(
                         (type, i) =>
-                        <option
-                            value       = {type.contactTypeID}
-                            key         = {i}
-                        >{type.type}</option>
+                            <option
+                                value       = {type.contactTypeID}
+                                key         = {i}
+                            >{type.type}</option>
                     )}
                 </select>
             </div>
-            <div>
+            <div
+                style = {this.props.divFieldStyle}
+            >
+                Remarks<br/>
+                <textarea
+                    rows = "4"
+                    cols = "80"
+                    value = {remark || ''}
+                    style = {this.props.textfieldValStyle}
+                    onChange = {(e) => {
+                        this.onFieldChange.call(this, 'remark', e.target.value);
+                    }}
+                />
+            </div>
+            <div
+                style = {this.props.divFieldStyle}
+            >
                 <button
                     onClick = {this.handleSubmit.bind(this)}
                 >{this.state.queryType} Contact</button>

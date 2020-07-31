@@ -1,15 +1,24 @@
-// @TODO need to have macros for some of the filters. May want to look at last 30 days by default, but may want to also be able to look back further
-// OR could just set those as variables
 const QueryConstants = {
     select : {
-        activePositions : `
+        activePositions : function(specialFilterRule = '') {
+            const defaultFilter = `
+                    WHERE
+                    lastStatusChange BETWEEN NOW() - INTERVAL 7 DAY AND NOW()
+                        AND status NOT IN(5, 11, 19, 27)`;
+            const posFilter = specialFilterRule === ''
+              ? defaultFilter
+              : '';
+
+        return (`
 SELECT
     positions.*
 	FROM (SELECT
-			rawPosition.positionID AS ID,
+        		rawPosition.positionID AS ID,
+        		rawPosition.employer AS employerID,
+        		rawPosition.recruiter AS recruiterID,
             rawPosition.title AS title,
             rawPosition.link AS link, 
-			rawPosition.remarks AS positionRemarks,
+			      rawPosition.remarks AS positionRemarks,
             employer.employerName AS employerName,
             recruiter.recruiterName AS recruiterName,
             roletypes.roleTypeName AS roleType,
@@ -22,9 +31,7 @@ SELECT
 				*
             FROM
 			specificposition
-            WHERE
-				lastStatusChange BETWEEN NOW() - INTERVAL 21 DAY AND NOW()
-                AND status NOT IN(5, 11, 19, 27)
+			      ${posFilter}
             )
             AS rawPosition
             INNER JOIN
@@ -70,8 +77,10 @@ SELECT
             ON resumeVersions.resumeVersionID = rawPosition.resumeVersion
 		) 
 	AS positions
-    ORDER BY lastStatusChange DESC;
-        `,
+	  ${specialFilterRule}
+    ORDER BY lastStatusChange DESC
+        `)
+        },
 
         // @TODO filter and use for the right side.
         conversationMainTable : `

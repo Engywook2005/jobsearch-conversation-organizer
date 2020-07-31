@@ -1,6 +1,7 @@
 import styles from '../constants/styles';
 import Ajax from '../http/ajax';
 import EditPosition from './forms/EditPosition.jsx';
+import PositionFilterTool from './forms/filters/PositionFilterTool.jsx';
 import React, { Component } from 'react';
 
 class App extends Component {
@@ -38,7 +39,9 @@ class App extends Component {
             },
             linkStyle: {
                 color: '#888800'
-            }
+            },
+            altPositionQuery: '',
+            showingSearchResults: false
         };
     }
 
@@ -59,15 +62,17 @@ class App extends Component {
         this.setState(newState);
     }
 
-    // @TODO Should we have a base class for App that other can extend with overrides of ajaxHandler?
     ajaxHandler() {
         this.state.reloading = false;
 
-        Ajax.doAjaxQuery('http://localhost:8081/defaultq.json')
+        const positionsQueryURL = this.state.altPositionQuery || 'defaultq.json';
+
+        Ajax.doAjaxQuery(positionsQueryURL)
             .then((data) => {
                 this.state.stateHandler('positions', JSON.parse(data));
                 this.state.stateHandler('greeting', 'Irons In The Fire');
                 this.state.stateHandler('showingNewPositionTable', false);
+                this.state.stateHandler('altPositionQuery', '');
             })
             .catch((err) => {
                 this.state.stateHandler('greeting', `Oops: ${err}`)
@@ -75,6 +80,7 @@ class App extends Component {
     }
 
     render() {
+
         // If we're expected to reload, go back to the ajax call.
         if(this.state.reloading) {
             this.ajaxHandler();
@@ -111,8 +117,12 @@ class App extends Component {
                         buttonStyle = {styles.buttonStyle}
                         textfieldValStyle   = {this.state.textfieldValStyle}
                         divFieldStyle       = {this.state.divFieldStyle}
+                        linkStyle           = {this.state.linkStyle}
+                        showingSearchResults = {this.state.showingSearchResults}
                 />
-                <table style = {tableStyle}>
+                <table
+                    style = {tableStyle}
+                >
                     <tbody>
                         <tr>
                             <th style = {cellStyle}>ID</th>
@@ -134,6 +144,7 @@ class App extends Component {
                             positionDetails = {this.state.positionDetails}
                             cellStyle = {cellStyle}
                             linkStyle = {this.state.linkStyle}
+                            buttonStyle = {styles.buttonStyle}
                             key = {i}
                             data = {position}
                         />)
@@ -148,20 +159,36 @@ class App extends Component {
 class Header extends Component {
     render() {
         return (
-            <div>
-                <p>{this.props.greeting}</p>
-                <AddNewPos
-                    stateHandler            = {this.props.stateHandler}
-                    positionDetails         = {this.props.positionDetails}
-                    showingNewPositionTable = {this.props.showingNewPositionTable}
-                    buttonStyle             = {styles.buttonStyle}
-                    textfieldValStyle       = {this.props.textfieldValStyle}
-                    divFieldStyle           = {this.props.divFieldStyle}
-                    positionID              = {this.props.positionID}
-                    updateMultiState        = {this.props.updateMultiState}
-                    getPristineState        = {this.props.getPristineState}
-                />
-            </div>
+          <div>
+            <AddNewPos
+                stateHandler            = {this.props.stateHandler}
+                positionDetails         = {this.props.positionDetails}
+                showingNewPositionTable = {this.props.showingNewPositionTable}
+                buttonStyle             = {styles.buttonStyle}
+                textfieldValStyle       = {this.props.textfieldValStyle}
+                divFieldStyle           = {this.props.divFieldStyle}
+                linkStyle               = {this.props.linkStyle}
+                positionID              = {this.props.positionID}
+                updateMultiState        = {this.props.updateMultiState}
+                getPristineState        = {this.props.getPristineState}
+            />
+            <PositionFilterTool
+              buttonStyle             = {styles.buttonStyle}
+              textfieldValStyle       = {this.props.textfieldValStyle}
+              showingSearchResults = {this.props.showingSearchResults}
+              handleSearch={(altPositionQueryURL) => {
+                  const showingSearchResults = !!altPositionQueryURL;
+
+                  this.props.stateHandler('showingSearchResults', showingSearchResults);
+
+                  // Change URL specifying query to run
+                  this.props.stateHandler('altPositionQuery', altPositionQueryURL);
+
+                  // Trigger refresh of table.
+                  this.props.stateHandler('reloading', true);
+              }}
+            />
+          </div>
         );
     }
 }
@@ -172,12 +199,18 @@ class AddNewPos extends Component {
         this.props.stateHandler('showingNewPositionTable', true)
     }
 
+    handleCloseClick() {
+        this.props.stateHandler('showingNewPositionTable', false);
+    }
+
     linkForAddNewPos() {
         return (
-            <p style = {this.props.buttonStyle}
+            <button
+                style = {this.props.buttonStyle}
+                type="button"
                 onClick = {this.handleAddNewPosClick.bind(this)}>
                 Click to add a new position
-            </p>
+            </button>
         );
     }
 
@@ -189,6 +222,8 @@ class AddNewPos extends Component {
                 buttonStyle         = {this.props.buttonStyle}
                 textfieldValStyle   = {this.props.textfieldValStyle}
                 divFieldStyle       = {this.props.divFieldStyle}
+                linkStyle           = {this.props.linkStyle}
+                handleCloseClick    = {this.handleCloseClick.bind(this)}
                 positionData        = {
                     {
                         employer: '1',
@@ -230,7 +265,7 @@ class TableRow extends Component {
 
         return(
             <tr data-position-id={this.props.data.ID}>
-                <td onClick = {this.rowClick} style = {this.props.cellStyle}>{this.props.data.ID}</td>
+                <td onClick = {this.rowClick} style = {this.props.cellStyle}><span style = {this.props.buttonStyle}>{this.props.data.ID}</span></td>
                 <td style = {this.props.cellStyle}>{posTitle}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.employerName}</td>
                 <td style = {this.props.cellStyle}>{this.props.data.recruiterName}</td>

@@ -1,11 +1,14 @@
 /* global module */
 /* global require */
 
+// @TODO cache
+
 const express = require('express');
 const http = require('http');
 const url =  require('url');
 const MySQLExecutor = require('./src/mysql/mysql-executor');
 const mysql = require('./src/mysql');
+const ComplexSelex = require('./src/mysql/complex.selex');
 const ConversationQuery = require('./src/support/conversation-query');
 const InjectConstructor = require('./src/support/inject-constructor');
 const QueryConstants = require('./src/support/query-constants');
@@ -22,11 +25,11 @@ class HTTPServer {
     }
 
     /**
-     * 
+     *
      * @param {*} response          Response object where output will be written.
      * @param {MySQLExecutor}    Data server handling the query
-     * @param {String} query        Query string passed through 
-     * @param {*} params            Query params on request. 
+     * @param {String} query        Query string passed through
+     * @param {*} params            Query params on request.
      */
     fullQuery(response, mysqlExecutor, query, params = null) {
 
@@ -74,7 +77,7 @@ class HTTPServer {
 
         const routing = {
             '/defaultq.json' : {
-                'queryString' : QueryConstants.select.activePositions,
+                'queryString' : QueryConstants.select.activePositions(),
                 'func': this.fullQuery
             },
             '/employers.json' : {
@@ -132,6 +135,50 @@ class HTTPServer {
                     return ConversationQuery(queryParams.pid);
                 },
                 'func': this.injectQuery
+            },
+            '/search/findFilters.json': {
+                'constructQuery': (queryParams) => {
+                    return ComplexSelex.findFilter(queryParams.filter, queryParams.searchString);
+                },
+                'func': this.fullQuery
+            },
+            '/search/doFilterSearch.json': {
+                'constructQuery': (queryParams) => {
+                    const {filter} = queryParams;
+                    const {searchId} = queryParams;
+                    const querySet = {
+                        Employer: () => {
+                            return QueryConstants.select.activePositions(`WHERE employerID = ${searchId}`)
+                        },
+                        Recruiter: () => {
+                            return QueryConstants.select.activePositions(`WHERE recruiterID = ${searchId}`)
+                        },
+                        Contact: () => {
+                            const kernelQuery = QueryConstants.select.activePositions(`WHERE 1`);
+                            const fullContactQuery = `
+                                SELECT * FROM 
+                                    (SELECT DISTINCT
+                                        specificPositionID FROM conversationmaintable
+                                        WHERE contactID = ${searchId} 
+                                    )
+                                AS convoPos    
+                                INNER JOIN ( 
+                                    ${kernelQuery}
+                                )
+                                AS kernel
+                                ON kernel.ID = convoPos.specificPositionID        
+                            `;
+
+                            // Will definitely be the easiest thing in the world to break this.
+                            // console.log(fullContactQuery);
+
+                            return fullContactQuery;
+                        }
+                    }
+
+                    return querySet[filter]();
+                },
+                'func': this.fullQuery
             }
         };
 
@@ -146,6 +193,7 @@ class HTTPServer {
             console.log(`request received ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
 
             if(!routing[pathName]) {
+                console.log(pathName);
                 response.writeHead("404", {'Content-Type': 'text/json'});
                 response.write(`url ${pathName} not found`);
                 response.end();
@@ -155,7 +203,16 @@ class HTTPServer {
             if(routing[pathName].queryString) {
                 routing[pathName].func(response, mysqlExecutor, routing[pathName].queryString);
             } else if(routing[pathName].constructQuery) {
-                routing[pathName].func(response, mysqlExecutor, routing[pathName].constructQuery(queryParams));
+                const queryToRun = routing[pathName].constructQuery(queryParams);
+
+                if(!queryToRun) {
+                    response.writeHead("500", {'Content-Type': 'text/json'});
+                    response.write('query is empty');
+                    response.end();
+                    return;
+                }
+
+                routing[pathName].func(response, mysqlExecutor, queryToRun);
             }
 
         });

@@ -1,11 +1,15 @@
 {
+  "comments": [
+    "Use this space to make comments. Don't let JSON's strictures cramp your style when you aren't interested in forgetting anything important.",
+    "Scripts node is all for running locally. Deployment to production server is (perhaps perpetually, as personal use repo) TBD."
+  ],
   "name": "jobsearch-conversation-organizer",
   "version": "1.0.0",
   "description": "Logs conversations I have had in the course of a job search.",
   "main": "index.js",
   "scripts": {
     "buildDev": "webpack --mode development --config webpack/webpack.common.js",
-    "restoreDB": "docker exec -it mariadb mysql -u root -proot jobConvos < ./mySQLBackup/jobConvosDump.sql",
+    "restoreDB": "docker exec -it mariadb mysql -u root -proot jobConvos < ./mySQLBackup/jobConvosSchema.sql",
     "startMySql": "node server root"
   },
   "repository": {

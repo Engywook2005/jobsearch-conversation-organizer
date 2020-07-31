@@ -40,7 +40,10 @@ class ContactSelector extends Component {
     render() {
         // @TODO option to create new contact
         if(this.state.viewstate === 'select') {
-            return(<div>
+            return(
+                <div
+                    style = {this.props.divFieldStyle}
+                >
                 <p>name: <span
                     style = {styles.buttonStyle}
                     onClick = {
@@ -49,6 +52,7 @@ class ContactSelector extends Component {
                     }
                 }>Add new contact</span></p>
                 <select
+                    style = {this.props.textfieldValStyle}
                     onChange = {(e) => {
                         this.updateDetails.call(this, 'contactID', e.target.value);
                     }}>
@@ -67,6 +71,10 @@ class ContactSelector extends Component {
                     convoData               = {this.state.convoData}
                     loadConversationData    = {this.props.loadConversationData}
                     setNewContactID         = {this.props.setNewContactID}
+                    linkStyle               = {this.props.linkStyle}
+                    textfieldValStyle       = {this.props.textfieldValStyle}
+                    divFieldStyle           = {this.props.divFieldStyle}
+                    buttonStyle             = {this.props.buttonStyle}
                 />
             </div>);
         }

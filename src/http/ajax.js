@@ -1,3 +1,5 @@
+// @TODO post requests can send data as JSON.
+
 class Ajax {
     static doAjaxQuery(url) {
         return new Promise((resolve, reject) => {
@@ -9,7 +11,7 @@ class Ajax {
                     resolve(this.responseText);
                 }
                 else {
-                    reject('Not a response we can use');
+                    reject(`Not a response we can use: ${this.status}`);
                 }
             };
 

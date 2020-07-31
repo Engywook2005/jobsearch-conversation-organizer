@@ -48,26 +48,33 @@ class ConvoDetails extends Component {
 
         return(<div>
             <div>
-                <div>
-                    Date:&nbsp;&nbsp;
+                <div
+                    style = {this.props.divFieldStyle}
+                >
+                    Date&nbsp;
                     <input
                         type="date"
                         value={convoDate}
+                        style = {this.props.textfieldValStyle}
                         data-prop="conversationDate"
                         onChange={this.handleChange}
                     />
-                    &nbsp;&nbsp;Time:&nbsp;&nbsp;
+                    &nbsp;Time&nbsp;
                     <input
                         type="time"
                         value={convoTime}
+                        style = {this.props.textfieldValStyle}
                         data-prop="conversationTime"
                         onChange={this.handleChange}
                     />
                 </div>
-                <div>
-                    Conversation Type&nbsp;&nbsp;
+                <div
+                    style = {this.props.divFieldStyle}
+                >
+                    Conversation Type&nbsp;
                     <select
                         value = {convoData.conversationType || 1}
+                        style = {this.props.textfieldValStyle}
                         data-prop="conversationType"
                         onChange={this.handleChange}
                     >
@@ -79,12 +86,15 @@ class ConvoDetails extends Component {
                         }
                     </select>
                 </div>
-                <div>
+                <div
+                    style = {this.props.divFieldStyle}
+                >
                     Remarks<br/>
                     <textarea
                         rows = "4"
                         cols = "80"
                         value = {convoData.remark || ''}
+                        style = {this.props.textfieldValStyle}
                         data-prop="remark"
                         onChange={this.handleChange}
                     />
