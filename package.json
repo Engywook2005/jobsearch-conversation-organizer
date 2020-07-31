@@ -4,7 +4,7 @@
     "Scripts node is all for running locally. Deployment to production server is (perhaps perpetually, as personal use repo) TBD."
   ],
   "name": "jobsearch-conversation-organizer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Logs conversations I have had in the course of a job search.",
   "main": "index.js",
   "scripts": {
