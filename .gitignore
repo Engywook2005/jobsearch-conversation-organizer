@@ -1,5 +1,6 @@
 .idea/*
 mySQLBackup/*
+!mySQLBackup/jobConvosSchema.sql
 node_modules
 public/*
 yarn-error.log
