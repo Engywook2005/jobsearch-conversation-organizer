@@ -5,7 +5,7 @@
 
 const express = require('express');
 const http = require('http');
-const url =  require('url');
+const url = require('url');
 const MySQLExecutor = require('./src/mysql/mysql-executor');
 const mysql = require('./src/mysql');
 const ComplexSelex = require('./src/mysql/complex.selex');
@@ -16,146 +16,169 @@ const QueryConstants = require('./src/support/query-constants');
 const app = express();
 
 class HTTPServer {
-    constructor(password) {
-        this.createMySQLInstance(password);
+  constructor(password) {
+    this.createMySQLInstance(password);
+  }
+
+  createMySQLInstance(password) {
+    new mysql.MySqlConnexJS().connectToSQLServer(
+      this.startServerOnMySQLReady.bind(this),
+      password
+    );
+  }
+
+  /**
+   *
+   * @param {*} response          Response object where output will be written.
+   * @param {MySQLExecutor}    Data server handling the query
+   * @param {String} query        Query string passed through
+   * @param {*} params            Query params on request.
+   */
+  fullQuery(response, mysqlExecutor, query, params = null) {
+    const mySQLResponseCallback = function (err, mySQLResponse) {
+      // @TODO this should be consolidated in one function to handle all ultimate output.
+      response.writeHead('200', { 'Content-Type': 'text/json' });
+      if (mySQLResponse) {
+        response.write(JSON.stringify(mySQLResponse));
+      } else if (err) {
+        console.log('oops: ' + err);
+        response.write('oops, something went wrong: ' + err.message);
+      }
+      response.end();
+    };
+    mysqlExecutor.execSelectQuery(mySQLResponseCallback, query);
+  }
+
+  // @TODO do we need a separate injectQuery?
+  injectQuery(response, mysqlExecutor, query, params = null) {
+    const mySQLresponseCallback = function (err, mySQLResponse) {
+      response.writeHead('200', { 'Content-Type': 'text/json' });
+      if (mySQLResponse) {
+        response.write(JSON.stringify(mySQLResponse));
+      } else if (err) {
+        console.log('oops: ' + err);
+        response.write('oops, something went wrong: ' + err.message);
+      }
+      response.end();
+    };
+
+    mysqlExecutor.execInjectQuery(mySQLresponseCallback, query);
+  }
+
+  startServerOnMySQLReady(err, mySQLConnex) {
+    console.log('sql ready');
+    if (err) {
+      console.log('error connecting with SQL: ' + err.message);
     }
 
-    createMySQLInstance(password) {
-        new mysql.MySqlConnexJS().connectToSQLServer(this.startServerOnMySQLReady.bind(this), password);
-    }
+    const mysqlExecutor = new MySQLExecutor(mySQLConnex);
 
-    /**
-     *
-     * @param {*} response          Response object where output will be written.
-     * @param {MySQLExecutor}    Data server handling the query
-     * @param {String} query        Query string passed through
-     * @param {*} params            Query params on request.
-     */
-    fullQuery(response, mysqlExecutor, query, params = null) {
+    const routing = {
+      '/defaultq.json': {
+        queryString: QueryConstants.select.activePositions(),
+        func: this.fullQuery
+      },
+      '/employers.json': {
+        queryString: QueryConstants.select.employers,
+        func: this.fullQuery
+      },
+      '/recruiters.json': {
+        queryString: QueryConstants.select.recruiters,
+        func: this.fullQuery
+      },
+      '/positionTypes.json': {
+        queryString: QueryConstants.select.positionTypes,
+        func: this.fullQuery
+      },
+      '/applicationStatus.json': {
+        queryString: QueryConstants.select.applicationStatus,
+        func: this.fullQuery
+      },
+      '/resumeVersions.json': {
+        queryString: QueryConstants.select.resumeVersions,
+        func: this.fullQuery
+      },
+      '/positionData.json': {
+        constructQuery: (queryParams) => {
+          return `${QueryConstants.select.positionData} WHERE positionID=${queryParams.posid};`;
+        },
+        func: this.fullQuery
+      },
+      '/generalSelex.json': {
+        constructQuery: (queryParams) => {
+          console.log(
+            `CONSTRUCTING SELEX QUERY: ${JSON.stringify(queryParams)}`
+          );
 
-        const mySQLResponseCallback = function(err, mySQLResponse) {
+          return InjectConstructor.constructSelexQuery(
+            queryParams.table,
+            queryParams.where
+          );
+        },
+        func: this.injectQuery
+      },
+      '/insertSQL.json': {
+        constructQuery: (queryParams) => {
+          console.log(
+            `CONSTRUCTING INSERT QUERY: ${JSON.stringify(queryParams)}`
+          );
 
-            // @TODO this should be consolidated in one function to handle all ultimate output.
-            response.writeHead("200", {'Content-Type': 'text/json'});
-            if(mySQLResponse) {
-                response.write(JSON.stringify(mySQLResponse));
-            } else if(err) {
+          return InjectConstructor.constructInjexQuery(
+            queryParams.table,
+            queryParams.props,
+            queryParams.values
+          );
+        },
+        func: this.injectQuery
+      },
+      '/updateSQL.json': {
+        constructQuery: (queryParams) => {
+          console.log(
+            `CONSTRUCTING UPDATE QUERY: ${JSON.stringify(queryParams)}`
+          );
 
-
-                console.log('oops: ' + err);
-                response.write("oops, something went wrong: " + err.message);
-            }
-            response.end();
-        };
-        mysqlExecutor.execSelectQuery(mySQLResponseCallback, query);
-    }
-
-    // @TODO do we need a separate injectQuery?
-    injectQuery(response, mysqlExecutor, query, params = null) {
-
-        const mySQLresponseCallback = function(err, mySQLResponse) {
-            response.writeHead("200", {'Content-Type': 'text/json'});
-            if(mySQLResponse) {
-                response.write(JSON.stringify(mySQLResponse));
-            } else if(err) {
-                console.log('oops: ' + err);
-                response.write("oops, something went wrong: " + err.message);
-            }
-            response.end();
-        };
-
-        mysqlExecutor.execInjectQuery(mySQLresponseCallback, query);
-    }
-
-    startServerOnMySQLReady(err, mySQLConnex) {
-        console.log("sql ready");
-        if(err) {
-            console.log("error connecting with SQL: " + err.message);
-        }
-
-        const mysqlExecutor = new MySQLExecutor(mySQLConnex);
-
-        const routing = {
-            '/defaultq.json' : {
-                'queryString' : QueryConstants.select.activePositions(),
-                'func': this.fullQuery
+          return InjectConstructor.constructUpdateQuery(
+            queryParams.table,
+            queryParams.updatedata,
+            queryParams.where
+          );
+        },
+        func: this.injectQuery
+      },
+      '/convoq.json': {
+        constructQuery: (queryParams) => {
+          return ConversationQuery(queryParams.pid);
+        },
+        func: this.injectQuery
+      },
+      '/search/findFilters.json': {
+        constructQuery: (queryParams) => {
+          return ComplexSelex.findFilter(
+            queryParams.filter,
+            queryParams.searchString
+          );
+        },
+        func: this.fullQuery
+      },
+      '/search/doFilterSearch.json': {
+        constructQuery: (queryParams) => {
+          const { filter } = queryParams;
+          const { searchId } = queryParams;
+          const querySet = {
+            Employer: () => {
+              return QueryConstants.select.activePositions(
+                `WHERE employerID = ${searchId}`
+              );
             },
-            '/employers.json' : {
-                'queryString': QueryConstants.select.employers,
-                'func': this.fullQuery
+            Recruiter: () => {
+              return QueryConstants.select.activePositions(
+                `WHERE recruiterID = ${searchId}`
+              );
             },
-            '/recruiters.json' : {
-                'queryString': QueryConstants.select.recruiters,
-                'func': this.fullQuery
-            },
-            '/positionTypes.json': {
-                'queryString': QueryConstants.select.positionTypes,
-                'func': this.fullQuery
-            },
-            '/applicationStatus.json': {
-                'queryString': QueryConstants.select.applicationStatus,
-                'func': this.fullQuery
-            },
-            '/resumeVersions.json': {
-                'queryString': QueryConstants.select.resumeVersions,
-                'func': this.fullQuery
-            },
-            '/positionData.json': {
-                'constructQuery': (queryParams) => {
-                    return `${QueryConstants.select.positionData} WHERE positionID=${queryParams.posid};`;
-                },
-                'func': this.fullQuery
-            },
-            '/generalSelex.json' : {
-                'constructQuery' : (queryParams) => {
-                    console.log(`CONSTRUCTING SELEX QUERY: ${JSON.stringify(queryParams)}`);
-
-                    return InjectConstructor.constructSelexQuery(queryParams.table, queryParams.where);
-                },
-                'func': this.injectQuery
-            },
-            '/insertSQL.json' : {
-                'constructQuery': (queryParams) => {
-                    console.log(`CONSTRUCTING INSERT QUERY: ${JSON.stringify(queryParams)}`);
-
-                    return InjectConstructor.constructInjexQuery(queryParams.table, queryParams.props, queryParams.values);
-                },
-                'func': this.injectQuery
-            },
-            '/updateSQL.json' : {
-                'constructQuery' : (queryParams) => {
-                    console.log(`CONSTRUCTING UPDATE QUERY: ${JSON.stringify(queryParams)}`);
-
-                    return InjectConstructor.constructUpdateQuery(queryParams.table, queryParams.updatedata, queryParams.where);
-                },
-                'func': this.injectQuery
-            },
-            '/convoq.json': {
-                'constructQuery': (queryParams) => {
-                    return ConversationQuery(queryParams.pid);
-                },
-                'func': this.injectQuery
-            },
-            '/search/findFilters.json': {
-                'constructQuery': (queryParams) => {
-                    return ComplexSelex.findFilter(queryParams.filter, queryParams.searchString);
-                },
-                'func': this.fullQuery
-            },
-            '/search/doFilterSearch.json': {
-                'constructQuery': (queryParams) => {
-                    const {filter} = queryParams;
-                    const {searchId} = queryParams;
-                    const querySet = {
-                        Employer: () => {
-                            return QueryConstants.select.activePositions(`WHERE employerID = ${searchId}`)
-                        },
-                        Recruiter: () => {
-                            return QueryConstants.select.activePositions(`WHERE recruiterID = ${searchId}`)
-                        },
-                        Contact: () => {
-                            const kernelQuery = QueryConstants.select.activePositions(`WHERE 1`);
-                            const fullContactQuery = `
+            Contact: () => {
+              const kernelQuery =
+                QueryConstants.select.activePositions(`WHERE 1`);
+              const fullContactQuery = `
                                 SELECT * FROM 
                                     (SELECT DISTINCT
                                         specificPositionID FROM conversationmaintable
@@ -169,56 +192,61 @@ class HTTPServer {
                                 ON kernel.ID = convoPos.specificPositionID        
                             `;
 
-                            // Will definitely be the easiest thing in the world to break this.
-                            // console.log(fullContactQuery);
+              // Will definitely be the easiest thing in the world to break this.
+              // console.log(fullContactQuery);
 
-                            return fullContactQuery;
-                        }
-                    }
-
-                    return querySet[filter]();
-                },
-                'func': this.fullQuery
+              return fullContactQuery;
             }
-        };
+          };
 
-        app.use(express.static('public'));
+          return querySet[filter]();
+        },
+        func: this.fullQuery
+      }
+    };
 
-        app.get('/[A-Za-z0-9_-]*\.json', (request, response) => {
-            const urlParts = url.parse(request.url, true),
-                now = new Date(),
-                pathName = urlParts.pathname,
-                queryParams = urlParts.query;
+    app.use(express.static('public'));
 
-            console.log(`request received ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
+    app.get('/[A-Za-z0-9_-]*.json', (request, response) => {
+      const urlParts = url.parse(request.url, true),
+        now = new Date(),
+        pathName = urlParts.pathname,
+        queryParams = urlParts.query;
 
-            if(!routing[pathName]) {
-                console.log(pathName);
-                response.writeHead("404", {'Content-Type': 'text/json'});
-                response.write(`url ${pathName} not found`);
-                response.end();
-                return;
-            }
+      console.log(
+        `request received ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+      );
 
-            if(routing[pathName].queryString) {
-                routing[pathName].func(response, mysqlExecutor, routing[pathName].queryString);
-            } else if(routing[pathName].constructQuery) {
-                const queryToRun = routing[pathName].constructQuery(queryParams);
+      if (!routing[pathName]) {
+        console.log(pathName);
+        response.writeHead('404', { 'Content-Type': 'text/json' });
+        response.write(`url ${pathName} not found`);
+        response.end();
+        return;
+      }
 
-                if(!queryToRun) {
-                    response.writeHead("500", {'Content-Type': 'text/json'});
-                    response.write('query is empty');
-                    response.end();
-                    return;
-                }
+      if (routing[pathName].queryString) {
+        routing[pathName].func(
+          response,
+          mysqlExecutor,
+          routing[pathName].queryString
+        );
+      } else if (routing[pathName].constructQuery) {
+        const queryToRun = routing[pathName].constructQuery(queryParams);
 
-                routing[pathName].func(response, mysqlExecutor, queryToRun);
-            }
+        if (!queryToRun) {
+          response.writeHead('500', { 'Content-Type': 'text/json' });
+          response.write('query is empty');
+          response.end();
+          return;
+        }
 
-        });
+        routing[pathName].func(response, mysqlExecutor, queryToRun);
+      }
+    });
 
-        console.log('server is running');
-    }
+    console.log('server is running');
+  }
 }
 
 new HTTPServer(process.argv[2]);

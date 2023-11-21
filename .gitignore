@@ -8,3 +8,4 @@ yarn-error.log
 dist/
 tests/http/*
 db_data
+.DS_Store

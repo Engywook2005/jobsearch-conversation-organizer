@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "buildDev": "webpack --mode development --config webpack/webpack.common.js",
-    "restoreDB": "docker exec -it mariadb mysql -u root -proot jobConvos < ./mySQLBackup/jobConvosSchema.sql",
+    "restoreDB": "docker exec -it mariadb-jobconvos mysql -u root -proot jobConvos < ./mySQLBackup/jobConvosSchema.sql",
     "startMySql": "node server root"
   },
   "repository": {
