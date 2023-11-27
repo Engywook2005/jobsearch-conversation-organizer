@@ -6,9 +6,9 @@ Keeps track of conversations I've had in the course of job searches 2017 and onw
 
 @TODO: Add a committed starter .sql kit where only a sample entry is in there.
 
-_Important_: Before starting, you'll need a database. Add the jobConvosDump.sql file to `db_data/mySQLBackup/`
+_Important_: Before starting, you'll need a database. Add the jobConvosDump.sql file to `mySQLBackup/`
 
-- Note: once the container is running and the database is populated, many more files will be added to `db_data`. That's Docker doing its thing.
+- Note: once the container is running and the database is populated, many files will be added to `db_data`. That's Docker doing its thing.
 
 ## Starting the container
 
