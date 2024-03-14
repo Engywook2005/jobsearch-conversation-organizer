@@ -3,7 +3,7 @@ const QueryConstants = {
         activePositions : function(specialFilterRule = '') {
             const defaultFilter = `
                     WHERE
-                    lastStatusChange BETWEEN NOW() - INTERVAL 7 DAY AND NOW()
+                    lastStatusChange BETWEEN NOW() - INTERVAL 180 DAY AND NOW()
                         AND status NOT IN(5, 11, 19, 27)`;
             const posFilter = specialFilterRule === ''
               ? defaultFilter

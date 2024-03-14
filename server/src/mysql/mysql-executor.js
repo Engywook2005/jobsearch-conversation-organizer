@@ -8,6 +8,7 @@ class MySQLExecutor {
 
   execSelectQuery(callback, queryString) {
     const now = new Date();
+    console.log(queryString);
     console.log(
       `executing selexquery ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
     );
